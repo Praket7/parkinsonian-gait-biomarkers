@@ -15,7 +15,7 @@ implemented; it is not a negative finding.
 | CARE-PD cohort-level and medication-state analyses | Implemented as cohort-specific translation-speed and conditional BMCLab ON/OFF summaries | This is transport/translation evidence, not matched gait-event feature replication. |
 | Analysis version/config/result agreement | PASS: config and frozen manifest both report 3.0 | The release gate checks this consistency. |
 | Negative controls | Implemented | Gaussian-feature, shuffled-severity, and site-only controls did not show a strong primary association. |
-| Run provenance manifest | Pending final release commit | It is generated from aggregate files only after the code-and-results commit is frozen. |
+| Run provenance manifest | Implemented for release commit `c52cfa61bbb454acb143d635277be2738c3ea6ad` | It hashes configuration, dependency lock, metadata, and public aggregate outputs without reading raw inputs. |
 
 ## Interpretation boundary
 

@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import platform
 import subprocess
 from datetime import datetime, timezone
@@ -24,6 +25,8 @@ def sha256(path: Path) -> str:
 
 
 def git_commit(root: Path) -> str | None:
+    if os.environ.get("ANALYSIS_CODE_COMMIT"):
+        return os.environ["ANALYSIS_CODE_COMMIT"]
     try:
         return subprocess.run(
             ["git", "-C", str(root), "rev-parse", "HEAD"],

@@ -39,6 +39,13 @@ def main(root: str) -> int:
                 failures.append(f"missing aggregate output {name}")
         if not (base / "requirements-lock.txt").exists():
             failures.append("missing requirements-lock.txt")
+        provenance_path = base / "results" / "frozen" / "run_provenance.json"
+        if not provenance_path.exists():
+            failures.append("missing aggregate run provenance")
+        else:
+            provenance = json.loads(provenance_path.read_text())
+            if provenance.get("analysis_version") != manifest.get("analysis_version"):
+                failures.append("provenance and result manifest versions differ")
         # Authorized files live outside the repository by design.  Require an
         # auditable derived table instead of requiring a redistributable copy.
         feature_path = base / "results" / "v1_reference_walkway_clinical.csv"

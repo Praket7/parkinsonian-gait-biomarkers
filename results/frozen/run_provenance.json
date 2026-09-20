@@ -1,0 +1,46 @@
+{
+  "schema": "run-provenance-v1",
+  "generated_at_utc": "2026-09-20T19:29:46.018243+00:00",
+  "git_commit": "c52cfa61bbb454acb143d635277be2738c3ea6ad",
+  "analysis_version": "3.0",
+  "python_version": "3.11.15",
+  "config": {
+    "path": "configs/analysis.yaml",
+    "sha256": "2a11c1e9c73dd9ae29bec0e40bec51388122bcd5c41ed8b4aa70d8e437321b0e"
+  },
+  "dependencies": {
+    "lockfile": "requirements-lock.txt",
+    "lockfile_sha256": "e288c943e8071278353d01bb202c7d305c4ec9c595f9331e7a0c9041fdba80f0",
+    "requirements_sha256": "76b7439f4a3542c4b51a3724cd678fa90e859361a3254bd16100360e2c44b2ba"
+  },
+  "dataset_metadata_sha256": {
+    "data/metadata/CARE-PD-README.md": "ba346f093693e829445b46bb4793290c82b134a610795fd452e1da85fde79565",
+    "data/metadata/acquisition_attempt_2026-09-20.json": "438f8f40061cd718c6e56291785692c8fdabb83a4449f572ddcc7720c4bba27e",
+    "data/metadata/carepd-dataverse-api.json": "144b9c74ceb9691511154f9b3eae98481e1614789705c56ffbe97cc5e86cb80f",
+    "data/metadata/carepd-hf-api.json": "0441570fcebd715e54d2d108b6fd87f61080004c92338be8b2f5a1cb45e8db08",
+    "data/metadata/carepd_acquisition_manifest.json": "ebf5d54b105f3307de3c3a80bc98734dc6d596bda99c80ab807f1bc061c2abaa",
+    "data/metadata/manifest.json": "7f205c0494b81ab5243c88728ab43eee976c50fafc17ec1441611cb00588378e",
+    "data/metadata/weargait-access-wiki.json": "158493fa0080928c452a971cb7fe394df91660968808ff2edaf46cd0acdf704f",
+    "data/metadata/weargait-synapse-entity.json": "d3b3442b4750387d1c3430b9fa544c332753f31993b48617a3245647188cf036",
+    "data/metadata/weargait-synapse-page.html": "39060169dd84dc359047ae4d353903c34e2a8963c282b4e69f707b5804e92e17",
+    "data/metadata/weargait-synapse-wiki.json": "618a31f7928465338c301b9dc53d4e2a82674d26b897d7795f20034d7f8b6fe6",
+    "data/metadata/weargait_v1_transfer.log": "4bc5ca3d1669158b0baad9ba2bbec6bf7e7ea79c00cb3a9d56a4bdb4bded1069"
+  },
+  "aggregate_result_sha256": {
+    "results/frozen/carepd_cohort_results.csv": "de35581814d48333d60b427e8f23bf0bd8ecf7f28a1a1b521851cba851f1ff5b",
+    "results/frozen/contact_validation.csv": "c8f66534b32f545b642c8ad0b14531ba8646c94dec5071d9d1957f339345f461",
+    "results/frozen/context_robustness.csv": "4849129d6350bab3815de8f93277c0b45be2884389664c5c77581cba4d3f9040",
+    "results/frozen/feature_evidence_matrix.csv": "4dbb863d8870b001ed6120e6d91c156f1c7fbc515aa865041bf6669164f3f73e",
+    "results/frozen/medication_sensitivity.csv": "b6f469ee79d766681f6c3f26115dd3042b45617ccf6b4f4e61f454a054b72f8e",
+    "results/frozen/negative_controls.csv": "ef057708d61322a5b4d86adc8d62e70033a965a6f37528e483d031b0b7089e87",
+    "results/frozen/participant_flow.csv": "70f10dc21a2bfe41812c667ed5ace2f01f136620c6214433e9a3cec77bd4dc32",
+    "results/frozen/primary_associations.csv": "e717e12c4640bbe3189f79f7ea64b724712dca85d1d6e92fe4b4fe1bff11ff5a",
+    "results/frozen/reliability.csv": "cbc1c7e3589a9edb168c1324f64aafe6857ae68b53379f0a292fdfd7ba6f8aaa",
+    "results/frozen/results.json": "0a72278f7db59f31f26c9eb5b0b8de82f084df51fb58547159eef7d0160f8530"
+  },
+  "privacy": {
+    "raw_data_read": false,
+    "participant_level_values_recorded": false,
+    "note": "Hashes do not permit recovery of source table contents; raw inputs remain external."
+  }
+}
