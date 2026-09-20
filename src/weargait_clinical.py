@@ -57,6 +57,11 @@ def read_weargait_clinical(path, cohort=None):
     out["sex"] = col("Sex", "Gender").astype("string").str.strip()
     out["disease_duration"] = _number(col("Years since PD diagnosis"))
     out["dbs_status"] = col("DBS?").map(_yes_no)
+    # The V1 instrument's Part III administration-state field is explicitly
+    # labelled 3b in its second header row.  Preserve only declared ON/OFF;
+    # all other values stay missing rather than being inferred from dosing.
+    medication = col("3b").astype("string").str.strip().str.lower()
+    out["medication_state"] = medication.where(medication.isin(["on", "off"]))
     session = _time_hours(col("Time of research session"))
     dose = _time_hours(col("Time of last medication dose"))
     delta = session - dose

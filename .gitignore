@@ -6,6 +6,9 @@ __pycache__/
 data/raw/
 data/interim/
 data/processed/
-results/*.csv
-results/frozen/*.json
-!results/frozen/results.json
+results/*
+!results/frozen/
+!results/frozen/*.csv
+!results/frozen/*.json
+!results/figures/
+!results/figures/*.png

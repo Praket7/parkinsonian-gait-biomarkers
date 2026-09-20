@@ -9,6 +9,7 @@ import argparse
 import json
 from pathlib import Path
 import sys
+import yaml
 
 
 def _ids(path: Path) -> set[str]:
@@ -30,6 +31,14 @@ def main(root: str) -> int:
         manifest = json.loads(manifest_path.read_text())
         if manifest.get("status") != "analysis_complete":
             failures.append("frozen manifest does not report analysis_complete")
+        config_path = base / "configs" / "analysis.yaml"
+        if not config_path.exists() or manifest.get("analysis_version") != (yaml.safe_load(config_path.read_text()) or {}).get("analysis_version"):
+            failures.append("analysis version differs between config and manifest")
+        for name in ("primary_associations.csv", "feature_evidence_matrix.csv", "reliability.csv", "contact_validation.csv", "context_robustness.csv", "carepd_cohort_results.csv", "medication_sensitivity.csv", "negative_controls.csv", "participant_flow.csv"):
+            if not (base / "results" / "frozen" / name).exists():
+                failures.append(f"missing aggregate output {name}")
+        if not (base / "requirements-lock.txt").exists():
+            failures.append("missing requirements-lock.txt")
         # Authorized files live outside the repository by design.  Require an
         # auditable derived table instead of requiring a redistributable copy.
         feature_path = base / "results" / "v1_reference_walkway_clinical.csv"

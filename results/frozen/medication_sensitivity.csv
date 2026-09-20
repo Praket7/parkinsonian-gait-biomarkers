@@ -1,0 +1,12 @@
+feature,adjuster,effect,p_value,status
+gait_speed,medication_state,-0.318344313854945,0.0002862267157402362,OK
+cadence,medication_state,-0.07638946785227488,0.5527700754698431,OK
+step_length_mean,medication_state,-0.3881121762179615,4.658183813890964e-07,OK
+stride_length_mean,medication_state,-0.3965157384188988,3.17682847162328e-07,OK
+step_time_mean,medication_state,0.15791524158655806,0.22507512310955524,OK
+stride_time_mean,medication_state,0.1507216654292453,0.24857680109706082,OK
+step_time_cv,medication_state,0.44499593563466333,0.0052747296568525425,OK
+stride_time_cv,medication_state,0.33373047528118416,0.04157992717041749,OK
+stance_fraction,medication_state,0.2473430931888028,0.037017005663737,OK
+swing_fraction,medication_state,-0.2473430931888036,0.037017005663736745,OK
+double_support_fraction,medication_state,0.26375056672924735,0.03430941004378557,OK

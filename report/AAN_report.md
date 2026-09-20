@@ -1,33 +1,116 @@
-# Separating trait from state in Parkinsonian gait: an authorized secondary analysis
+# Parkinsonian gait biomarkers: aggregate analysis report
 
-## Bottom line
+Analysis version: `3.0`  
+Frozen status: `analysis_complete`
 
-The strict, predeclared trait screen was **not supported**. Several reference-walkway measures were associated with worse MDS-UPDRS Part III gait-item score, but no measure simultaneously showed an FDR-controlled association, stable participant-bootstrap direction, validated temporal sensing where required, and adequate two-session repeatability. These data support associations and a cautious translation-only external check; they do not establish a clinical biomarker, diagnostic test, causal mechanism, or medication effect.
+## Scope
 
-## Data and unit of analysis
+This report is generated from frozen aggregate outputs. It does not contain
+participant identifiers or row-level observations. The primary bundle contains
+124 analyzed rows from 62 participants, as reported by the
+frozen manifest.
 
-WearGait-PD V1 was analysed from the released PKMAS pressure-walkway summary for the two available reference tasks: self-paced (SP) and hurried-paced (HP) walking. The joined table comprised 271 participant-task rows; the PD primary cohort comprised 124 usable task rows from 62 participants with MDS-UPDRS Part III item 3.10 (gait). Thirteen rows without an exact clinical-ID match or required analysis value were not used in the primary model. The authorized source data remain outside this public repository.
+## Main result
 
-The primary model was a Gaussian GEE clustered by participant, with standardized outcome and gait-item score, adjusted for age, height, sex, task, and acquisition site. Benjamini-Hochberg correction covered the 11 predeclared reference measures. Direction stability used 2,000 whole-participant bootstrap resamples. This preserves task rows while avoiding individual-walk resampling.
+The implemented pipeline identified 0 feature(s) meeting
+its current strict trait rule: none reported.
+This is a statement about the implemented evidence pipeline, not proof that
+every unimplemented evidence path was negative.
 
-## Primary associations
+## Aggregate associations
 
-Higher gait impairment was associated with lower speed (standardized beta -0.308, 95% CI -0.464 to -0.151, q=0.00042), shorter step length (-0.367, -0.511 to -0.223, q=0.0000032), and shorter stride length (-0.375, -0.519 to -0.231, q=0.0000032). Temporal variability and support-phase measures also survived FDR: step-time CV (0.453, q=0.0135), stride-time CV (0.347, q=0.0487), stance fraction (0.277, q=0.0135), swing fraction (-0.277, q=0.0135), and double-support fraction (0.290, q=0.0135). Cadence, mean step time, and mean stride time did not survive FDR.
+- `gait_speed`: effect=-0.308, p=0.000114, q=0.000418
+- `cadence`: effect=-0.0971, p=0.401, q=0.401
+- `step_length_mean`: effect=-0.367, p=5.82e-07, q=3.2e-06
+- `stride_length_mean`: effect=-0.375, p=3.31e-07, q=3.2e-06
+- `step_time_mean`: effect=0.164, p=0.175, q=0.21
+- `stride_time_mean`: effect=0.158, p=0.19, q=0.21
+- `step_time_cv`: effect=0.453, p=0.00597, q=0.0135
+- `stride_time_cv`: effect=0.347, p=0.0354, q=0.0487
+- `stance_fraction`: effect=0.277, p=0.00778, q=0.0135
+- `swing_fraction`: effect=-0.277, p=0.00778, q=0.0135
+- `double_support_fraction`: effect=0.29, p=0.00858, q=0.0135
 
-The variance model indicates that step/stride length and support-phase measures had large participant-level fractions (about 0.71 to 0.76), while speed and cadence also had substantial task/site fixed-context fractions (about 0.32). This is descriptive model decomposition, not evidence that a feature is a stable trait by itself.
+## Reliability summary
 
-## Signal and longitudinal checks
+- `cadence`: status=OK, icc_2_1=0.356
+- `cadence`: status=OK, icc_2_1=0.715
+- `step_time_mean`: status=OK, icc_2_1=0.411
+- `step_time_mean`: status=OK, icc_2_1=0.711
+- `step_time_cv`: status=OK, icc_2_1=-0.252
+- `step_time_cv`: status=OK, icc_2_1=0.141
+- `stride_time_mean`: status=OK, icc_2_1=0.348
+- `stride_time_mean`: status=OK, icc_2_1=0.679
+- `stride_time_cv`: status=OK, icc_2_1=0.0609
+- `stride_time_cv`: status=OK, icc_2_1=0.181
 
-The raw WearGait contact stream was restricted to release-labelled `Walk` segments and split at gaps over two seconds. Against independent PKMAS measurements across 257 matched trials, contact cadence had Spearman rho=0.962 (MAE 2.54 steps/min) and mean step time rho=0.960 (MAE 0.0125 s). Only those two temporal measurements were treated as validated contact proxies.
+## Feature evidence matrix
 
-In the longitudinal release, 184 participant-task session pairs were available for cadence, step time, and step-time CV. ICC(2,1) was 0.610 for cadence, 0.587 for mean step time, and 0.808 for step-time CV. Crucially, there is no linked repeated clinical-score table in the accessible longitudinal files, so no within-person severity-change or medication-effect model was fitted.
+- `gait_speed`: aggregate row reported
+- `cadence`: aggregate row reported
+- `step_length_mean`: aggregate row reported
+- `stride_length_mean`: aggregate row reported
+- `step_time_mean`: aggregate row reported
+- `stride_time_mean`: aggregate row reported
+- `step_time_cv`: aggregate row reported
+- `stride_time_cv`: aggregate row reported
+- `stance_fraction`: aggregate row reported
+- `swing_fraction`: aggregate row reported
+- `double_support_fraction`: aggregate row reported
 
-## CARE-PD check
+## Contact validation
 
-CARE-PD's canonicalized SMPL translations were used only for a narrow, external translation check. After retaining plausible, forward-axis trajectories (2,893 trials; 110 cohort-qualified participants), a cohort-adjusted participant-clustered model showed lower global translation speed with higher gait label (beta -0.656, 95% CI -0.765 to -0.547, p=3.7e-32). This agrees directionally with the WearGait speed association, but is **not** a gait-event, spatial-feature, or clinical biomarker replication: CARE-PD's reconstructed motion and heterogeneous cohorts do not provide an operationally identical outcome.
+- `cadence`: status=PASS, spearman_rho=0.952, n=189
+- `step_time_mean`: status=PASS, spearman_rho=0.949, n=189
+- `step_time_cv`: status=FAIL, spearman_rho=0.67, n=189
+- `stride_time_mean`: status=PASS, spearman_rho=0.927, n=189
+- `stride_time_cv`: status=FAIL, spearman_rho=0.523, n=189
 
-## Conclusion
+## External translation check
 
-The data reject the stronger claim that this implementation has identified a context-robust trait biomarker. They do provide reproducible evidence that several walkway features co-vary with gait impairment, and that speed has a directionally consistent, limited external translation check. A future confirmation study needs independently scored longitudinal visits, a prespecified medication-state protocol, and an external reference-walkway replication before any measure is promoted to a trait biomarker.
+These are cohort-specific translation-speed checks, not full matched-feature
+replication.
 
-All aggregate outputs and decision thresholds are recorded in `results/frozen/results.json`; participant-level files and derived row-level tables are deliberately excluded from version control.
+- `3DGait`: status=ok, effect=-0.785, p_value=6.74e-25, ci_low=-0.934, ci_high=-0.636, n_trials=90
+- `3DGait`: status=ok, effect=-0.724, p_value=3.81e-15, ci_low=-0.905, ci_high=-0.544, n_trials=90
+- `3DGait`: status=ok, effect=-0.77, p_value=2.33e-23, ci_low=-0.922, ci_high=-0.619, n_trials=90
+- `BMCLab`: status=ok, effect=-0.688, p_value=1.57e-05, ci_low=-1, ci_high=-0.376, n_trials=781
+- `BMCLab`: status=ok, effect=-0.687, p_value=1.49e-05, ci_low=-0.998, ci_high=-0.376, n_trials=781
+- `BMCLab`: status=ok, effect=-0.685, p_value=1.67e-05, ci_low=-0.997, ci_high=-0.373, n_trials=781
+- `BMCLab`: status=ok, effect=-0.761, p_value=2.1e-06, ci_low=-1.08, ci_high=-0.447, n_trials=371
+- `BMCLab`: status=ok, effect=-0.614, p_value=0.00277, ci_low=-1.02, ci_high=-0.212, n_trials=410
+- `PD-GaM`: status=ok, effect=-0.748, p_value=1.46e-28, ci_low=-0.88, ci_high=-0.616, n_trials=1.7e+03
+- `PD-GaM`: status=ok, effect=-0.759, p_value=5.2e-30, ci_low=-0.89, ci_high=-0.629, n_trials=1.7e+03
+- `PD-GaM`: status=ok, effect=-0.762, p_value=1e-26, ci_low=-0.902, ci_high=-0.623, n_trials=1.7e+03
+- `T-SDU-PD`: status=ok, effect=-0.461, p_value=7.38e-05, ci_low=-0.688, ci_high=-0.233, n_trials=381
+- `T-SDU-PD`: status=ok, effect=-0.455, p_value=2.63e-05, ci_low=-0.667, ci_high=-0.243, n_trials=381
+- `T-SDU-PD`: status=ok, effect=-0.477, p_value=2.29e-05, ci_low=-0.697, ci_high=-0.256, n_trials=381
+
+## Medication-state sensitivity
+
+- `gait_speed`: status=OK, effect=-0.318, p_value=0.000286
+- `cadence`: status=OK, effect=-0.0764, p_value=0.553
+- `step_length_mean`: status=OK, effect=-0.388, p_value=4.66e-07
+- `stride_length_mean`: status=OK, effect=-0.397, p_value=3.18e-07
+- `step_time_mean`: status=OK, effect=0.158, p_value=0.225
+- `stride_time_mean`: status=OK, effect=0.151, p_value=0.249
+- `step_time_cv`: status=OK, effect=0.445, p_value=0.00527
+- `stride_time_cv`: status=OK, effect=0.334, p_value=0.0416
+- `stance_fraction`: status=OK, effect=0.247, p_value=0.037
+- `swing_fraction`: status=OK, effect=-0.247, p_value=0.037
+- `double_support_fraction`: status=OK, effect=0.264, p_value=0.0343
+
+## Negative controls
+
+- `gaussian_feature`: status=OK, effect=0.0989, p_value=0.245
+- `shuffled_severity`: status=OK, effect=0.0254, p_value=0.764
+- `site_only_severity`: status=OK, p_value=0.373
+
+## Limitations and deviations
+
+- Reference PKMAS measures are valid reference outcomes, not failed proxies.
+- V2 archive audit found no joinable session-level clinical-score table, so clinical change was not fitted.
+- CARE-PD remains cohort-level translation evidence, not matched feature replication.
+
+Do not interpret this report as diagnostic, causal, treatment, or clinical-use
+evidence. Regenerate it after every authorized analysis run.

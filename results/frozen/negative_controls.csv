@@ -1,0 +1,4 @@
+control,effect,p_value,status
+gaussian_feature,0.09887797223542091,0.24544956269388907,OK
+shuffled_severity,0.025379199122288885,0.7639139457914808,OK
+site_only_severity,,0.37261870468959213,OK

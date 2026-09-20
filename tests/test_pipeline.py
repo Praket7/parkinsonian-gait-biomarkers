@@ -81,10 +81,14 @@ class PipelineTests(unittest.TestCase):
             path = root / "NLS001_FreeWalk.csv"
             frame.to_csv(path, index=False)
             row = read_weargait_csv(path)
+            rejected = read_weargait_csv(path, minimum_clean_walk_seconds=10)
             table = load_weargait_csv_bouts(root)
         self.assertEqual(row["participant_id"], "NLS001")
         self.assertEqual(row["task"], "FW")
         self.assertAlmostEqual(row["step_time_mean"], 1.0, places=6)
+        self.assertTrue(row["qc_valid"])
+        self.assertFalse(rejected["qc_valid"])
+        self.assertIn("short_clean_bout", rejected["qc_reason"])
         self.assertEqual(len(table), 1)
 
     def test_v1_clinical_header_units_and_id_join(self):
@@ -94,6 +98,7 @@ class PipelineTests(unittest.TestCase):
             pd.DataFrame({
                 "Subject ID": ["NLS001"], "Height (in)": [60], "Age (years)": [70],
                 "Sex": ["Female"], "Years since PD diagnosis": [4], "DBS?": ["No"],
+                "3b": ["ON"],
                 "Time of research session": ["12:30 PM"], "Time of last medication dose": ["8:00 AM"],
                 "MDSUPDRS_3-1": [1], "MDSUPDRS_3-2": [2], "MDSUPDRS_3-3-Neck": [1],
                 "MDSUPDRS_3-3-RUE": [2], "MDSUPDRS_3-3-LUE": [3], "MDSUPDRS_3-10": [2],
@@ -107,6 +112,7 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(clinical.loc[0, "mds_updrs_gait_item"], 2)
         self.assertEqual(clinical.loc[0, "mds_updrs_iii"], 11)
         self.assertAlmostEqual(clinical.loc[0, "time_since_medication"], 4.5)
+        self.assertEqual(clinical.loc[0, "medication_state"], "on")
         self.assertTrue(pd.isna(joined.loc[1, "age"]))
 
 

@@ -15,6 +15,7 @@ import pandas as pd
 
 from .features import extract_bout_features
 from .io import canonical_task, derive_site, infer_task
+from .qc import quality_check
 
 _TIME_RE = re.compile(r"[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?")
 
@@ -57,7 +58,8 @@ def _participant_session(path: Path) -> tuple[str, str]:
     return match.group("participant"), match.group("session") or "v1"
 
 
-def read_weargait_csv(path) -> dict:
+def read_weargait_csv(path, *, minimum_clean_walk_seconds=0.0, minimum_steps=3,
+                      max_missing_fraction=0.20, minimum_alternation_fraction=0.50) -> dict:
     """Read one contact-signal CSV and derive one auditable bout row."""
     path = Path(path)
     header = pd.read_csv(path, nrows=0)
@@ -79,6 +81,19 @@ def read_weargait_csv(path) -> dict:
         _rising_edges(frame["L Foot Contact"], times),
         _rising_edges(frame["R Foot Contact"], times),
     )
+    contacts = np.sort(np.r_[left, right])
+    labels = np.r_[np.zeros(len(left), dtype=int), np.ones(len(right), dtype=int)]
+    ordering = np.argsort(np.r_[left, right], kind="stable")
+    ordered_labels = labels[ordering]
+    duration = float(contacts[-1] - contacts[0]) if len(contacts) > 1 else 0.0
+    alternation = float(np.mean(np.diff(ordered_labels) != 0)) if len(ordered_labels) > 1 else 0.0
+    qc = quality_check({"left_contacts": left, "right_contacts": right}, minimum_steps=minimum_steps,
+                       max_missing_fraction=max_missing_fraction)
+    reasons = [qc["reason_invalid"]] if qc["reason_invalid"] else []
+    if duration < minimum_clean_walk_seconds:
+        reasons.append("short_clean_bout")
+    if alternation < minimum_alternation_fraction:
+        reasons.append("nonalternating_contacts")
     features = extract_bout_features({"left_contacts": left, "right_contacts": right})
     return {
         "participant_id": participant,
@@ -87,6 +102,12 @@ def read_weargait_csv(path) -> dict:
         "task": task,
         "source_file": str(path),
         "source_format": "weargait_csv_signal",
+        "bout_duration_seconds": duration,
+        "contact_count": int(len(contacts)),
+        "alternation_fraction": alternation,
+        "missing_fraction": qc["missing_fraction"],
+        "qc_valid": not reasons,
+        "qc_reason": ";".join(reasons),
         **features,
     }
 

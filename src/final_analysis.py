@@ -40,16 +40,38 @@ def _z(values: pd.Series) -> pd.Series:
     return (values - values.mean()) / sd if np.isfinite(sd) and sd else values * np.nan
 
 
-def _selected_contacts(root: Path, tasks: set[str]) -> pd.DataFrame:
+def _selected_contacts(root: Path, tasks: set[str], config=None) -> pd.DataFrame:
     """Read only the requested signals; filenames are filtered before CSV IO."""
     rows = []
+    quality = (config or {}).get("quality", {})
     for path in sorted(root.rglob("*.csv")):
         if infer_task(path) in tasks:
+            # The companion *_mat.csv is a CSV rendering of the same trial.
+            # Skip it before IO when the native export is present.
+            if path.stem.endswith("_mat") and path.with_name(path.name.replace("_mat.csv", ".csv")).exists():
+                continue
             try:
-                rows.append(read_weargait_csv(path))
-            except ValueError:
-                pass
-    return pd.DataFrame(rows)
+                rows.append(read_weargait_csv(
+                    path,
+                    minimum_clean_walk_seconds=(config or {}).get("minimum_clean_walk_seconds", 0.0),
+                    minimum_steps=quality.get("minimum_steps", 3),
+                    max_missing_fraction=quality.get("max_missing_fraction", 0.20),
+                    minimum_alternation_fraction=quality.get("minimum_alternation_fraction", 0.50),
+                ))
+            except ValueError as exc:
+                if "not a WearGait contact CSV" in str(exc):
+                    continue
+                raise
+    result = pd.DataFrame(rows)
+    if result.empty:
+        return result
+    # CSV and *_mat.csv contact exports can describe the same trial.  Prefer
+    # the native CSV deterministically; retaining both would create an
+    # artificial within-session replicate in the ICC calculation.
+    result["_mat_export"] = result.source_file.str.contains("_mat\\.csv$", case=False, regex=True)
+    return result.sort_values("_mat_export").drop_duplicates(
+        ["participant_id", "session_id", "task"], keep="first"
+    ).drop(columns="_mat_export").reset_index(drop=True)
 
 
 def _gee_associations(table: pd.DataFrame, features: list[str]) -> pd.DataFrame:
@@ -229,5 +251,105 @@ def run_authorized_analysis(data_root, output_dir, *, seed=20260920, bootstrap_i
     _figures(outdir, associations, variance, validation, reliability, care_result)
     manifest = {"analysis_version": "2.0", "seed": seed, "primary_data": "WearGait V1 PKMAS reference walkway", "n_reference_rows": int(len(reference)), "n_primary_rows": int(len(pd_primary)), "n_primary_participants": int(pd_primary.participant_id.nunique()), "primary_target": "MDS-UPDRS Part III item 3.10 (gait)", "trait_features": traits, "hypothesis": "not_supported_under_strict_criteria" if not traits else "supported_for_listed_candidates", "contact_validation": validation.to_dict(orient="records"), "longitudinal": reliability.to_dict(orient="records"), "carepd": care_result, "limits": ["V1 reference-walkway table contains SP/HP only.", "Longitudinal source has no linked repeated clinical-score table; change-versus-severity was not estimated.", "CARE-PD result is a canonical global-translation check, not a gait-event replication."], "status": "analysis_complete"}
     (outdir / "frozen").mkdir(exist_ok=True)
+    (outdir / "frozen" / "results.json").write_text(json.dumps(manifest, indent=2) + "\n")
+    return manifest
+
+
+# Analysis v3 intentionally supersedes the compact v2 path above.  Keeping the
+# old helpers preserves compatibility with earlier synthetic tests only.
+from .carepd_analysis import analyze_carepd_directory
+from .stats_v3 import (FAIL, NOT_ESTIMABLE, PASS, association_table, gee_bootstrap,
+                       medication_sensitivity, negative_controls, participant_permutations, reliability_by_task,
+                       task_specific_and_leave_site_out)
+
+
+FEATURE_EVIDENCE_RULES = {
+    feature: {"source_type": "pkmas_reference", "requires_proxy_validation": False,
+              "requires_reliability": True, "requires_speed_adjustment": feature != "gait_speed"}
+    for feature in PRIMARY_FEATURES
+}
+
+
+def _v3_validation(reference, contacts, config):
+    metrics = [m for m in CONTACT_FEATURES if m in reference and m in contacts]
+    merged = contacts.merge(reference[["participant_id", "task", *metrics]], on=["participant_id", "task"], suffixes=("_contact", "_walkway"), validate="many_to_one")
+    rows = []
+    for metric in metrics:
+        frame = merged[[f"{metric}_contact", f"{metric}_walkway"]].dropna()
+        if len(frame) < 3:
+            rows.append({"feature": metric, "n": len(frame), "status": NOT_ESTIMABLE}); continue
+        error = frame.iloc[:, 0] - frame.iloc[:, 1]
+        rho = float(spearmanr(frame.iloc[:, 0], frame.iloc[:, 1]).statistic)
+        rows.append({"feature": metric, "n": len(frame), "spearman_rho": rho, "mean_bias": float(error.mean()),
+                     "mae": float(error.abs().mean()), "rmse": float(np.sqrt(np.mean(error ** 2))),
+                     "loa_low": float(error.mean() - 1.96 * error.std(ddof=1)), "loa_high": float(error.mean() + 1.96 * error.std(ddof=1)),
+                     "relative_mae": float((error.abs() / frame.iloc[:, 1].abs().replace(0, np.nan)).mean()),
+                     "status": PASS if rho >= config["validation"]["minimum_spearman_rho"] else FAIL})
+    return pd.DataFrame(rows)
+
+
+def _evidence(associations, bootstrap, reliability, validation, robustness, care, config, medication=None):
+    rows = []
+    for record in associations.to_dict("records"):
+        feature, rule = record["feature"], FEATURE_EVIDENCE_RULES[record["feature"]]
+        item = {"feature": feature, **rule, "n_rows": record["n_rows"], "n_participants": record["n_participants"],
+                "severity_beta": record["effect"], "severity_ci_low": record["ci_low"], "severity_ci_high": record["ci_high"], "severity_q": record["q_value"],
+                "speed_adjusted_beta": record.get("speed_adjusted_effect"), "speed_adjusted_q": record.get("speed_adjusted_q_value"),
+                "task_interaction_p": record.get("task_interaction_interaction_p_value"), "site_interaction_p": record.get("site_interaction_interaction_p_value")}
+        boot = bootstrap[bootstrap.feature.eq(feature)]
+        item.update(boot.iloc[0].to_dict() if len(boot) else {"bootstrap_status": NOT_ESTIMABLE})
+        val = validation[validation.feature.eq(feature)]
+        item["analytical_validation_status"] = "NOT_APPLICABLE" if not rule["requires_proxy_validation"] else (val.iloc[0].status if len(val) else NOT_ESTIMABLE)
+        rel = reliability[reliability.feature.eq(feature)]
+        item["reliability_status"] = NOT_ESTIMABLE if rel.empty else (PASS if (rel.icc_2_1 >= config["reliability"]["icc_candidate_threshold"]).any() else FAIL)
+        item["reliability_n_participants"] = int(rel.n_participants.max()) if not rel.empty else np.nan
+        item["icc_best"] = float(rel.icc_2_1.max()) if not rel.empty else np.nan
+        loo = robustness[(robustness.feature.eq(feature)) & robustness.analysis.eq("leave_one_site_out")]
+        item["leave_site_out_sign_consistency"] = float(loo.same_direction.dropna().mean()) if "same_direction" in loo and loo.same_direction.notna().any() else np.nan
+        item["site_robustness_status"] = PASS if item["leave_site_out_sign_consistency"] == 1 else (NOT_ESTIMABLE if pd.isna(item["leave_site_out_sign_consistency"]) else FAIL)
+        item["task_robustness_status"] = PASS if pd.notna(item["task_interaction_p"]) and item["task_interaction_p"] >= config["interaction_alpha"] else (NOT_ESTIMABLE if pd.isna(item["task_interaction_p"]) else FAIL)
+        item["severity_status"] = PASS if record["q_value"] <= config["fdr_alpha"] else FAIL
+        item["bootstrap_status"] = PASS if item.get("bootstrap_same_sign_fraction", 0) >= config["stability"]["minimum_direction_consistency"] else FAIL
+        item["speed_status"] = "NOT_APPLICABLE" if feature == "gait_speed" else (PASS if np.sign(record["effect"]) == np.sign(record.get("speed_adjusted_effect", np.nan)) else (NOT_ESTIMABLE if pd.isna(record.get("speed_adjusted_effect")) else FAIL))
+        medication_row = medication[medication.feature.eq(feature)] if medication is not None else pd.DataFrame()
+        item["state_status"] = ("ADJUSTED" if len(medication_row) and medication_row.iloc[0]["status"] == "OK" else NOT_ESTIMABLE)
+        item["context_status"] = PASS if item["task_robustness_status"] == PASS and item["site_robustness_status"] == PASS else (FAIL if FAIL in (item["task_robustness_status"], item["site_robustness_status"]) else NOT_ESTIMABLE)
+        item["external_replication_status"] = "LIMITED_TRANSLATION_CHECK" if feature == "gait_speed" and not care.empty else NOT_ESTIMABLE
+        mandatory = [item["severity_status"], item["bootstrap_status"], item["speed_status"], item["task_robustness_status"], item["site_robustness_status"], item["reliability_status"]]
+        item["trait_status"] = FAIL if FAIL in mandatory else ("INCOMPLETE" if NOT_ESTIMABLE in mandatory else PASS)
+        item["reason"] = ";".join(k for k, v in {"severity":item["severity_status"],"bootstrap":item["bootstrap_status"],"speed":item["speed_status"],"task":item["task_robustness_status"],"site":item["site_robustness_status"],"reliability":item["reliability_status"]}.items() if v != PASS)
+        rows.append(item)
+    return pd.DataFrame(rows)
+
+
+def run_authorized_analysis(data_root, output_dir, *, config):
+    """Run the v3 evidence pipeline; decisions come exclusively from config."""
+    root, outdir = Path(data_root), Path(output_dir); outdir.mkdir(parents=True, exist_ok=True); (outdir / "frozen").mkdir(exist_ok=True)
+    v1, v2, care_root = root / "WearGait_PD_V1", root / "WearGait_PD_Longitudinal", root / "CARE_PD"
+    walkway = load_walkway_metrics(v1 / "Walkway-derived metrics" / "PKMAS Walkway Gait Metrics - HP+SP.csv")
+    clinical = load_v1_clinical(v1 / "PD - Demographic+Clinical - datasetV1.csv", v1 / "CONTROLS - Demographic+Clinical - datasetV1.csv")
+    reference = join_clinical_features(walkway, clinical); reference.to_csv(outdir / "v1_reference_walkway_clinical.csv", index=False)
+    primary = reference[reference.clinical_cohort.eq("pd") & reference.task.isin(config["primary_tasks"]) & reference.mds_updrs_gait_item.notna()].copy()
+    associations = association_table(primary, PRIMARY_FEATURES, config)
+    bootstrap = gee_bootstrap(primary, associations, config)
+    robustness = task_specific_and_leave_site_out(primary, PRIMARY_FEATURES, config)
+    permutations = participant_permutations(primary, PRIMARY_FEATURES, config)
+    associations = associations.merge(bootstrap, on="feature", how="left").merge(permutations, on="feature", how="left")
+    medication = medication_sensitivity(primary, PRIMARY_FEATURES, config)
+    controls = negative_controls(primary, config)
+    contacts1_all = _selected_contacts(v1, set(config["contact_tasks"]), config)
+    contacts1_all.to_csv(outdir / "contact_qc_v1.csv", index=False)
+    contacts1 = join_clinical_features(contacts1_all[contacts1_all.qc_valid], clinical); contacts1.to_csv(outdir / "v1_contact_features.csv", index=False)
+    validation = _v3_validation(walkway[walkway.task.isin(config["primary_tasks"])], contacts1[contacts1.task.isin(config["primary_tasks"])], config)
+    contacts2_all = _selected_contacts(v2, set(config["contact_tasks"]), config)
+    contacts2_all.to_csv(outdir / "contact_qc_v2.csv", index=False)
+    contacts2 = contacts2_all[contacts2_all.qc_valid].copy(); contacts2.to_csv(outdir / "v2_contact_features.csv", index=False)
+    reliability = reliability_by_task(contacts2, CONTACT_FEATURES, config)
+    care = analyze_carepd_directory(care_root / "Canonicalized_SMPL_pickles", cohorts=("3DGait", "BMCLab", "PD-GaM", "T-SDU-PD")); care.to_csv(outdir / "carepd_cohort_results.csv", index=False)
+    evidence = _evidence(associations, bootstrap, reliability, validation, robustness, care, config, medication)
+    # Aggregate outputs are safe to publish; row-level tables remain ignored.
+    for name, frame in {"primary_associations.csv":associations, "feature_evidence_matrix.csv":evidence, "reliability.csv":reliability, "contact_validation.csv":validation, "context_robustness.csv":robustness, "carepd_cohort_results.csv":care, "medication_sensitivity.csv":medication, "negative_controls.csv":controls}.items(): frame.to_csv(outdir / "frozen" / name, index=False)
+    flow = pd.DataFrame([{"stage":"source_pd_clinical","n_participants":int(clinical[clinical.clinical_cohort.eq("pd")].participant_id.nunique())},{"stage":"pkmas_primary_tasks","n_participants":int(reference[reference.clinical_cohort.eq("pd") & reference.task.isin(config["primary_tasks"])].participant_id.nunique())},{"stage":"primary_with_gait_item","n_participants":int(primary.participant_id.nunique())},{"stage":"v1_contact_qc_valid","n_participants":int(contacts1.participant_id.nunique())},{"stage":"v2_contact_qc_valid","n_participants":int(contacts2.participant_id.nunique())}]); flow.to_csv(outdir / "frozen" / "participant_flow.csv", index=False)
+    manifest = {"analysis_version":config["analysis_version"], "seed":config["seed"], "status":"analysis_complete", "n_primary_rows":int(len(primary)), "n_primary_participants":int(primary.participant_id.nunique()), "trait_features":evidence.loc[evidence.trait_status.eq(PASS),"feature"].tolist(), "promising_incomplete_features":evidence.loc[evidence.trait_status.eq("INCOMPLETE"),"feature"].tolist(), "hypothesis":"incomplete_evidence_not_true_negative" if not (evidence.trait_status == PASS).any() else "candidate_trait_features_present", "longitudinal_clinical_status":"NOT_ESTIMABLE_AFTER_1077_FILE_AUDIT", "limits":["Reference PKMAS measures are valid reference outcomes, not failed proxies.","V2 archive audit found no joinable session-level clinical-score table, so clinical change was not fitted.","CARE-PD remains cohort-level translation evidence, not matched feature replication."]}
     (outdir / "frozen" / "results.json").write_text(json.dumps(manifest, indent=2) + "\n")
     return manifest
