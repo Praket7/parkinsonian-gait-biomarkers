@@ -1,0 +1,41 @@
+{
+  "retrieved_utc": "2026-09-20T05:41:58.551133+00:00",
+  "files": [
+    {
+      "name": "weargait-synapse-entity.json",
+      "url": "https://repo-prod.prod.sagebase.org/repo/v1/entity/syn52540892",
+      "bytes": 357,
+      "sha256": "d3b3442b4750387d1c3430b9fa544c332753f31993b48617a3245647188cf036"
+    },
+    {
+      "name": "weargait-synapse-wiki.json",
+      "url": "https://repo-prod.prod.sagebase.org/repo/v1/entity/syn52540892/wiki/623751",
+      "bytes": 5054,
+      "sha256": "618a31f7928465338c301b9dc53d4e2a82674d26b897d7795f20034d7f8b6fe6"
+    },
+    {
+      "name": "weargait-access-wiki.json",
+      "url": "https://repo-prod.prod.sagebase.org/repo/v1/entity/syn52540892/wiki/623752",
+      "bytes": 2792,
+      "sha256": "158493fa0080928c452a971cb7fe394df91660968808ff2edaf46cd0acdf704f"
+    },
+    {
+      "name": "carepd-dataverse-api.json",
+      "url": "https://borealisdata.ca/api/datasets/:persistentId/?persistentId=doi:10.5683/SP3/TWIKMK",
+      "bytes": 47007,
+      "sha256": "144b9c74ceb9691511154f9b3eae98481e1614789705c56ffbe97cc5e86cb80f"
+    },
+    {
+      "name": "carepd-hf-api.json",
+      "url": "https://huggingface.co/api/datasets/vida-adl/CARE-PD",
+      "bytes": 2951,
+      "sha256": "0441570fcebd715e54d2d108b6fd87f61080004c92338be8b2f5a1cb45e8db08"
+    },
+    {
+      "name": "CARE-PD-README.md",
+      "url": "https://raw.githubusercontent.com/TaatiTeam/CARE-PD/master/README.md",
+      "bytes": 14255,
+      "sha256": "ba346f093693e829445b46bb4793290c82b134a610795fd452e1da85fde79565"
+    }
+  ]
+}

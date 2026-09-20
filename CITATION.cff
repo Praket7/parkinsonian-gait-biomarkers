@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it."
+title: "Parkinsonian Gait Biomarkers"
+version: 0.1.0
+date-released: 2026-09-20
+authors:
+  - family-names: "Praket7"
+license: MIT

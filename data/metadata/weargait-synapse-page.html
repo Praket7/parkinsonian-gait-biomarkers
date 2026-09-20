@@ -1,0 +1,441 @@
+<!doctype html>
+<html id="synapse.org" dir="ltr" lang="en-US">
+  <head>
+    <title>Synapse | Sage Bionetworks</title>
+    <meta name="description" content="Synapse is a platform for supporting scientific collaborations centered around shared biomedical data sets.  Our goal is to make biomedical research more transparent, more reproducible, and more accessible to a broader audience of scientists.  Synapse serves as the host site for a variety of scientific collaborations, individual research projects, and DREAM challenges." />
+    <meta property="og:title" content="Synapse | Sage Bionetworks" />
+    <meta property="og:description" content="Synapse is a platform for supporting scientific collaborations centered around shared biomedical data sets.  Our goal is to make biomedical research more transparent, more reproducible, and more ac..." />
+    <meta name="author" content="Sage Bionetworks, info@sagebase.org" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self' data: blob: 'unsafe-inline' 'unsafe-eval' *.synapse.org *.sagebase.org *.googleapis.com *.gstatic.com *.googletagmanager.com cdn.statuspage.io s3.amazonaws.com www.google-analytics.com kh896k90gyvg.statuspage.io *.youtube.com *.rstudio.com *.google.com *.shinyapps.io *.smartsheet.com sagebionetworks.jira.com 127.0.0.1:9876 localhost:5173 googleads.g.doubleclick.net www.googleadservices.com *.contentsquare.net airtable.com *.airtable.com; frame-ancestors 'self' https://*.synapse.org localhost; img-src * data: blob:; connect-src https://* http://127.0.0.1:8888 http://localhost:5173 ws://localhost:5173 wss://*.execute-api.us-east-1.amazonaws.com"
+    />
+    <meta
+      name="google-site-verification"
+      content="KIO5H8Bg3i0oAEAzTEMK5qIlYJLbd2zogLs_-im4rI0"
+    />
+    <meta name="msvalidate.01" content="E37AC1589F823723B64275D4BC890B1A" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      property="og:logo"
+      content="https://www.synapse.org/images/synapselogo.png"
+    />
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://www.synapse.org/Portal.html" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://www.synapse.org/images/ogimage.png"
+    />
+
+    <!-- Twitter Meta Tags -->
+    <meta
+      property="twitter:image"
+      content="https://www.synapse.org/images/ogimage.png"
+    />
+    <meta name="twitter:title" content="Synapse | Sage Bionetworks" />
+    <meta name="twitter:description" content="Synapse is a platform for supporting scientific collaborations centered around shared biomedical data sets.  Our goal is to make biomedical research more transparent, more reproducible, and more ac..." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@Sagebio" />
+    <meta name="twitter:creator" content="@Sagebio" />
+
+    
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 10]>
+      <div class="alert alert-warning" role="alert">
+        <a
+          class="alert-link"
+          href="http://windows.microsoft.com/en-us/internet-explorer/download-ie"
+          target="_blank"
+        >
+          You are using an outdated browser. For a faster, safer browsing
+          experience, click here to upgrade today.</a
+        >
+      </div>
+    <![endif]-->
+    <!--[if lt IE 9]>
+      <script src="bootstrap-3.0/assets/js/html5shiv.js"></script>
+      <script src="bootstrap-3.0/assets/js/respond.min.js"></script>
+    <![endif]-->
+    <meta http-equiv="x-dns-prefetch-control" content="off" />
+
+    <!-- meta to instruct browser not to cache portal.html -->
+    <!-- http://stackoverflow.com/questions/1341089/using-meta-tags-to-turn-off-caching-in-all-browsers -->
+    <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <!-- end cache control -->
+    <link rel="icon" href="/favicon.png?v=4" />
+    <link
+      href="/opensearch.xml"
+      rel="search"
+      title="Synapse"
+      type="application/opensearchdescription+xml"
+    />
+    <link rel="manifest" href="/manifest.json" />
+    <script>
+      // Modern browsers natively support this function.
+      if (typeof Object.assign !== 'function') {
+        document.write(
+          '<div class="alert alert-danger" role="alert" style="margin:0px">Unsupported browser: A modern browser is required for security, reliability, and performance.</div>',
+        )
+      }
+    </script>
+    <script>
+      // SWC-5959: Before loading the SRC library, set value so actual column names are shown in Synapse.org
+      window.localStorage.setItem('force-display-original-column-names', 'true')
+    </script>
+    <link
+      rel="stylesheet"
+      href="//cdn-www.synapse.org/loadinglogo.css"
+      type="text/css"
+    />
+    <script src="//cdn-www.synapse.org/js/compiled-closure-lib.js"></script>
+    <script src="//cdn-www.synapse.org/Portal/Portal.nocache.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      type="text/css"
+    />
+    <script src="//cdn-www.synapse.org/generated/jquery.min.js"></script>
+    <script src="//cdn-www.synapse.org/generated/jquery-ui.min.js"></script>
+
+    <link rel="stylesheet" href="//cdn-www.synapse.org/generated/vite/assets/main-BF_E-NYv.css" />
+<link rel="stylesheet" href="//cdn-www.synapse.org/generated/vite/assets/FullWidthAlert-CccBg3YT.css" />
+<link rel="stylesheet" href="//cdn-www.synapse.org/generated/vite/assets/hooks-DzW1zZwQ.css" />
+<script type="module" src="//cdn-www.synapse.org/generated/vite/assets/main-DDxslalF.js"></script>
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/rolldown-runtime-C0FnF6B9.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/dist-aLGQgS5F.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/jsx-runtime-C0DEiTIn.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/isFocusVisible-F8V0Xr3b.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/useTheme-DKXW3R99.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/RtlProvider-4zs5gaBr.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/Tooltip-CZKjj2zK.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/spreadSx-DGmuJm4S.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/createSimplePaletteValueFilter-BBswoAow.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/Box-CM28MlTS.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/Typography-DI9anFbe.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/getThemeProps-BVXgLjVQ.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/Stack-2vG_J_nl.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/Button-DNwUVuXT.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/ClickAwayListener-C2qmzX6U.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/FullWidthAlert-BVc-l14-.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/getScrollbarSize-DuTJKLYN.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/dist-Cmw-iXzl.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/toString-wEW-DprQ.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/ToastMessage-Dlz3zJme.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/useMediaQuery-OKHjLJub.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/Skeleton-_gLk3ebM.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/Link-BtpmEmSc.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/js.cookie-Cy-oSp9r.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/EntityTypeUtils-BmtQIFSC.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/StringUtils-Dx3Q6fpr.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/SynapseContext-Ccc-OZAd.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/LinearProgress-CwqvuaCe.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/uniq-991DviWt.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/useCookiePreferences-Vf0yf4oM.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/CheckCircleTwoTone-BEClaFzT.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/hooks-B9z5Z7l8.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/Container-CqByTE2o.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/isMuiElement-PdXa56RT.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/Grid-BsaeFOZw.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/preload-helper-HclGiUj8.js" />
+<link rel="modulepreload" href="//cdn-www.synapse.org/generated/vite/assets/react-BDYNfqBf.js" />
+
+
+    <!--
+    Load latest version of Bootstrap 3 to override the version bundled by GWTBootstrap3
+    The Bootstrap 3 custom theme CSS is loaded through swc.scss
+    -->
+    <script src="//cdn-www.synapse.org/generated/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="//cdn-www.synapse.org/js/back-forward-nav-handler.js"></script>
+    <script src="//cdn-www.synapse.org/generated/moment.min.js"></script>
+    <script src="//cdn-www.synapse.org/generated/jsplumb.min.js"></script>
+    <script src="//cdn-www.synapse.org/js/jquery.tablesorter.min.js"></script>
+    <script src="//cdn-www.synapse.org/js/jquery.tablesorter.scinot.js"></script>
+    <link
+      rel="stylesheet"
+      href="//cdn-www.synapse.org/icons/font/synapseicons.css?v=1"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="//cdn-www.synapse.org/generated/font-awesome.css"
+      type="text/css"
+    />
+    <script src="//cdn-www.synapse.org/js/highlight.pack.js"></script>
+    <script src="//cdn-www.synapse.org/js/init-nchart.js"></script>
+    <script src="//cdn-www.synapse.org/generated/markdown-it.js"></script>
+    <script src="//cdn-www.synapse.org/generated/markdown-it-br.js"></script>
+    <script src="//cdn-www.synapse.org/generated/markdown-it-center-text.js"></script>
+    <script src="//cdn-www.synapse.org/generated/markdown-it-container.js"></script>
+    <script src="//cdn-www.synapse.org/generated/markdown-it-emphasis-alt.js"></script>
+    <script src="//cdn-www.synapse.org/generated/markdown-it-inline-comments.js"></script>
+    <script src="//cdn-www.synapse.org/generated/markdown-it-math.js"></script>
+    <script src="//cdn-www.synapse.org/generated/markdown-it-strikethrough-alt.js"></script>
+    <script src="//cdn-www.synapse.org/generated/markdown-it-sub.js"></script>
+    <script src="//cdn-www.synapse.org/generated/markdown-it-sup.js"></script>
+    <script src="//cdn-www.synapse.org/generated/markdown-it-synapse.js"></script>
+    <script src="//cdn-www.synapse.org/generated/markdown-it-synapse-heading.js"></script>
+    <script src="//cdn-www.synapse.org/generated/markdown-it-synapse-math.js"></script>
+    <script src="//cdn-www.synapse.org/generated/markdown-it-synapse-table.js"></script>
+    <script src="//cdn-www.synapse.org/generated/katex/katex.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="//cdn-www.synapse.org/generated/katex/katex.min.css"
+      type="text/css"
+    />
+    <script src="//cdn-www.synapse.org/js/polyfill-2.js"></script>
+    <script src="//cdn-www.synapse.org/generated/xss.min.js"></script>
+    <script src="//cdn-www.synapse.org/generated/pica.min.js"></script>
+    <script src="//cdn-www.synapse.org/generated/prop-types.min.js"></script>
+    <script src="//cdn-www.synapse.org/generated/plotly.min.js"></script>
+    <script src="//cdn-www.synapse.org/generated/create-plotly-component.min.js"></script>
+    <!-- We don't load SRC's scss because we include it in our own compiled scss -->
+    <script src="//cdn-www.synapse.org/generated/croppie.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="//cdn-www.synapse.org/generated/croppie.css"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="//cdn-www.synapse.org/css/highlight-js-default.css"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="//cdn-www.synapse.org/generated/jquery-ui.min.css"
+      type="text/css"
+    />
+    <script src="//cdn-www.synapse.org/js/linkify.min.js"></script>
+    <script src="//cdn-www.synapse.org/js/linkify-string.min.js"></script>
+    <script src="//cdn.statuspage.io/se-v2.js"></script>
+    <!-- script src="//kh896k90gyvg.statuspage.io/embed/script.js"></script -->
+    <script src="//cdn-www.synapse.org/generated/papaparse.min.js"></script>
+  </head>
+  <body id="body">
+    
+    <div>
+      <!-- GWT history support -->
+      <iframe
+        src="javascript:''"
+        id="__gwt_historyFrame"
+        tabindex="-1"
+        style="position: absolute; width: 0; height: 0; border: 0"
+      ></iframe>
+      <div id="dropzone" class="dropzone" style="display: none">
+        <h2 class="center" style="color: white; padding-top: 180px">
+          <span class="fa fa-cloud-upload"></span>
+          Drop files to upload
+        </h2>
+      </div>
+      <noscript>
+        <style>
+          .sg-noscript {
+            font-family:
+              -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+              Arial, sans-serif;
+            max-width: 860px;
+            margin: 40px auto;
+            padding: 0 24px;
+            color: #141414;
+            line-height: 1.6;
+          }
+          .sg-noscript h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.25rem;
+          }
+          .sg-noscript h2 {
+            font-size: 1.2rem;
+            margin-top: 2rem;
+            margin-bottom: 0.5rem;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 0.25rem;
+          }
+          .sg-noscript ul {
+            padding-left: 1.5rem;
+          }
+          .sg-noscript li {
+            margin-bottom: 0.4rem;
+          }
+          .sg-noscript a {
+            color: #1a6fa8;
+          }
+          .sg-noscript address {
+            font-style: normal;
+          }
+          .sg-noscript .note {
+            margin-top: 2rem;
+            color: #666;
+            font-size: 0.85rem;
+          }
+        </style>
+
+        <div class="sg-noscript">
+          <h1>
+            Synapse — A Collaborative Platform for Open Biomedical Science
+          </h1>
+          <p>
+            <strong>Synapse</strong> is a collaborative data-sharing and
+            analysis platform built and operated by
+            <strong>Sage Bionetworks</strong>, a 501(c)(3) nonprofit biomedical
+            research organization based in Seattle, Washington.
+          </p>
+
+          <h2>About Sage Bionetworks</h2>
+          <p>
+            Sage Bionetworks is a nonprofit research organization whose mission
+            is
+            <em
+              >to drive a new age of discovery through truly open science and
+              radical collaboration.</em
+            >
+          </p>
+          <p>
+            Our vision is
+            <em
+              >to create a world where silos within and across science and
+              technology no longer exist, forging a path to optimal human
+              health.</em
+            >
+          </p>
+          <p>
+            We are a trusted leader in data sharing and reuse, enabling a rapid
+            acceleration in biomedical discoveries and the transformation of
+            medicine. <em>Better Science Together</em> is the principle that
+            guides our work with researchers, clinicians, patient communities,
+            and funders worldwide.
+          </p>
+
+          <h2>What Synapse Does</h2>
+          <p>
+            Synapse is the platform Sage Bionetworks uses to make biomedical
+            research data findable, accessible, interoperable, and reusable
+            (FAIR). Researchers, clinicians, and data scientists use Synapse to:
+          </p>
+          <ul>
+            <li>
+              Share large biomedical datasets across institutions, with
+              appropriate access controls, data-use agreements, and governance.
+            </li>
+            <li>
+              Run reproducible analyses on shared data with documented
+              provenance.
+            </li>
+            <li>
+              Coordinate consortium science across disease areas including
+              Alzheimer's disease, neurofibromatosis, ALS, rare cancers, and
+              others.
+            </li>
+            <li>
+              Power public-facing knowledge portals such as the AD Knowledge
+              Portal, the NF Data Portal, and the ALS Knowledge Portal.
+            </li>
+          </ul>
+
+          <h2>Nonprofit Identity</h2>
+          <address>
+            <strong>Sage Bionetworks</strong><br />
+            A 501(c)(3) nonprofit research organization<br />
+            EIN: 26-4489946<br />
+            Seattle, Washington, USA<br />
+            <a href="https://sagebionetworks.org">sagebionetworks.org</a><br />
+            <a href="https://sagebionetworks.org/trust-center"
+              >Trust Center — Terms of Service, Privacy Policy, financial
+              statements, and governance documents</a
+            >
+          </address>
+
+          <h2>Learn More</h2>
+          <ul>
+            <li>
+              <a href="https://sagebionetworks.org/trust-center"
+                >Sage Bionetworks Trust Center — financial statements, policies,
+                and governance documents</a
+              >
+            </li>
+            <li>
+              <a href="https://sagebionetworks.org"
+                >Sage Bionetworks — Mission, vision, and current work</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://projects.propublica.org/nonprofits/organizations/264489946"
+                >IRS Form 990 filings (via ProPublica Nonprofit Explorer)</a
+              >
+            </li>
+            <li>
+              <a href="https://help.synapse.org"
+                >Synapse documentation and help</a
+              >
+            </li>
+            <li>
+              <a href="https://www.synapse.org/Home:0"
+                >Synapse Home crawl link</a
+              >
+            </li>
+          </ul>
+          <p class="note">
+            This static content is provided for search engines and users with
+            JavaScript disabled. For the full Synapse experience, please enable
+            JavaScript in your browser.
+          </p>
+        </div>
+      </noscript>
+      <!-- Google Tag Manager (noscript) -->
+      <noscript>
+        <iframe
+          src="https://www.googletagmanager.com/ns.html?id=GTM-KPW4KS62"
+          height="0"
+          width="0"
+          style="display: none; visibility: hidden"
+        ></iframe>
+      </noscript>
+      <!-- End Google Tag Manager (noscript) -->
+      <!-- This is the GWT-generated body -->
+      <div id="alertWrapper">
+        <div id="alertContainer"></div>
+      </div>
+      <div id="initialLoadingUI" style="padding-top: 180px">
+        <div
+          class="spinner"
+          style="
+            width: 80px;
+            height: 80px;
+            background-size: 80px 80px;
+            display: block;
+            margin: auto;
+          "
+        ></div>
+        <h4
+          style="
+            color: #1e7098;
+            margin-top: 10px;
+            font-family: Sans-serif;
+            text-align: center;
+          "
+        >
+          Loading&hellip;
+        </h4>
+      </div>
+      <div id="headerPanel" class="zeroOpacity"></div>
+      <div id="rootPanel" class="zeroOpacity"></div>
+      <div id="toastContainer"></div>
+      <div id="footerPanel"></div>
+    </div>
+    <div class="clear"></div>
+  </body>
+</html>

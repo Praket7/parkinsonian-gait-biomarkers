@@ -1,0 +1,15 @@
+{
+  "analysis_version": "1.0",
+  "seed": 20260920,
+  "primary_n_participants": 0,
+  "n_rows": 0,
+  "primary_features": [],
+  "trait_features": [],
+  "state_features": [],
+  "context_features": [],
+  "external_replication": {},
+  "longitudinal": {},
+  "status": "no_input_data",
+  "primary_target": null,
+  "conclusion": "No hypothesis test was run: authorized participant-level data are unavailable."
+}

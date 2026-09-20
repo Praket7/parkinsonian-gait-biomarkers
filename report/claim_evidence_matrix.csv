@@ -1,0 +1,2 @@
+claim_id,claim_text,analysis,dataset,sample_size,effect,confidence_interval,p_value,q_value,figure,table,limitations
+C01,"Trait-versus-state hypothesis remains unevaluated",data_access_audit,None,0,NA,NA,NA,NA,NA,DATASETS.md,"Participant-level datasets require separate access/terms workflows"

@@ -1,0 +1,25 @@
+seed: 20260920
+analysis_version: "1.0"
+primary_tasks: [SP, HP, SPm, HPm]
+context_tasks: [SPmT, TUG, SPdoorpat, FW]
+minimum_clean_walk_seconds: 3.0
+fdr_alpha: 0.05
+bootstrap_iterations: 2000
+permutation_iterations: 5000
+data:
+  input_dir: data/raw
+  output_dir: results
+  file_glob: "*.csv"
+quality:
+  max_missing_fraction: 0.20
+  minimum_steps: 3
+reliability:
+  icc_candidate_threshold: 0.60
+  preferred_threshold: 0.75
+stability:
+  minimum_direction_consistency: 0.80
+external_validation:
+  same_direction_required: true
+predictive_validation:
+  participant_grouped: true
+  leave_site_out: true

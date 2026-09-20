@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+*.egg-info/
+data/raw/
+data/interim/
+data/processed/
+results/*.csv
+results/frozen/*.json
+!results/frozen/results.json
