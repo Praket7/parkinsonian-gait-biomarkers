@@ -17,4 +17,6 @@ def test_manifest_hashes_config_and_never_reads_raw(tmp_path: Path):
     assert manifest["analysis_version"] == "3.0"
     assert manifest["config"]["sha256"]
     assert all("raw" not in path for path in manifest["aggregate_result_sha256"])
-    assert manifest["privacy"]["raw_data_read"] is False
+    assert manifest["schema"] == "run-provenance-v2"
+    assert manifest["privacy"]["provenance_script_read_row_level_data"] is False
+    assert manifest["privacy"]["analysis_used_authorized_external_row_level_data"] is True

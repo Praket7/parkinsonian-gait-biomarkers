@@ -1,5 +1,5 @@
 seed: 20260920
-analysis_version: "3.0"
+analysis_version: "3.1"
 # V1 PKMAS reference summaries contain SP/HP only.  The other straight-walk
 # tasks are used in the contact-signal reliability/context layer.
 primary_tasks: [SP, HP]
@@ -36,3 +36,7 @@ external_validation:
 predictive_validation:
   participant_grouped: true
   leave_site_out: true
+carepd:
+  labelled_cohorts: [3DGait, BMCLab, PD-GaM, T-SDU-PD]
+resampling:
+  n_jobs: 4

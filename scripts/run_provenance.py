@@ -3,6 +3,8 @@
 
 Only paths, versions, timestamps, and cryptographic digests are recorded.
 The script never opens files under data/raw and never records table contents.
+The analysis itself may have used licensed row-level data in controlled
+storage; the privacy fields below describe that distinction explicitly.
 """
 from __future__ import annotations
 
@@ -32,6 +34,18 @@ def git_commit(root: Path) -> str | None:
             ["git", "-C", str(root), "rev-parse", "HEAD"],
             check=True, capture_output=True, text=True,
         ).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        return None
+
+
+def git_tag(root: Path) -> str | None:
+    if os.environ.get("RELEASE_TAG"):
+        return os.environ["RELEASE_TAG"]
+    try:
+        return subprocess.run(
+            ["git", "-C", str(root), "describe", "--tags", "--exact-match"],
+            check=True, capture_output=True, text=True,
+        ).stdout.strip() or None
     except (OSError, subprocess.CalledProcessError):
         return None
 
@@ -77,27 +91,39 @@ def build_manifest(root: Path, config: Path | None = None) -> dict[str, object]:
         None,
     )
     requirements = root / "requirements.txt"
+    config_digest = sha256(config) if config.is_file() else None
+    lock_digest = sha256(dependency_lock) if dependency_lock else None
     return {
-        "schema": "run-provenance-v1",
+        "schema": "run-provenance-v2",
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
-        "git_commit": git_commit(root),
+        "analysis_code_commit": git_commit(root),
+        # RELEASE_COMMIT is supplied by the release workflow after the
+        # analysis-output commit is known.  Falling back to HEAD keeps local
+        # development useful without inventing an identity.
+        "release_commit": os.environ.get("RELEASE_COMMIT") or git_commit(root),
+        "release_tag": git_tag(root),
+        "report_generation_commit": os.environ.get("REPORT_GENERATION_COMMIT"),
         "analysis_version": analysis_version(config),
         "python_version": platform.python_version(),
+        "config_sha256": config_digest,
+        "dependency_lock_sha256": lock_digest,
         "config": {
             "path": config.relative_to(root).as_posix() if config.is_relative_to(root) else str(config),
-            "sha256": sha256(config) if config.is_file() else None,
+            "sha256": config_digest,
         },
         "dependencies": {
             "lockfile": dependency_lock.relative_to(root).as_posix() if dependency_lock else None,
-            "lockfile_sha256": sha256(dependency_lock) if dependency_lock else None,
+            "lockfile_sha256": lock_digest,
             "requirements_sha256": sha256(requirements) if requirements.is_file() else None,
         },
         "dataset_metadata_sha256": metadata_hashes(root),
         "aggregate_result_sha256": file_hashes(root),
         "privacy": {
-            "raw_data_read": False,
-            "participant_level_values_recorded": False,
-            "note": "Hashes do not permit recovery of source table contents; raw inputs remain external.",
+            "provenance_script_read_row_level_data": False,
+            "row_level_data_recorded_in_manifest": False,
+            "row_level_data_published": False,
+            "analysis_used_authorized_external_row_level_data": True,
+            "note": "The analysis used authorized licensed source data in controlled storage. Only aggregate outputs and hashes are released; hashes do not permit recovery of source table contents.",
         },
     }
 

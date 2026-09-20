@@ -6,6 +6,7 @@ converted into a failed scientific criterion.
 from __future__ import annotations
 
 import warnings
+from concurrent.futures import ProcessPoolExecutor
 
 import numpy as np
 import pandas as pd
@@ -19,6 +20,16 @@ from .stats import bh_fdr
 
 
 PASS, FAIL, NOT_ESTIMABLE = "PASS", "FAIL", "NOT_ESTIMABLE"
+
+
+def site_sign_consistency(context, feature):
+    """Canonical leave-one-site-out sign calculation used by evidence and QA."""
+    rows = context[(context.feature == feature) & (context.analysis == "leave_one_site_out")]
+    vals = rows.same_direction.dropna()
+    if not pd.api.types.is_bool_dtype(vals):
+        vals = vals.map(lambda value: str(value).strip().lower() == "true")
+    vals = vals.astype(bool)
+    return float(vals.mean()) if len(vals) else np.nan
 
 
 def z(values):
@@ -124,9 +135,51 @@ def association_table(table, features, config):
     return result.reset_index()
 
 
+def _bootstrap_shard(frame, people, seed, iterations):
+    """Exact clustered GEE refits for one deterministic resampling shard."""
+    rng, effects = np.random.default_rng(seed), []
+    for _ in range(iterations):
+        chosen = rng.choice(people, len(people), replace=True)
+        sample = pd.concat([frame[frame.participant_id.eq(person)].assign(participant_id=f"boot_{index}") for index, person in enumerate(chosen)], ignore_index=True)
+        try:
+            effects.append(float(_fit(sample, "outcome_z ~ severity_z + age_z + height_z + C(sex) + C(task) + C(site)").params["severity_z"]))
+        except (ValueError, np.linalg.LinAlgError, KeyError):
+            continue
+    return effects
+
+
+def _permutation_shard(frame, scores, seed, iterations):
+    """Exact clustered GEE label permutations for one deterministic shard."""
+    rng, estimates = np.random.default_rng(seed), []
+    for _ in range(iterations):
+        shuffled = dict(zip(scores.index, rng.permutation(scores.to_numpy())))
+        sample = frame.copy(); sample["severity_z"] = sample.participant_id.map(shuffled).pipe(z)
+        try:
+            estimates.append(float(_fit(sample, "outcome_z ~ severity_z + age_z + height_z + C(sex) + C(task) + C(site)").params["severity_z"]))
+        except (ValueError, np.linalg.LinAlgError, KeyError):
+            continue
+    return estimates
+
+
+def _shard_counts(iterations, jobs):
+    shards = min(max(1, jobs), iterations)
+    return [iterations // shards + (index < iterations % shards) for index in range(shards)]
+
+
+def _parallel_shards(worker, args, counts, seed_sequence, jobs):
+    seeds = [child.generate_state(1)[0] for child in seed_sequence.spawn(len(counts))]
+    payloads = [(*args, seed, count) for seed, count in zip(seeds, counts)]
+    if jobs == 1:
+        return [worker(*payload) for payload in payloads]
+    with ProcessPoolExecutor(max_workers=jobs) as pool:
+        return [future.result() for future in [pool.submit(worker, *payload) for payload in payloads]]
+
+
 def gee_bootstrap(table, associations, config):
     """Refit the primary GEE on whole-participant bootstrap samples."""
-    rng, iterations = np.random.default_rng(config["seed"]), int(config["bootstrap_iterations"])
+    iterations = int(config["bootstrap_iterations"])
+    jobs = max(1, int(config.get("resampling", {}).get("n_jobs", 1)))
+    seed_sequence = np.random.SeedSequence(config["seed"])
     output = []
     for association in associations.itertuples(index=False):
         feature = association.feature
@@ -134,14 +187,9 @@ def gee_bootstrap(table, associations, config):
         frame, usable = _ready(table, feature, minimum_participants=config["minimum_model_participants"])
         if not usable or not np.isfinite(primary):
             output.append({"feature": feature, "bootstrap_status": NOT_ESTIMABLE}); continue
-        people = frame.participant_id.unique(); effects = []
-        for _ in range(iterations):
-            chosen = rng.choice(people, len(people), replace=True)
-            sample = pd.concat([frame[frame.participant_id.eq(person)].assign(participant_id=f"boot_{i}") for i, person in enumerate(chosen)], ignore_index=True)
-            try:
-                effects.append(float(_fit(sample, "outcome_z ~ severity_z + age_z + height_z + C(sex) + C(task) + C(site)").params["severity_z"]))
-            except (ValueError, np.linalg.LinAlgError, KeyError):
-                continue
+        people = frame.participant_id.unique()
+        shards = _parallel_shards(_bootstrap_shard, (frame, people), _shard_counts(iterations, jobs), seed_sequence, jobs)
+        effects = [effect for shard in shards for effect in shard]
         values = np.asarray(effects)
         output.append({"feature": feature, "bootstrap_status": "OK" if len(values) >= iterations * .9 else "FIT_INCOMPLETE",
                        "bootstrap_n": int(len(values)), "bootstrap_same_sign_fraction": float(np.mean(values * np.sign(primary) > 0)) if len(values) else np.nan,
@@ -169,7 +217,9 @@ def task_specific_and_leave_site_out(table, features, config):
 
 def participant_permutations(table, features, config):
     """Empirical p values after participant-level severity-label shuffling."""
-    rng, iterations, minimum = np.random.default_rng(config["seed"] + 1), int(config["permutation_iterations"]), config["minimum_model_participants"]
+    iterations, minimum = int(config["permutation_iterations"]), config["minimum_model_participants"]
+    jobs = max(1, int(config.get("resampling", {}).get("n_jobs", 1)))
+    seed_sequence = np.random.SeedSequence(config["seed"] + 1)
     rows = []
     for feature in features:
         observed = gee_association(table, feature, minimum_participants=minimum)
@@ -177,14 +227,8 @@ def participant_permutations(table, features, config):
         if not usable or not np.isfinite(observed["effect"]):
             rows.append({"feature": feature, "permutation_status": NOT_ESTIMABLE}); continue
         participant_scores = frame.groupby("participant_id").mds_updrs_gait_item.first()
-        estimates = []
-        for _ in range(iterations):
-            shuffled = participant_scores.copy(); shuffled[:] = rng.permutation(shuffled.to_numpy())
-            sample = frame.copy(); sample["severity_z"] = sample.participant_id.map(shuffled).pipe(z)
-            try:
-                estimates.append(float(_fit(sample, "outcome_z ~ severity_z + age_z + height_z + C(sex) + C(task) + C(site)").params["severity_z"]))
-            except (ValueError, np.linalg.LinAlgError, KeyError):
-                pass
+        shards = _parallel_shards(_permutation_shard, (frame, participant_scores), _shard_counts(iterations, jobs), seed_sequence, jobs)
+        estimates = [estimate for shard in shards for estimate in shard]
         values = np.asarray(estimates)
         rows.append({"feature": feature, "permutation_status": "OK" if len(values) >= iterations * .9 else "FIT_INCOMPLETE",
                      "permutation_n": int(len(values)), "permutation_p_value": float((1 + np.sum(np.abs(values) >= abs(observed["effect"]))) / (1 + len(values))) if len(values) else np.nan})

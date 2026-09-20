@@ -16,6 +16,13 @@ def _number(value: Any, digits: int = 3) -> str:
         return "not reported"
 
 
+def _as_number(value: Any) -> float | None:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
 def _manifest(root: Path) -> dict[str, Any]:
     path = root / "results" / "frozen" / "results.json"
     if not path.is_file():
@@ -85,6 +92,10 @@ def render(root: Path) -> tuple[str, str]:
     longitudinal = data.get("longitudinal") or []
     limits = data.get("limits") or []
     primary = _primary_summary(root) or ["- Feature-level aggregate association table was not present in the frozen bundle."]
+    primary_rows = _primary_rows(root)
+    fdr_count = sum(1 for row in primary_rows if (lambda value: value is not None and value <= .05)(
+        _as_number(row.get("q_value"))))
+    feature_count = len(primary_rows)
     reliability = _table_summary(root, "reliability.csv", "Frozen reliability table") if _frozen_rows(root, "reliability.csv") else [f"- `{item.get('feature', 'unknown')}`: ICC(2,1)={_number(item.get('icc_2_1'))}" for item in longitudinal if isinstance(item, dict)] or ["- Longitudinal reliability estimates were not reported."]
     evidence = _table_summary(root, "feature_evidence_matrix.csv", "Feature evidence matrix")
     contact = _table_summary(root, "contact_validation.csv", "Contact validation")
@@ -106,10 +117,19 @@ frozen manifest.
 
 ## Main result
 
-The implemented pipeline identified {len(trait_features)} feature(s) meeting
-its current strict trait rule: {', '.join(f'`{x}`' for x in trait_features) or 'none reported'}.
-This is a statement about the implemented evidence pipeline, not proof that
-every unimplemented evidence path was negative.
+Cross-sectional severity association is insufficient for digital-biomarker
+qualification: speed independence, context transport, analytical validity,
+and repeated-session reliability are separate empirical properties. In the
+frozen primary table, {fdr_count}/{feature_count} measures have FDR-adjusted
+severity associations. The implemented strict rule identifies
+{len(trait_features)} candidate trait feature(s): {', '.join(f'`{x}`' for x in trait_features) or 'none reported'}.
+
+Spatial measures must be interpreted after gait-speed adjustment, while
+temporal variability can retain association without demonstrating repeatable
+measurement. Conversely, repeatable temporal measures need not be the
+strongest severity correlates. These statements are derived below from the
+frozen association and task-specific reliability tables rather than manually
+entered values.
 
 ## Aggregate associations
 
@@ -130,7 +150,9 @@ every unimplemented evidence path was negative.
 ## External translation check
 
 These are cohort-specific translation-speed checks, not full matched-feature
-replication.
+replication. CARE matched temporal replication is included only if the
+prespecified canonical event QC can support it; unavailable canonical foot or
+ankle events are reported as not estimable, never as a negative replication.
 
 {chr(10).join(cohort)}
 
@@ -150,11 +172,11 @@ Do not interpret this report as diagnostic, causal, treatment, or clinical-use
 evidence. Regenerate it after every authorized analysis run.
 """
     abstract = (
-        f"Parkinsonian gait biomarkers (analysis v{version}). We analyzed {n_rows} frozen aggregate rows from {n_participants} participants. "
-        f"The implemented pipeline classified {len(trait_features)} feature(s) as meeting its current strict trait rule ({', '.join(trait_features) or 'none reported'}). "
-        "This result is not equivalent to a true negative for evidence paths that were not estimable or not implemented. "
-        "CARE-PD was analyzed as cohort-specific translation-speed evidence, not full external feature replication. "
-        "These aggregate results do not support diagnostic, causal, treatment, or clinical-use claims.\n"
+        f"Parkinsonian gait biomarkers (v{version}). We analyzed {n_rows} primary rows from {n_participants} participants using participant-clustered GEE models. "
+        f"{fdr_count}/{feature_count} measures were severity-associated after FDR correction, but the evidence matrix separately evaluated speed adjustment, task and site context, analytical validity, and repeated-session reliability. "
+        f"The strict rule classified {len(trait_features)} candidate trait features ({', '.join(trait_features) or 'none reported'}). "
+        "CARE-PD supplied four cohort-specific forward-translation-speed checks, not matched-feature replication. Unavailable longitudinal clinical linkage and CARE temporal events remain not estimable, not negative findings. "
+        "Cross-sectional association alone is therefore insufficient to qualify a context-robust digital biomarker.\n"
     )
     return report, abstract
 

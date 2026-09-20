@@ -7,6 +7,7 @@ for unvalidated spatial or pressure-walkway variables.
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 import warnings
 
@@ -51,13 +52,16 @@ def _selected_contacts(root: Path, tasks: set[str], config=None) -> pd.DataFrame
             if path.stem.endswith("_mat") and path.with_name(path.name.replace("_mat.csv", ".csv")).exists():
                 continue
             try:
-                rows.append(read_weargait_csv(
+                item = read_weargait_csv(
                     path,
                     minimum_clean_walk_seconds=(config or {}).get("minimum_clean_walk_seconds", 0.0),
                     minimum_steps=quality.get("minimum_steps", 3),
                     max_missing_fraction=quality.get("max_missing_fraction", 0.20),
                     minimum_alternation_fraction=quality.get("minimum_alternation_fraction", 0.50),
-                ))
+                )
+                item["source_path_sha256"] = hashlib.sha256(str(path.resolve()).encode()).hexdigest()
+                item["recording_id"] = path.stem.removesuffix("_mat")
+                rows.append(item)
             except ValueError as exc:
                 if "not a WearGait contact CSV" in str(exc):
                     continue
@@ -69,8 +73,11 @@ def _selected_contacts(root: Path, tasks: set[str], config=None) -> pd.DataFrame
     # the native CSV deterministically; retaining both would create an
     # artificial within-session replicate in the ICC calculation.
     result["_mat_export"] = result.source_file.str.contains("_mat\\.csv$", case=False, regex=True)
-    return result.sort_values("_mat_export").drop_duplicates(
-        ["participant_id", "session_id", "task"], keep="first"
+    result["source_identity"] = result[["participant_id", "session_id", "task", "recording_id"]].astype(str).agg("|".join, axis=1)
+    # Native CSV is preferred over its *_mat rendering; separate recordings
+    # remain distinct because recording_id is part of the identity.
+    return result.sort_values(["_mat_export", "source_file"]).drop_duplicates(
+        ["source_identity"], keep="first"
     ).drop(columns="_mat_export").reset_index(drop=True)
 
 
@@ -225,7 +232,7 @@ def _figures(outdir: Path, associations: pd.DataFrame, variance: pd.DataFrame, v
     fig, ax = plt.subplots(figsize=(5, 3.5)); effect = care.get("effect", np.nan); ax.bar(["CARE translation\nspeed"], [effect], color="#d95f02"); ax.errorbar([0], [effect], yerr=[[effect-care.get("ci_low", effect)], [care.get("ci_high", effect)-effect]], fmt="none", color="black"); ax.axhline(0, color="black", lw=1); ax.set_ylabel("Standardized severity association"); fig.tight_layout(); fig.savefig(figures / "figure_5_carepd_translation_check.png", dpi=220); plt.close(fig)
 
 
-def run_authorized_analysis(data_root, output_dir, *, seed=20260920, bootstrap_iterations=200) -> dict:
+def _run_legacy_v2_analysis(data_root, output_dir, *, seed=20260920, bootstrap_iterations=200) -> dict:
     """Run all analysis steps that are supported by locally authorized files."""
     root, outdir = Path(data_root), Path(output_dir); outdir.mkdir(parents=True, exist_ok=True)
     v1 = root / "WearGait_PD_V1"; v2 = root / "WearGait_PD_Longitudinal"; care = root / "CARE_PD"
@@ -260,7 +267,7 @@ def run_authorized_analysis(data_root, output_dir, *, seed=20260920, bootstrap_i
 from .carepd_analysis import analyze_carepd_directory
 from .stats_v3 import (FAIL, NOT_ESTIMABLE, PASS, association_table, gee_bootstrap,
                        medication_sensitivity, negative_controls, participant_permutations, reliability_by_task,
-                       task_specific_and_leave_site_out)
+                       site_sign_consistency, task_specific_and_leave_site_out)
 
 
 FEATURE_EVIDENCE_RULES = {
@@ -304,8 +311,7 @@ def _evidence(associations, bootstrap, reliability, validation, robustness, care
         item["reliability_status"] = NOT_ESTIMABLE if rel.empty else (PASS if (rel.icc_2_1 >= config["reliability"]["icc_candidate_threshold"]).any() else FAIL)
         item["reliability_n_participants"] = int(rel.n_participants.max()) if not rel.empty else np.nan
         item["icc_best"] = float(rel.icc_2_1.max()) if not rel.empty else np.nan
-        loo = robustness[(robustness.feature.eq(feature)) & robustness.analysis.eq("leave_one_site_out")]
-        item["leave_site_out_sign_consistency"] = float(loo.same_direction.dropna().mean()) if "same_direction" in loo and loo.same_direction.notna().any() else np.nan
+        item["leave_site_out_sign_consistency"] = site_sign_consistency(robustness, feature)
         item["site_robustness_status"] = PASS if item["leave_site_out_sign_consistency"] == 1 else (NOT_ESTIMABLE if pd.isna(item["leave_site_out_sign_consistency"]) else FAIL)
         item["task_robustness_status"] = PASS if pd.notna(item["task_interaction_p"]) and item["task_interaction_p"] >= config["interaction_alpha"] else (NOT_ESTIMABLE if pd.isna(item["task_interaction_p"]) else FAIL)
         item["severity_status"] = PASS if record["q_value"] <= config["fdr_alpha"] else FAIL
@@ -345,11 +351,22 @@ def run_authorized_analysis(data_root, output_dir, *, config):
     contacts2_all.to_csv(outdir / "contact_qc_v2.csv", index=False)
     contacts2 = contacts2_all[contacts2_all.qc_valid].copy(); contacts2.to_csv(outdir / "v2_contact_features.csv", index=False)
     reliability = reliability_by_task(contacts2, CONTACT_FEATURES, config)
-    care = analyze_carepd_directory(care_root / "Canonicalized_SMPL_pickles", cohorts=("3DGait", "BMCLab", "PD-GaM", "T-SDU-PD")); care.to_csv(outdir / "carepd_cohort_results.csv", index=False)
+    # This audit reads only archive schemas and authorized acquisition metadata.
+    # Publish a compact status/count summary, never names, paths, or row values.
+    from scripts.audit_longitudinal_schema import audit_archive
+    audit = audit_archive(v2, [Path("data/metadata/weargait-synapse-entity.json"), Path("data/metadata/weargait-synapse-wiki.json"), Path("data/metadata/weargait-access-wiki.json")])
+    longitudinal_status = audit["longitudinal_clinical_status"]
+    (outdir / "frozen" / "longitudinal_schema_audit_summary.json").write_text(json.dumps({
+        "schema_files": audit["schema_files"],
+        "joinable_participant_session_clinical_schema": audit["joinable_participant_session_clinical_schema"],
+        "longitudinal_clinical_status": longitudinal_status,
+        "interpretation": audit["interpretation"],
+    }, indent=2) + "\n")
+    care = analyze_carepd_directory(care_root / "Canonicalized_SMPL_pickles", cohorts=tuple(config["carepd"]["labelled_cohorts"])); care.to_csv(outdir / "carepd_cohort_results.csv", index=False)
     evidence = _evidence(associations, bootstrap, reliability, validation, robustness, care, config, medication)
     # Aggregate outputs are safe to publish; row-level tables remain ignored.
     for name, frame in {"primary_associations.csv":associations, "feature_evidence_matrix.csv":evidence, "reliability.csv":reliability, "contact_validation.csv":validation, "context_robustness.csv":robustness, "carepd_cohort_results.csv":care, "medication_sensitivity.csv":medication, "negative_controls.csv":controls}.items(): frame.to_csv(outdir / "frozen" / name, index=False)
     flow = pd.DataFrame([{"stage":"source_pd_clinical","n_participants":int(clinical[clinical.clinical_cohort.eq("pd")].participant_id.nunique())},{"stage":"pkmas_primary_tasks","n_participants":int(reference[reference.clinical_cohort.eq("pd") & reference.task.isin(config["primary_tasks"])].participant_id.nunique())},{"stage":"primary_with_gait_item","n_participants":int(primary.participant_id.nunique())},{"stage":"v1_contact_qc_valid","n_participants":int(contacts1.participant_id.nunique())},{"stage":"v2_contact_qc_valid","n_participants":int(contacts2.participant_id.nunique())}]); flow.to_csv(outdir / "frozen" / "participant_flow.csv", index=False)
-    manifest = {"analysis_version":config["analysis_version"], "seed":config["seed"], "status":"analysis_complete", "n_primary_rows":int(len(primary)), "n_primary_participants":int(primary.participant_id.nunique()), "trait_features":evidence.loc[evidence.trait_status.eq(PASS),"feature"].tolist(), "promising_incomplete_features":evidence.loc[evidence.trait_status.eq("INCOMPLETE"),"feature"].tolist(), "hypothesis":"incomplete_evidence_not_true_negative" if not (evidence.trait_status == PASS).any() else "candidate_trait_features_present", "longitudinal_clinical_status":"NOT_ESTIMABLE_AFTER_1077_FILE_AUDIT", "limits":["Reference PKMAS measures are valid reference outcomes, not failed proxies.","V2 archive audit found no joinable session-level clinical-score table, so clinical change was not fitted.","CARE-PD remains cohort-level translation evidence, not matched feature replication."]}
+    manifest = {"analysis_version":config["analysis_version"], "seed":config["seed"], "status":"analysis_complete", "n_primary_rows":int(len(primary)), "n_primary_participants":int(primary.participant_id.nunique()), "trait_features":evidence.loc[evidence.trait_status.eq(PASS),"feature"].tolist(), "promising_incomplete_features":evidence.loc[evidence.trait_status.eq("INCOMPLETE"),"feature"].tolist(), "hypothesis":"incomplete_evidence_not_true_negative" if not (evidence.trait_status == PASS).any() else "candidate_trait_features_present", "longitudinal_clinical_status":longitudinal_status, "limits":["Reference PKMAS measures are valid reference outcomes, not failed proxies.","V2 archive filename/header/schema audit found no joinable session-level clinical-score table, so clinical change was not fitted.","CARE-PD is a cohort-specific limited translation check; matched temporal replication is included only if event QC passes."]}
     (outdir / "frozen" / "results.json").write_text(json.dumps(manifest, indent=2) + "\n")
     return manifest

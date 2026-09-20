@@ -6,10 +6,175 @@ This only audits files already present; it does not download, alter, or infer da
 from __future__ import annotations
 
 import argparse
+import csv
+import hashlib
 import json
+import math
 from pathlib import Path
 import sys
+import subprocess
 import yaml
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from src.stats import bh_fdr
+from src.stats_v3 import site_sign_consistency
+
+
+def _sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _csv(path: Path) -> list[dict[str, str]]:
+    with path.open(newline="", encoding="utf-8") as handle:
+        return list(csv.DictReader(handle))
+
+
+def _number(value: str) -> float | None:
+    try:
+        value = value.strip()
+        if not value or value.upper() in {"NA", "N/A", "NONE", "NAN"}:
+            return None
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _check_hashes(base: Path, provenance: dict[str, object], failures: list[str]) -> None:
+    expected = provenance.get("aggregate_result_sha256") or {}
+    if not isinstance(expected, dict):
+        failures.append("provenance aggregate_result_sha256 is not a mapping")
+        return
+    actual = {}
+    for rel in expected:
+        path = base / rel
+        if not path.is_file():
+            failures.append(f"hashed aggregate is missing: {rel}")
+        else:
+            actual[rel] = _sha256(path)
+            if actual[rel] != expected[rel]:
+                failures.append(f"aggregate hash mismatch: {rel}")
+    if set(actual) != set(expected):
+        failures.append("provenance aggregate hash set is incomplete")
+
+
+def _check_fdr(base: Path, failures: list[str]) -> None:
+    path = base / "results" / "frozen" / "primary_associations.csv"
+    rows = _csv(path)
+    p = {i: _number(row.get("p_value", "")) for i, row in enumerate(rows)}
+    q = bh_fdr(__import__("pandas").Series(p, dtype=float))
+    for i, row in enumerate(rows):
+        observed = _number(row.get("q_value", ""))
+        if observed is not None and not math.isclose(observed, float(q.iloc[i]), rel_tol=1e-8, abs_tol=1e-10):
+            failures.append(f"primary FDR q-value mismatch for {row.get('feature', i)}")
+    if "speed_adjusted_p_value" in rows[0] if rows else False:
+        p2 = __import__("pandas").Series({i: _number(row.get("speed_adjusted_p_value", "")) for i, row in enumerate(rows)}, dtype=float)
+        q2 = bh_fdr(p2)
+        for i, row in enumerate(rows):
+            observed = _number(row.get("speed_adjusted_q_value", ""))
+            if observed is not None and not math.isclose(observed, float(q2.iloc[i]), rel_tol=1e-8, abs_tol=1e-10):
+                failures.append(f"speed-adjusted FDR q-value mismatch for {row.get('feature', i)}")
+
+
+def _check_evidence(base: Path, config: dict, failures: list[str]) -> None:
+    evidence = _csv(base / "results" / "frozen" / "feature_evidence_matrix.csv")
+    primary = {row.get("feature"): row for row in _csv(base / "results" / "frozen" / "primary_associations.csv")}
+    context = __import__("pandas").DataFrame(_csv(base / "results" / "frozen" / "context_robustness.csv"))
+    reliability = _csv(base / "results" / "frozen" / "reliability.csv")
+    features = [row.get("feature", "") for row in evidence]
+    if len(features) != len(set(features)) or any(not feature for feature in features):
+        failures.append("feature evidence matrix does not contain exactly one row per feature")
+    for row in evidence:
+        feature = row.get("feature")
+        source = primary.get(feature, {})
+        # Every displayed numeric evidence field must trace to the frozen GEE
+        # association row; no result is accepted merely because it is present.
+        for stored, source_name in (("severity_beta", "effect"), ("severity_q", "q_value"),
+                                    ("speed_adjusted_beta", "speed_adjusted_effect"), ("speed_adjusted_q", "speed_adjusted_q_value"),
+                                    ("bootstrap_same_sign_fraction", "bootstrap_same_sign_fraction"),
+                                    ("task_interaction_p", "task_interaction_interaction_p_value"),
+                                    ("site_interaction_p", "site_interaction_interaction_p_value")):
+            actual, expected = _number(row.get(stored, "")), _number(source.get(source_name, ""))
+            if actual is not None and expected is not None and not math.isclose(actual, expected, rel_tol=1e-8, abs_tol=1e-10):
+                failures.append(f"evidence numeric trace mismatch for {feature} {stored}")
+        consistency = site_sign_consistency(context, feature)
+        stored_consistency = _number(row.get("leave_site_out_sign_consistency", ""))
+        if stored_consistency is not None and not math.isclose(stored_consistency, consistency, rel_tol=1e-8, abs_tol=1e-10):
+            failures.append(f"site consistency mismatch for {feature}")
+        expected_site = "PASS" if consistency == 1 else ("NOT_ESTIMABLE" if math.isnan(consistency) else "FAIL")
+        if row.get("site_robustness_status") != expected_site:
+            failures.append(f"site robustness status mismatch for {feature}")
+        rel_values = [_number(item.get("icc_2_1", "")) for item in reliability if item.get("feature") == feature]
+        rel_values = [value for value in rel_values if value is not None]
+        expected_reliability = "NOT_ESTIMABLE" if not rel_values else ("PASS" if max(rel_values) >= config["reliability"]["icc_candidate_threshold"] else "FAIL")
+        if row.get("reliability_status") != expected_reliability:
+            failures.append(f"reliability status mismatch for {feature}")
+        mandatory = [row.get(key, "") for key in ("severity_status", "bootstrap_status", "speed_status", "task_robustness_status", "site_robustness_status", "reliability_status")]
+        expected = "FAIL" if "FAIL" in mandatory else ("INCOMPLETE" if "NOT_ESTIMABLE" in mandatory else "PASS")
+        if row.get("trait_status") != expected:
+            failures.append(f"evidence status mismatch for {row.get('feature')}: expected {expected}")
+
+
+def _check_numeric_trace(base: Path, failures: list[str]) -> None:
+    path = base / "report" / "claim_evidence_matrix.csv"
+    if not path.is_file():
+        return
+    frozen = base / "results" / "frozen"
+    for claim in _csv(path):
+        table_name = claim.get("table", "")
+        source = frozen / table_name
+        if not table_name or table_name.upper() in {"NA", "N/A"}:
+            continue
+        if not source.is_file():
+            failures.append(f"claim {claim.get('claim_id')} references missing frozen table {table_name}")
+            continue
+        source_numbers = {_number(value) for row in _csv(source) for value in row.values()}
+        source_numbers.discard(None)
+        for field in ("effect", "p_value", "q_value"):
+            value = _number(claim.get(field, ""))
+            if value is not None and not any(math.isclose(value, candidate, rel_tol=2e-3, abs_tol=2e-4) for candidate in source_numbers):
+                failures.append(f"claim {claim.get('claim_id')} {field} has no matching frozen numeric value")
+
+
+def _check_public_headers(base: Path, failures: list[str]) -> None:
+    forbidden = {"participant_id", "subject_id", "recording_id", "session_id"}
+    for directory in (base / "results" / "frozen", base / "report"):
+        if not directory.is_dir():
+            continue
+        for path in directory.rglob("*.csv"):
+            with path.open(newline="", encoding="utf-8") as handle:
+                headers = set(next(csv.reader(handle), []))
+            leaked = sorted(headers & forbidden)
+            if leaked:
+                failures.append(f"row-level identifiers published in {path.relative_to(base)}: {', '.join(leaked)}")
+
+
+def _git(base: Path, *args: str) -> str | None:
+    try:
+        return subprocess.run(["git", "-C", str(base), *args], check=True, capture_output=True, text=True).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        return None
+
+
+def _check_release_identity(base: Path, provenance: dict[str, object], failures: list[str]) -> None:
+    current = _git(base, "rev-parse", "HEAD")
+    expected_commit = provenance.get("release_commit")
+    if current and expected_commit and current != expected_commit:
+        failures.append("provenance.release_commit differs from current release commit")
+    tag = provenance.get("release_tag")
+    if tag:
+        tagged = _git(base, "rev-list", "-n", "1", str(tag))
+        if tagged and expected_commit and tagged != expected_commit:
+            failures.append("release tag does not point to provenance.release_commit")
+    analysis_commit = provenance.get("analysis_code_commit")
+    if current and analysis_commit:
+        try:
+            subprocess.run(["git", "-C", str(base), "merge-base", "--is-ancestor", str(analysis_commit), current], check=True, capture_output=True)
+        except (OSError, subprocess.CalledProcessError):
+            failures.append("analysis_code_commit is not an ancestor of release commit")
 
 
 def _ids(path: Path) -> set[str]:
@@ -46,6 +211,21 @@ def main(root: str) -> int:
             provenance = json.loads(provenance_path.read_text())
             if provenance.get("analysis_version") != manifest.get("analysis_version"):
                 failures.append("provenance and result manifest versions differ")
+            if provenance.get("schema") != "run-provenance-v2":
+                failures.append("provenance schema is not run-provenance-v2")
+            required_privacy = {
+                "provenance_script_read_row_level_data": False,
+                "row_level_data_recorded_in_manifest": False,
+                "row_level_data_published": False,
+                "analysis_used_authorized_external_row_level_data": True,
+            }
+            if any(provenance.get("privacy", {}).get(k) != v for k, v in required_privacy.items()):
+                failures.append("provenance privacy wording is incomplete or inaccurate")
+            if not provenance.get("analysis_code_commit"):
+                failures.append("provenance lacks analysis_code_commit")
+            if not provenance.get("release_commit"):
+                failures.append("provenance lacks release_commit")
+            _check_release_identity(base, provenance, failures)
         # Authorized files live outside the repository by design.  Require an
         # auditable derived table instead of requiring a redistributable copy.
         feature_path = base / "results" / "v1_reference_walkway_clinical.csv"
@@ -62,6 +242,19 @@ def main(root: str) -> int:
             keys = [(r.get("participant_id"), r.get("session_id"), r.get("task")) for r in rows]
             if len(keys) != len(set(keys)):
                 failures.append("duplicate participant/site/session/task keys")
+        provenance_path = base / "results" / "frozen" / "run_provenance.json"
+        if provenance_path.exists():
+            provenance = json.loads(provenance_path.read_text())
+            _check_hashes(base, provenance, failures)
+        evidence_path = base / "results" / "frozen" / "feature_evidence_matrix.csv"
+        if evidence_path.exists():
+            config = yaml.safe_load((base / "configs" / "analysis.yaml").read_text()) or {}
+            _check_evidence(base, config, failures)
+        primary_path = base / "results" / "frozen" / "primary_associations.csv"
+        if primary_path.exists():
+            _check_fdr(base, failures)
+        _check_numeric_trace(base, failures)
+        _check_public_headers(base, failures)
     # If a user supplies explicit split CSVs, enforce participant grouping.
     split_paths = list(base.glob("**/*[Tt]rain*.csv")) + list(base.glob("**/*[Tt]est*.csv"))
     splits = {p.name: _ids(p) for p in split_paths}

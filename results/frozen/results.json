@@ -1,16 +1,20 @@
 {
-  "analysis_version": "3.0",
+  "analysis_version": "3.1",
   "seed": 20260920,
   "status": "analysis_complete",
   "n_primary_rows": 124,
   "n_primary_participants": 62,
   "trait_features": [],
-  "promising_incomplete_features": [],
+  "promising_incomplete_features": [
+    "stance_fraction",
+    "swing_fraction",
+    "double_support_fraction"
+  ],
   "hypothesis": "incomplete_evidence_not_true_negative",
-  "longitudinal_clinical_status": "NOT_ESTIMABLE_AFTER_1077_FILE_AUDIT",
+  "longitudinal_clinical_status": "NOT_ESTIMABLE_AFTER_ARCHIVE_AND_SCHEMA_AUDIT",
   "limits": [
     "Reference PKMAS measures are valid reference outcomes, not failed proxies.",
-    "V2 archive audit found no joinable session-level clinical-score table, so clinical change was not fitted.",
-    "CARE-PD remains cohort-level translation evidence, not matched feature replication."
+    "V2 archive filename/header/schema audit found no joinable session-level clinical-score table, so clinical change was not fitted.",
+    "CARE-PD is a cohort-specific limited translation check; matched temporal replication is included only if event QC passes."
   ]
 }

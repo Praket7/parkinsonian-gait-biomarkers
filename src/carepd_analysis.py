@@ -69,6 +69,78 @@ def _speed_rows(raw, cohort):
     return pd.DataFrame(rows)
 
 
+# The public CARE-PD canonical records currently contain pose (72 values) and
+# root translation, not labelled foot/ankle trajectories or gait events.  Keep
+# this allowlist deliberately small: deriving contacts from pose without the
+# canonical body model would turn a schema audit into an unvalidated feature.
+_TEMPORAL_KEYS = {
+    "cadence": ("cadence", "cadence_steps_min"),
+    "stride_time_mean": ("stride_time_mean", "mean_stride_time", "stride_time"),
+    "stride_time_cv": ("stride_time_cv", "stride_time_percent_cv"),
+    "temporal_asymmetry": ("temporal_asymmetry", "stride_time_asymmetry"),
+}
+
+
+def _temporal_observations(raw, cohort):
+    """Extract only explicitly supplied, QC-ready temporal observations.
+
+    No pose/root-translation reconstruction is attempted.  A value must be a
+    finite scalar or a finite sequence with at least three events; this keeps
+    the matched layer honest when a release exposes no gait-event labels.
+    """
+    rows = []
+    for participant, trials in raw.items():
+        for trial, record in trials.items():
+            for outcome, keys in _TEMPORAL_KEYS.items():
+                key = next((name for name in keys if name in record), None)
+                if key is None:
+                    continue
+                value = np.asarray(record[key], dtype=float)
+                if value.ndim == 0:
+                    value = value.reshape(1)
+                value = value[np.isfinite(value)]
+                if value.size < 3 or (value <= 0).any():
+                    continue
+                # Arrays represent event intervals; summarize deterministically.
+                summary = float(np.mean(value)) if outcome == "stride_time_mean" else float(value[0])
+                rows.append({"cohort": cohort, "participant_key": f"{cohort}:{participant}",
+                             "trial": str(trial), "outcome": outcome, "value": summary})
+    return pd.DataFrame(rows)
+
+
+def matched_temporal_aggregate(table, *, min_participants=8):
+    """Return aggregate matched CARE temporal results or explicit non-estimability.
+
+    Event extraction is accepted only when canonical temporal observations are
+    already present.  The current public schema normally has none, so the
+    returned rows make that boundary visible instead of reporting fabricated
+    cadence/stride associations.
+    """
+    outcomes = tuple(_TEMPORAL_KEYS)
+    rows = []
+    for cohort, raw in table.items():
+        cohort = str(cohort)
+        observations = _temporal_observations(raw, cohort)
+        for outcome in outcomes:
+            subset = observations[observations.outcome.eq(outcome)] if not observations.empty else observations
+            participants = int(subset.participant_key.nunique()) if not subset.empty else 0
+            if participants < min_participants:
+                rows.append({"cohort": cohort, "outcome": outcome,
+                             "n_trials": int(len(subset)), "n_participants": participants,
+                             "effect": np.nan, "ci_low": np.nan, "ci_high": np.nan,
+                             "p_value": np.nan, "status": "NOT_ESTIMABLE",
+                             "estimability_reason": "canonical_foot_ankle_events_unavailable_or_qc_insufficient"})
+                continue
+            fit_frame = subset.rename(columns={"value": outcome})
+            result = _fit(fit_frame, outcome, min_participants=min_participants)
+            result["status"] = result.get("status", "NOT_ESTIMABLE") if result.get("status") == "ok" else "NOT_ESTIMABLE"
+            result["estimability_reason"] = "prespecified_event_qc_or_model_failed" if result["status"] != "ok" else "prespecified_event_qc_passed"
+            rows.append({"cohort": cohort, "outcome": outcome, **result})
+    return pd.DataFrame(rows, columns=["cohort", "outcome", "n_trials", "n_participants",
+                                       "effect", "ci_low", "ci_high", "p_value", "status",
+                                       "estimability_reason"])
+
+
 def _fit(frame, outcome, *, min_participants=8):
     keep = frame[[outcome, "severity", "participant_key"]].dropna().copy()
     n_people = keep.participant_key.nunique()
@@ -135,7 +207,9 @@ def analyze_carepd_directory(directory, *, min_participants=8, cohorts=None):
             raw = pickle.load(stream)
         if isinstance(raw, dict):
             output[cohort] = raw
-    return safe_aggregate(output, min_participants=min_participants)
+    speed = safe_aggregate(output, min_participants=min_participants)
+    temporal = matched_temporal_aggregate(output, min_participants=min_participants)
+    return pd.concat([speed, temporal], ignore_index=True, sort=False)
 
 
 if __name__ == "__main__":

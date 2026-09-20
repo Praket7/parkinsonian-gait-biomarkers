@@ -3,6 +3,7 @@ import unittest
 import pandas as pd
 
 from scripts.audit_longitudinal_clinical_files import audit_archive
+from scripts.audit_longitudinal_schema import audit_archive as audit_schema_archive
 from src.longitudinal import icc_2_1, prepare_two_session_reliability, reliability_qc
 
 
@@ -31,6 +32,16 @@ class LongitudinalTests(unittest.TestCase):
             row = audit_archive(tmp, max_hash_bytes=10000)[0]
         self.assertEqual(row["header_keyword_hits"], "score|subject|updrs")
         self.assertNotIn("NLS001,4", str(row))
+
+    def test_schema_audit_does_not_read_mat_values_and_freezes_status(self):
+        import tempfile
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "signals.mat"
+            path.write_bytes(b"not-a-mat-payload")
+            report = audit_schema_archive(tmp)
+        self.assertEqual(report["longitudinal_clinical_status"], "NOT_ESTIMABLE_AFTER_ARCHIVE_AND_SCHEMA_AUDIT")
+        self.assertFalse(report["joinable_participant_session_clinical_schema"])
 
 
 if __name__ == "__main__":

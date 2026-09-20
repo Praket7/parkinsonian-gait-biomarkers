@@ -1,6 +1,6 @@
 # Parkinsonian gait biomarkers: aggregate analysis report
 
-Analysis version: `3.0`  
+Analysis version: `3.1`  
 Frozen status: `analysis_complete`
 
 ## Scope
@@ -12,10 +12,19 @@ frozen manifest.
 
 ## Main result
 
-The implemented pipeline identified 0 feature(s) meeting
-its current strict trait rule: none reported.
-This is a statement about the implemented evidence pipeline, not proof that
-every unimplemented evidence path was negative.
+Cross-sectional severity association is insufficient for digital-biomarker
+qualification: speed independence, context transport, analytical validity,
+and repeated-session reliability are separate empirical properties. In the
+frozen primary table, 8/11 measures have FDR-adjusted
+severity associations. The implemented strict rule identifies
+0 candidate trait feature(s): none reported.
+
+Spatial measures must be interpreted after gait-speed adjustment, while
+temporal variability can retain association without demonstrating repeatable
+measurement. Conversely, repeatable temporal measures need not be the
+strongest severity correlates. These statements are derived below from the
+frozen association and task-specific reliability tables rather than manually
+entered values.
 
 ## Aggregate associations
 
@@ -69,7 +78,9 @@ every unimplemented evidence path was negative.
 ## External translation check
 
 These are cohort-specific translation-speed checks, not full matched-feature
-replication.
+replication. CARE matched temporal replication is included only if the
+prespecified canonical event QC can support it; unavailable canonical foot or
+ankle events are reported as not estimable, never as a negative replication.
 
 - `3DGait`: status=ok, effect=-0.785, p_value=6.74e-25, ci_low=-0.934, ci_high=-0.636, n_trials=90
 - `3DGait`: status=ok, effect=-0.724, p_value=3.81e-15, ci_low=-0.905, ci_high=-0.544, n_trials=90
@@ -85,6 +96,22 @@ replication.
 - `T-SDU-PD`: status=ok, effect=-0.461, p_value=7.38e-05, ci_low=-0.688, ci_high=-0.233, n_trials=381
 - `T-SDU-PD`: status=ok, effect=-0.455, p_value=2.63e-05, ci_low=-0.667, ci_high=-0.243, n_trials=381
 - `T-SDU-PD`: status=ok, effect=-0.477, p_value=2.29e-05, ci_low=-0.697, ci_high=-0.256, n_trials=381
+- `3DGait`: status=NOT_ESTIMABLE, n_trials=0
+- `3DGait`: status=NOT_ESTIMABLE, n_trials=0
+- `3DGait`: status=NOT_ESTIMABLE, n_trials=0
+- `3DGait`: status=NOT_ESTIMABLE, n_trials=0
+- `BMCLab`: status=NOT_ESTIMABLE, n_trials=0
+- `BMCLab`: status=NOT_ESTIMABLE, n_trials=0
+- `BMCLab`: status=NOT_ESTIMABLE, n_trials=0
+- `BMCLab`: status=NOT_ESTIMABLE, n_trials=0
+- `PD-GaM`: status=NOT_ESTIMABLE, n_trials=0
+- `PD-GaM`: status=NOT_ESTIMABLE, n_trials=0
+- `PD-GaM`: status=NOT_ESTIMABLE, n_trials=0
+- `PD-GaM`: status=NOT_ESTIMABLE, n_trials=0
+- `T-SDU-PD`: status=NOT_ESTIMABLE, n_trials=0
+- `T-SDU-PD`: status=NOT_ESTIMABLE, n_trials=0
+- `T-SDU-PD`: status=NOT_ESTIMABLE, n_trials=0
+- `T-SDU-PD`: status=NOT_ESTIMABLE, n_trials=0
 
 ## Medication-state sensitivity
 
@@ -109,8 +136,8 @@ replication.
 ## Limitations and deviations
 
 - Reference PKMAS measures are valid reference outcomes, not failed proxies.
-- V2 archive audit found no joinable session-level clinical-score table, so clinical change was not fitted.
-- CARE-PD remains cohort-level translation evidence, not matched feature replication.
+- V2 archive filename/header/schema audit found no joinable session-level clinical-score table, so clinical change was not fitted.
+- CARE-PD is a cohort-specific limited translation check; matched temporal replication is included only if event QC passes.
 
 Do not interpret this report as diagnostic, causal, treatment, or clinical-use
 evidence. Regenerate it after every authorized analysis run.

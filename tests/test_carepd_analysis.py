@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from src.carepd_analysis import safe_aggregate, translation_speed_sensitivities
+from src.carepd_analysis import matched_temporal_aggregate, safe_aggregate, translation_speed_sensitivities
 
 
 class CarePDAnalysisTests(unittest.TestCase):
@@ -33,6 +33,15 @@ class CarePDAnalysisTests(unittest.TestCase):
         result = safe_aggregate(raw, min_participants=3)
         self.assertTrue(any(result.outcome.str.endswith("_on")))
         self.assertTrue(any(result.outcome.str.endswith("_off")))
+
+    def test_matched_temporal_layer_fails_safe_without_canonical_events(self):
+        raw = {"3DGait": {"person": {"walk": {
+            "pose": np.zeros((20, 72)), "trans": np.zeros((20, 3)), "fps": 30
+        }}}}
+        result = matched_temporal_aggregate(raw, min_participants=1)
+        self.assertEqual(set(result.status), {"NOT_ESTIMABLE"})
+        self.assertTrue((result.n_trials == 0).all())
+        self.assertTrue(result.estimability_reason.str.contains("foot_ankle").all())
 
 
 if __name__ == "__main__":

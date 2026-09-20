@@ -6,7 +6,7 @@ measures dominated by task, speed, site, or short-term state.
 
 ## Current evidence status
 
-The authorized analysis is complete. In the primary WearGait V1 reference
+The authorized analysis release is complete. In the primary WearGait V1 reference
 walkway analysis (124 SP/HP rows from 62 PD participants), several measures
 were associated with MDS-UPDRS Part III gait-item severity; **no feature met
 the full context-robust trait criterion**. CARE-PD provides a limited,
@@ -38,11 +38,14 @@ Git) and the public-safe aggregate decision record at
 
 - Reference outcomes are PKMAS pressure-walkway measurements; contacts are a
   separately validated temporal layer.
-- Participant-level bootstrap resamples whole participants, not walks.
+- Participant-level bootstrap and permutation resamples use the declared GEE,
+  deterministically sharded across workers; they never substitute OLS.
 - GEE clusters repeated task rows by participant and adjusts for task, site,
   age, height, and sex.
 - Benjamini-Hochberg FDR correction is applied across the primary feature family.
 - The project reports association, not diagnosis, causality, or medication effect.
+- The V2 clinical-change estimand is `NOT_ESTIMABLE_AFTER_ARCHIVE_AND_SCHEMA_AUDIT`;
+  it was unavailable in the authorized release, not a failed validity test.
 
 The preregistered design is in `docs/preregistration.md`; feature compatibility
 across WearGait and CARE-PD is in `docs/common_feature_mapping.md`; sources and
