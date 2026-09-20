@@ -1,15 +1,81 @@
 {
-  "analysis_version": "1.0",
+  "analysis_version": "2.0",
   "seed": 20260920,
-  "primary_n_participants": 0,
-  "n_rows": 0,
-  "primary_features": [],
+  "primary_data": "WearGait V1 PKMAS reference walkway",
+  "n_reference_rows": 271,
+  "n_primary_rows": 124,
+  "n_primary_participants": 62,
+  "primary_target": "MDS-UPDRS Part III item 3.10 (gait)",
   "trait_features": [],
-  "state_features": [],
-  "context_features": [],
-  "external_replication": {},
-  "longitudinal": {},
-  "status": "no_input_data",
-  "primary_target": null,
-  "conclusion": "No hypothesis test was run: authorized participant-level data are unavailable."
+  "hypothesis": "not_supported_under_strict_criteria",
+  "contact_validation": [
+    {
+      "metric": "cadence",
+      "n": 257,
+      "spearman_rho": 0.9620065262522037,
+      "mean_bias": 0.39638780760988723,
+      "mae": 2.537049595019116,
+      "rmse": 4.229909920166823
+    },
+    {
+      "metric": "step_time_mean",
+      "n": 257,
+      "spearman_rho": 0.9604037028026072,
+      "mean_bias": 0.00105895002101226,
+      "mae": 0.012507672936661267,
+      "rmse": 0.019708177534483298
+    }
+  ],
+  "longitudinal": [
+    {
+      "feature": "cadence",
+      "n_pairs": 184,
+      "icc_2_1": 0.6100795836843398,
+      "sem": 9.661870539602813,
+      "mdc95": 26.78133877579873
+    },
+    {
+      "feature": "step_time_mean",
+      "n_pairs": 184,
+      "icc_2_1": 0.5871747470234037,
+      "sem": 0.0503212801634446,
+      "mdc95": 0.13948347229091432
+    },
+    {
+      "feature": "step_time_cv",
+      "n_pairs": 184,
+      "icc_2_1": 0.8078397918123572,
+      "sem": 12.87392322104217,
+      "mdc95": 35.68469456748961
+    },
+    {
+      "feature": "stride_time_mean",
+      "n_pairs": 184,
+      "icc_2_1": 0.5327386720089937,
+      "sem": 0.1334959277461151,
+      "mdc95": 0.3700318330186641
+    },
+    {
+      "feature": "stride_time_cv",
+      "n_pairs": 181,
+      "icc_2_1": 0.7272301687010736,
+      "sem": 9.668867786667946,
+      "mdc95": 26.80073415512835
+    }
+  ],
+  "carepd": {
+    "status": "translation_speed_only",
+    "n_trials": 2893,
+    "n_participants": 110,
+    "effect": -0.6558121892462021,
+    "ci_low": -0.7647070771435662,
+    "ci_high": -0.546917301348838,
+    "p_value": 3.7328739672671496e-32
+  },
+  "limits": [
+    "V1 reference-walkway table contains SP/HP only.",
+    "Longitudinal source has no linked repeated clinical-score table; change-versus-severity was not estimated.",
+    "CARE-PD result is a canonical global-translation check, not a gait-event replication."
+  ],
+  "status": "analysis_complete"
 }

@@ -1,0 +1,13 @@
+{
+  "dataset": "vida-adl/CARE-PD",
+  "repo_type": "dataset",
+  "revision": "d53fe929aaacbd6822bcad5ef2b1d215401800b7",
+  "source": "https://huggingface.co/datasets/vida-adl/CARE-PD",
+  "terms_source": "https://neurips2025.care-pd.ca/terms-of-use",
+  "drive_destination": "<controlled external storage>/CARE_PD",
+  "file_count": 37,
+  "total_bytes": 2235219112,
+  "status": "download_complete",
+  "download_method": "huggingface_hub.snapshot_download(repo_type=dataset, local_dir=..., revision=...)",
+  "note": "CARE-PD is hosted on Hugging Face and is not a Synapse entity; no Synapse ID applies. Terms acceptance was performed by the authorized user, not automation."
+}

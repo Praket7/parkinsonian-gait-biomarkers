@@ -1,0 +1,28 @@
+{
+  "retrieved_utc": "2026-09-20T12:55:00Z",
+  "source": "Synapse",
+  "project": "syn52540892",
+  "cross_sectional": {
+    "entity_id": "syn55052683",
+    "files_queued_in_synapse_ui": 1865,
+    "estimated_bytes": 54975581389,
+    "status": "complete",
+    "drive_destination": "<controlled external storage>/WearGait_PD_V1",
+    "observed_local_count": 1865,
+    "observed_local_bytes_human": "48G",
+    "integrity_manifest_entries": 1865,
+    "integrity_missing_paths": 0,
+    "command": ".venv/bin/synapse --silent get syn55052683 -r --downloadLocation <drive_destination> --manifest all"
+  },
+  "longitudinal": {
+    "entity_id": "syn74686228",
+    "status": "complete",
+    "observed_local_count": 1077,
+    "observed_local_bytes_human": "27G",
+    "observed_local_count_including_manifests": 1077
+  },
+  "authorization": "User reported Synapse sign-in and terms acceptance; no terms were accepted by automation.",
+  "blocker": "Chrome blocks the Synapse data.prod.sagebase.org download endpoint (ERR_BLOCKED_BY_CLIENT).",
+  "local_raw_files_in_repository": 0,
+  "notes": "The controlled acquisition completed. This repository intentionally contains no participant-level files; only public-safe provenance and aggregate findings are versioned."
+}

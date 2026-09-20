@@ -1,18 +1,11 @@
-# Draft AAN abstract — results pending authorized data
+# AAN-style structured abstract
 
-Digital gait measures may support objective assessment of Parkinsonian motor
-impairment, but the same measure can change with walking task, gait speed,
-sensor context, site, medication state, and repeated-session conditions. We
-pre-specified a secondary analysis of WearGait-PD, its longitudinal extension,
-and CARE-PD to distinguish candidate trait-like measures from state-responsive
-or context-confounded measures. The planned pipeline restricts primary analyses
-to annotated clean walking, derives a limited interpretable feature set, models
-severity with explicit context covariates, uses participant-level resampling and
-false-discovery-rate correction, evaluates repeated-measure reliability and
-within-person change, and reserves CARE-PD for independent replication. At the
-time of this draft, public metadata were retrieved but participant-level files
-remain behind dataset-specific access and terms workflows; no clinical analyses
-were run. Accordingly, no gait feature is reported as a validated biomarker,
-and the trait-versus-state hypothesis remains untested. The released code,
-frozen configuration, data-access manifest, and synthetic tests provide a
-reproducible, auditable route for the authorized analysis.
+**Objective:** To distinguish Parkinsonian gait measures associated with motor gait impairment from measures insufficiently robust to task and repeated-session context.
+
+**Background:** Digital gait measures can vary with task, site, pace, and short-term state. A robust association alone is not a trait biomarker.
+
+**Design/Methods:** Authorized WearGait-PD V1 PKMAS reference-walkway data were joined to clinical records. In 62 PD participants (124 SP/HP task rows with MDS-UPDRS Part III item 3.10), standardized Gaussian GEE models clustered by participant adjusted for age, height, sex, task, and site. Eleven measures underwent Benjamini-Hochberg correction and 2,000 participant bootstraps. Raw foot-contact temporal measures were validated against PKMAS. WearGait longitudinal sessions assessed ICC(2,1). CARE-PD was reserved for a canonical global-translation-speed check.
+
+**Results:** Worse gait-item score was associated with lower speed (beta=-0.308, 95% CI -0.464 to -0.151, q=0.00042), shorter step length (-0.367, q=0.0000032), shorter stride length (-0.375, q=0.0000032), greater step-time CV (0.453, q=0.0135), and greater double support (0.290, q=0.0135). Contact cadence and step time agreed with PKMAS (rho=0.962 and 0.960; n=257). Longitudinal ICCs were 0.610 for cadence, 0.587 for mean step time, and 0.808 for step-time CV. No feature passed all association, bootstrap, validated-proxy, and repeatability criteria. CARE-PD forward translation speed was directionally associated with higher gait label (beta=-0.656, 95% CI -0.765 to -0.547; 2,893 trials), but is not an operational gait-feature replication.
+
+**Conclusions:** Reference-walkway gait features covary with motor gait impairment, but this analysis did not identify a context-robust trait biomarker. Independently scored longitudinal clinical visits and matched external reference measurements are required before clinical translation.

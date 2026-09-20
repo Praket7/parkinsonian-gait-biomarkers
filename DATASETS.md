@@ -1,12 +1,12 @@
 # Parkinsonian gait datasets
 
-Checked 2026-09-20. This inventory follows the build plan and records what can be accessed without accepting dataset-specific terms or using credentials.
+Checked 2026-09-20. The authorized source releases were acquired to the user's controlled Google Drive folder; participant-level data and row-level derivatives remain excluded from this repository.
 
 | Dataset | Scientific fit | Access/licence | Current status |
 |---|---|---|---|
-| WearGait-PD (cross-sectional) | 185 participants (100 PD, 85 controls), synchronized IMUs, sensorized insoles, gait reference, video annotations, demographics and clinical evaluations; strong fit for task/speed/site-free trait analysis. | Synapse `syn52540892`; CC BY 4.0. Data-file download requires a registered Synapse account and agreement to Synapse governance policies. | Public metadata retrieved. No participant files downloaded because registration/terms were not accepted. |
-| WearGait-PD Longitudinal | 47 PD participants with repeated sessions at least six months apart; supports reliability and within-person change. The first session overlaps Version 1, so do not concatenate blindly. | Synapse folder `syn74686228`; same project access route and CC BY 4.0. | Public access metadata retrieved; data not downloaded for the same reason. |
-| CARE-PD | 9 cohorts from 8 sites and about 363 participants, harmonized anonymized SMPL gait meshes; useful independent multi-site replication. | Borealis Dataverse DOI `10.5683/SP3/TWIKMK` and Hugging Face `vida-adl/CARE-PD`. Dataverse/HF metadata reports CC BY-NC-ND 4.0. The official HF card says users must read the project terms before downloading/using data. | Repository metadata retrieved only. No mesh files downloaded and no terms accepted. |
+| WearGait-PD (cross-sectional) | 185 participants (100 PD, 85 controls), synchronized IMUs, sensorized insoles, gait reference, video annotations, demographics and clinical evaluations; strong fit for task/speed/site-free trait analysis. | Synapse `syn52540892`; CC BY 4.0. Data-file download requires a registered Synapse account and agreement to Synapse governance policies. | Authorized V1 archive acquired. Manifest audit found 1,865 release files present. |
+| WearGait-PD Longitudinal | 47 PD participants with repeated sessions at least six months apart; supports reliability and within-person change. The first session overlaps Version 1, so do not concatenate blindly. | Synapse folder `syn74686228`; same project access route and CC BY 4.0. | Authorized archive acquired. Used for contact-feature repeatability only; no linked repeated clinical-score table was treated as available. |
+| CARE-PD | 9 cohorts from 8 sites and about 363 participants, harmonized anonymized SMPL gait meshes; useful independent multi-site replication. | Borealis Dataverse DOI `10.5683/SP3/TWIKMK` and Hugging Face `vida-adl/CARE-PD`. Dataverse/HF metadata reports CC BY-NC-ND 4.0. The official HF card says users must read the project terms before downloading/using data. | Official Hugging Face revision `d53fe929aaacbd6822bcad5ef2b1d215401800b7` acquired after terms acceptance; 37 source files are checksum-recorded in `data/metadata/carepd_acquisition_manifest.json`. |
 
 ## Evidence captured locally
 
@@ -19,9 +19,9 @@ Checked 2026-09-20. This inventory follows the build plan and records what can b
 
 Run `python3 scripts/acquire_dataset_metadata.py` to refresh these metadata snapshots and write `data/metadata/manifest.json` with retrieval timestamps and SHA-256 hashes. The script intentionally does not log in, request access, accept click-through terms, or download participant-level files.
 
-## Recommended next gate
+## Reproduction gate
 
-An authorized researcher should register with Synapse, review the governance documents, and separately confirm CARE-PD's project terms/licence before downloading. Record the account/access decision, exact release version, checksums, and local path in a controlled data-access record. Keep WearGait and CARE-PD identifiers separate.
+Keep the authorized Drive folder outside the repository, set `PARKINSON_GAIT_DATA_ROOT` to it, and run `bash scripts/reproduce_final_results.sh`. The run writes row-level audit files locally under `results/` (ignored by Git) and a public-safe aggregate manifest under `results/frozen/results.json`. Keep WearGait and CARE-PD identifiers separate.
 
 ## Citations and links
 
