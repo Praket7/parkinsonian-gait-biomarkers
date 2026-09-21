@@ -1,6 +1,6 @@
-analysis_version: "4.0.5"
-analysis_protocol_version: "4.0.5"
-release_version: "v4.0.5"
+analysis_version: "4.0.6"
+analysis_protocol_version: "4.0.6"
+release_version: "v4.0.6"
 seed: 20260921
 fdr_alpha: 0.05
 bootstrap_iterations: 2000

@@ -50,6 +50,9 @@ def main():
     associations=association_table(primary,["context_adjusted_gait_deviation_v1",*list(scaling.filter(regex="_v1$").columns)],config) if not scaling.empty else association_table(primary,["context_adjusted_gait_deviation_v1"],config)
     if not contact.empty:
         contact_pd=contact[contact.clinical_cohort.eq("pd")]
+        # Free-walking contact exports have no validated spatial speed route.
+        # Keep the prespecified speed-adjustment gate visible as NOT_ESTIMABLE.
+        contact_pd["gait_speed"] = np.nan
         contact_features=[c for c in config["families"]["variability_rescue"] + config["families"]["arm_axial"] + config["families"]["turning"] + config["families"]["harmonicity"] if c in contact_pd and contact_pd[c].notna().sum()]
         contact_assoc=association_table(contact_pd,contact_features,config)
         associations=pd.concat([associations,contact_assoc],ignore_index=True)
