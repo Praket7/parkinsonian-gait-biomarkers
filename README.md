@@ -47,6 +47,19 @@ repeated-session scoring and eight-input external transport remain explicitly
 [frozen manifest](results/v4_1/frozen/protocol_manifest.json), and the
 [five v4.1 figures](results/v4_1/frozen/figures).
 
+### v4.2 H4/H2 validation closure
+
+v4.2.0 tested whether raw walkway streams could recover the missing
+longitudinal eight-input score and whether the score's ranking signal was
+stable under stronger grouped validation. The raw release lacks a documented
+metric rear-foot coordinate calibration, so the all-eight PKMAS-equivalence
+gate could not be established and H4 remains `NOT_ESTIMABLE`. Across 100
+participant-grouped five-fold repeats, ranking improved consistently while
+row-level RMSE did not; the predefined interpretation is
+`RANKING_SUPPORT_ONLY`. This does not alter the frozen v4.1 absolute-prediction
+conclusion. Read the [v4.2 report](results/v4_2/frozen/AAN_v4_2_report.md) and
+[frozen evidence matrix](results/v4_2/frozen/evidence_matrix.csv).
+
 ## Run
 
 ```bash

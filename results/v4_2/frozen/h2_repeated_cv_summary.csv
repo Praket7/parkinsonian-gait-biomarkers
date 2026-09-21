@@ -1,0 +1,3 @@
+level,delta_mae_median,delta_rmse_median,delta_spearman_rho_median,delta_pearson_r_median,delta_calibration_slope_median,delta_calibration_intercept_median,delta_mae_favorable_fraction,delta_rmse_favorable_fraction,delta_spearman_rho_favorable_fraction,delta_pearson_r_favorable_fraction,delta_calibration_slope_favorable_fraction,delta_calibration_intercept_favorable_fraction
+participant,0.0007892717891302692,-0.006908773391669898,0.04737933370608602,0.049790695949388314,0.020299870844433826,-0.025706538621378894,0.44,0.66,0.98,0.91,0.6,0.39
+row,-0.0006413175647180247,0.012269011299660626,0.05451233231377617,0.029197448853038932,-0.05964934321009724,0.05746453600563009,0.52,0.25,0.99,0.77,0.21,0.78
