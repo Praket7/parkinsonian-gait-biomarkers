@@ -37,7 +37,7 @@ def run(config_path, data_root=None):
     authorized_root = data_root or os.environ.get("PARKINSON_GAIT_DATA_ROOT")
     if authorized_root:
         from .final_analysis import run_authorized_analysis
-        return run_authorized_analysis(authorized_root, data.get("output_dir", "results"), seed=config["seed"], bootstrap_iterations=config.get("bootstrap_iterations", 2000))
+        return run_authorized_analysis(authorized_root, data.get("output_dir", "results"), config=config)
     raw = load_csv_bouts(data["input_dir"], data.get("file_glob", "*.csv"))
     outdir = Path(data.get("output_dir", "results"))
     outdir.mkdir(parents=True, exist_ok=True)
