@@ -42,6 +42,8 @@ def main():
     ap=argparse.ArgumentParser(); ap.add_argument("--source",required=True); ap.add_argument("--config",default="configs/v4_analysis.yaml"); ap.add_argument("--output",default="results/v4/frozen"); args=ap.parse_args()
     config=yaml.safe_load(Path(args.config).read_text()); rows=[]; errors=[]
     for path in sorted(Path(args.source).rglob("*.csv")):
+        if infer_task(path) not in set(config["source_tasks"]):
+            continue
         try:
             item=extract_file(path,config)
             if item: rows.append(item)
