@@ -1,0 +1,47 @@
+step_time_cv_longbout_v1:
+  construct: variability_rescue
+  formula: "100 * sample_sd(all alternating inter-foot intervals) / mean(interval)"
+  source: "WearGait annotated walking contact CSV"
+  minimum_cycles: 30
+  context_of_use: trait_candidate
+stride_time_cv_longbout_v1:
+  construct: variability_rescue
+  formula: "100 * sample_sd(same-foot intervals) / mean(interval)"
+  source: "WearGait annotated walking contact CSV"
+  minimum_cycles: 30
+  context_of_use: trait_candidate
+arm_swing_rom_v1:
+  construct: arm_axial
+  formula: "mean bilateral wrist sagittal-angle range during QC-passing gait"
+  source: "WearGait bilateral wrist IMU, official readable export required"
+  context_of_use: monitoring_candidate
+arm_swing_asymmetry_v1:
+  construct: arm_axial
+  formula: "abs(left_rom-right_rom)/(0.5*(left_rom+right_rom))"
+  source: "WearGait bilateral wrist IMU, official readable export required"
+  context_of_use: monitoring_candidate
+arm_swing_coordination_v1:
+  construct: arm_axial
+  formula: "maximum absolute normalized cross-correlation of bilateral wrist signals"
+  source: "WearGait bilateral wrist IMU, official readable export required"
+  context_of_use: state_response_candidate
+axial_rotation_smoothness_v1:
+  construct: arm_axial
+  formula: "spectral arc length of trunk yaw angular velocity"
+  source: "WearGait trunk gyroscope, official readable export required"
+  context_of_use: monitoring_candidate
+context_adjusted_gait_deviation_v1:
+  construct: normative
+  formula: "sqrt(z^T Sigma^-1 z), with models and covariance fitted only in controls"
+  source: "WearGait PKMAS reference walkway"
+  context_of_use: trait_candidate
+stride_scaling_response_v1:
+  construct: speed_response
+  formula: "(stride_length_HP-stride_length_SP)/(speed_HP-speed_SP)"
+  source: "WearGait PKMAS reference walkway"
+  context_of_use: challenge_response_candidate
+cadence_scaling_response_v1:
+  construct: speed_response
+  formula: "(cadence_HP-cadence_SP)/(speed_HP-speed_SP)"
+  source: "WearGait PKMAS reference walkway"
+  context_of_use: challenge_response_candidate
