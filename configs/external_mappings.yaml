@@ -1,0 +1,17 @@
+mapping_version: "3.2.2"
+mobilised_cvs:
+  participant: participantid
+  visit: visit.number
+  mds_updrs_iii: mdsscore3
+  valid_days: n_days_w
+  minimum_valid_days: 3
+  visit_months: {t1: 0, t2: 6, t3: 12, t4: 18, t5: 24}
+  confirmatory_features: {ws_30_avg_w: gait_speed, strlen_30_avg_w: stride_length_mean, cadence_30_avg_w: cadence, strdur_30_avg_w: stride_time_mean}
+  anchor_compatibility: broad_motor
+mendeley_gait:
+  processed_tables_only: true
+  participant: ID
+  anchor: Gait evaluation MDS-UPDRS
+  stride_speed: {source: "Mean stride speed (cm/s)", canonical: gait_speed_m_s, conversion: "cm/s_to_m/s"}
+  stride_amplitude: {source: "Mean stride amplitude (cm)", canonical: stride_amplitude_cm, compatibility: source_specific}
+adaptive_dbs: {mapping_status: NOT_APPROVED, reason: STATE_PAIR_MAPPING_NOT_FROZEN}

@@ -7,7 +7,7 @@ from pathlib import Path
 def sha(path: Path) -> str: return hashlib.sha256(path.read_bytes()).hexdigest()
 def main() -> int:
     p=argparse.ArgumentParser(); p.add_argument("--config",required=True); p.add_argument("--prereg",required=True); p.add_argument("--mapping",required=True); p.add_argument("--output",required=True); a=p.parse_args()
-    files={"analysis_config_sha256":Path(a.config),"analysis_protocol_sha256":Path(a.prereg),"feature_mapping_sha256":Path(a.mapping)}
+    files={"analysis_config_sha256":Path(a.config),"analysis_protocol_sha256":Path(a.prereg),"feature_mapping_sha256":Path(a.mapping),"external_mappings_sha256":Path("configs/external_mappings.yaml")}
     try: commit=os.environ.get("ANALYSIS_FREEZE_COMMIT") or subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
     except Exception: commit="UNAVAILABLE"
     manifest={key:sha(path) for key,path in files.items()}|{"analysis_freeze_commit_sha":commit,"schema":"analysis-freeze-v1"}

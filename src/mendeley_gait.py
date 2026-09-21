@@ -2,12 +2,15 @@
 from __future__ import annotations
 
 from pathlib import Path
+import io
+import re
 import zipfile
 import pandas as pd
 
 from .external_schema import canonicalize, namespaced_key, source_files
 
 _TABLE_SUFFIXES = {".csv", ".tsv", ".xlsx", ".xls", ".parquet"}
+PROCESSED_COLUMNS = {"Mean stride amplitude (cm)": "stride_amplitude_cm", "SD stride amplitude (cm)": "stride_amplitude_sd_cm", "Mean stride speed (cm/s)": "gait_speed_m_s", "SD stride speed": "stride_speed_sd", "Mean speed correlation": "speed_correlation", "Mean height of foot lift (cm)": "foot_lift_cm", "SD height of foot lift (cm)": "foot_lift_sd_cm", "Arm swing indicator": "arm_swing_indicator", "Gait evaluation MDS-UPDRS": "gait_evaluation"}
 
 
 def _members(root: Path) -> list[str]:
@@ -68,3 +71,38 @@ def to_canonical(table: pd.DataFrame, mapping: dict[str, str]) -> pd.DataFrame:
         raise ValueError("participant and visit mappings cannot contain missing values")
     source["participant_key"] = source["participant_key"].map(lambda value: namespaced_key("mendeley", value))
     return canonicalize(source, "mendeley_gait")
+
+
+def _processed_book(root: Path, number: int) -> pd.DataFrame:
+    """Read only a declared processed workbook; raw IMU files are never joined."""
+    archives = list(Path(root).rglob("*.zip"))
+    for archive in archives:
+        with zipfile.ZipFile(archive) as handle:
+            member = next((n for n in handle.namelist() if re.search(fr"Tables in Excel/Table {number}\.xlsx$", n)), None)
+            if member:
+                return pd.read_excel(io.BytesIO(handle.read(member)), header=1)
+    raise FileNotFoundError(f"Mendeley processed Table {number}.xlsx not found")
+
+
+def parse_processed_id(value: object, table: int) -> dict:
+    text = " ".join(str(value).replace("\xa0", " ").split())
+    base = re.match(r"^(\d+)\s+([RL])", text, re.I)
+    if not base:
+        raise ValueError(f"unparseable processed-table ID: {text!r}")
+    visit = 2 if table == 2 and "+ 6 months" in text.lower() else 1
+    minutes = re.search(r"(\d+)\s*min", text, re.I)
+    return {"processed_participant": f"{base.group(1)} {base.group(2).upper()}", "visit_order": visit,
+            "time_since_medication_min": int(minutes.group(1)) if minutes else None}
+
+
+def load_mendeley_processed_tables(root: Path) -> dict[str, pd.DataFrame]:
+    tables = {}
+    for number, label in ((1, "cross_sectional"), (2, "six_month"), (3, "medication_timing")):
+        frame = _processed_book(root, number).rename(columns=PROCESSED_COLUMNS).dropna(subset=["ID"]).copy()
+        parsed = frame["ID"].map(lambda x: parse_processed_id(x, number)).apply(pd.Series)
+        frame = pd.concat([frame, parsed], axis=1)
+        frame["participant_key"] = frame.processed_participant.map(lambda x: namespaced_key("mendeley_processed", x))
+        frame["gait_speed_m_s"] = pd.to_numeric(frame.gait_speed_m_s, errors="coerce") / 100
+        frame["gait_evaluation"] = pd.to_numeric(frame.gait_evaluation, errors="coerce")
+        tables[label] = frame
+    return tables

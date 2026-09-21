@@ -16,6 +16,7 @@ _ID_COLUMNS = ("participantid", "participant_id", "participant", "subject_id")
 _DMO_MAP = {"averagestridespeed": "gait_speed", "averagewalkingspeed": "gait_speed",
             "averagestridelength": "stride_length_mean", "averagecadence": "cadence",
             "averagestrideduration": "stride_time_mean"}
+RELEASE_MAPPING = {"participant": "participantid", "visit": "visit.number", "anchor": "mdsscore3", "valid_days": "n_days_w", "features": {"ws_30_avg_w": "gait_speed", "strlen_30_avg_w": "stride_length_mean", "cadence_30_avg_w": "cadence", "strdur_30_avg_w": "stride_time_mean"}}
 
 
 def _norm(value: object) -> str:
@@ -149,3 +150,51 @@ def reliable_week(table: pd.DataFrame) -> pd.Series:
 
 def filter_reliable_week(table: pd.DataFrame, *, sensitivity: bool = False) -> pd.DataFrame:
     return table.copy() if sensitivity else table.loc[reliable_week(table)].copy()
+
+
+def find_pd_dataset_member(root: Path) -> tuple[Path, str]:
+    for archive in Path(root).rglob("*.zip"):
+        try:
+            with zipfile.ZipFile(archive) as handle:
+                member = next((n for n in handle.namelist() if n.endswith("/PD_dataset.csv")), None)
+                if member:
+                    return archive, member
+        except zipfile.BadZipFile:
+            continue
+    raise FileNotFoundError("Mobilise-D Main datasets for analysis/CSV files/PD_dataset.csv not found")
+
+
+def load_pd_dataset(root: Path, mapping: dict | None = None) -> pd.DataFrame:
+    mapping = mapping or RELEASE_MAPPING
+    archive, member = find_pd_dataset_member(root)
+    with zipfile.ZipFile(archive) as handle:
+        frame = pd.read_csv(handle.open(member), low_memory=False)
+    needed = {mapping["participant"], mapping["visit"], mapping["anchor"], mapping["valid_days"], *mapping["features"]}
+    missing = needed - set(frame.columns)
+    if missing:
+        raise ValueError(f"Mobilise-D mapped release fields missing: {sorted(missing)}")
+    return frame
+
+
+def validate_participant_visit_uniqueness(table: pd.DataFrame, participant: str = "participantid", visit: str = "visit.number") -> None:
+    if table[[participant, visit]].isna().any().any():
+        raise ValueError("Mobilise-D participant/visit key contains missing values")
+    if table.duplicated([participant, visit]).any():
+        raise ValueError("Mobilise-D participant/visit key is not unique")
+
+
+def build_mobilised_canonical(table: pd.DataFrame, mapping: dict | None = None) -> pd.DataFrame:
+    mapping = mapping or RELEASE_MAPPING
+    validate_participant_visit_uniqueness(table, mapping["participant"], mapping["visit"])
+    months = {"t1": 0, "t2": 6, "t3": 12, "t4": 18, "t5": 24}
+    output = pd.DataFrame({"participant_key": table[mapping["participant"]].map(lambda x: namespaced_key("mobilised_cvs", x)),
+                           "visit_id": table[mapping["visit"]].astype(str),
+                           "visit_order": table[mapping["visit"]].astype(str).str.lower().map({k: i + 1 for i, k in enumerate(months)}),
+                           "months_from_baseline": table[mapping["visit"]].astype(str).str.lower().map(months),
+                           "mdsscore3": pd.to_numeric(table[mapping["anchor"]], errors="coerce"),
+                           "n_days_w": pd.to_numeric(table[mapping["valid_days"]], errors="coerce")})
+    for source, target in mapping["features"].items(): output[target] = pd.to_numeric(table[source], errors="coerce")
+    for source, target in (("participant.site", "site"), ("age", "age"), ("height", "height"), ("gender", "sex"), ("ledd", "ledd")):
+        if source in table: output[target] = table[source]
+    output["reliable_week_status"] = output.n_days_w.ge(3).map({True: "PASS", False: "FAIL"})
+    return output
