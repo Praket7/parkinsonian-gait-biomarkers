@@ -1,7 +1,7 @@
 # Parkinsonian gait biomarkers: evidence report
 
-Analysis protocol version: `3.1.1`  
-Release version: `v3.1.3`  
+Analysis protocol version: `3.2.4`  
+Release version: `v3.2.4`  
 Frozen status: `analysis_complete`
 
 ## Question and scope
@@ -76,6 +76,23 @@ and never an improvised SMPL conversion. This boundary follows the CARE-PD
 release and code documentation ([5](AAN_bibliography.md#bibliography)).
 
 ## Interpretation for judges
+
+## Independent external evidence
+
+Mobilise-D contributes repeated real-world broad-motor-anchor evidence: walking speed and stride length meet the frozen four-feature FDR criterion, whereas cadence and stride duration do not. Mendeley supplies independent processed-table transport evidence. These contexts do not alter the original WearGait trait decision.
+
+- `gait_speed`: status=OK, p_value=0.00228, q_value=0.00455, ci_low=-0.00111, ci_high=-0.000243
+- `stride_length_mean`: status=OK, p_value=0.000427, q_value=0.00171, ci_low=-0.00106, ci_high=-0.000302
+- `cadence`: status=OK, p_value=0.408, q_value=0.544, ci_low=-0.0383, ci_high=0.0156
+- `stride_time_mean`: status=OK, p_value=0.674, q_value=0.674, ci_low=-0.000277, ci_high=0.000429
+- `stride_amplitude_cm`: status=OK, spearman_rho=-0.617, n=42
+- `stride_amplitude_sd_cm`: status=OK, spearman_rho=-0.00944, n=42
+- `gait_speed_m_s`: status=OK, spearman_rho=-0.656, n=42
+- `stride_speed_sd`: status=OK, spearman_rho=-0.0719, n=42
+- `speed_correlation`: status=OK, spearman_rho=-0.228, n=42
+- `foot_lift_cm`: status=OK, spearman_rho=-0.373, n=42
+- `foot_lift_sd_cm`: status=OK, spearman_rho=-0.314, n=42
+- `arm_swing_indicator`: status=OK, spearman_rho=-0.761, n=42
 
 The high-value outcome is a rigorous negative qualification result. It narrows
 an initially plausible candidate: step-time variability survives speed

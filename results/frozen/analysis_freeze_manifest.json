@@ -1,8 +1,8 @@
 {
-  "analysis_config_sha256": "96b789123ad5ffb39da688b91b587b93da6d5da802a4bee0fc4d3004fa19f7f8",
+  "analysis_config_sha256": "51990063114656dd5c412b43bd3efcef28ce75df9e9d6be43a05fe9b491682ec",
   "analysis_protocol_sha256": "4e6c8fc856fd046f8b34449dd4f728e756cc24bed95c672498684b4eabd9ccb8",
   "feature_mapping_sha256": "221335b448e0ad1c5a5bfc4315057e1aa63216f68517c3fb3bfe2db7f90a2776",
   "external_mappings_sha256": "e783042d656adc5f082238dcdc0002dd61ce272a0c4df3ffdc26bcc964a76b4e",
-  "analysis_freeze_commit_sha": "cba0923d0d5e69c37f8ddfa35bf525ea3fbd5fbe",
+  "analysis_freeze_commit_sha": "e635bcb50d902aad8156f9fc9d454b67a359ffa7",
   "schema": "analysis-freeze-v1"
 }

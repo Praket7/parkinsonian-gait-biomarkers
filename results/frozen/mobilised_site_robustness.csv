@@ -1,2 +1,5 @@
-dataset,status,reason
-mobilised_cvs,NOT_ESTIMABLE,SITE_SENSITIVITY_NOT_YET_IMPLEMENTED
+dataset,feature,n_leave_site_out_models,status,reason
+mobilised_cvs,gait_speed,4,PASS,LEAVE_ONE_SITE_OUT_DIRECTION
+mobilised_cvs,stride_length_mean,4,PASS,LEAVE_ONE_SITE_OUT_DIRECTION
+mobilised_cvs,cadence,4,FAIL,LEAVE_ONE_SITE_OUT_DIRECTION
+mobilised_cvs,stride_time_mean,4,FAIL,LEAVE_ONE_SITE_OUT_DIRECTION

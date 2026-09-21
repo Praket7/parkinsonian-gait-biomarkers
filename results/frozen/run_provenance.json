@@ -1,18 +1,18 @@
 {
   "schema": "run-provenance-v3",
-  "generated_at_utc": "2026-09-21T13:42:13.136645+00:00",
-  "analysis_results_commit": "cba0923d0d5e69c37f8ddfa35bf525ea3fbd5fbe",
-  "release_tag": "v3.2.3",
-  "release_version": "v3.2.3",
-  "analysis_protocol_version": "3.2.3",
+  "generated_at_utc": "2026-09-21T14:01:55.477689+00:00",
+  "analysis_results_commit": "e635bcb50d902aad8156f9fc9d454b67a359ffa7",
+  "release_tag": "v3.2.4",
+  "release_version": "v3.2.4",
+  "analysis_protocol_version": "3.2.4",
   "report_generation_commit": null,
-  "analysis_version": "3.2.3",
+  "analysis_version": "3.2.4",
   "python_version": "3.11.15",
-  "config_sha256": "96b789123ad5ffb39da688b91b587b93da6d5da802a4bee0fc4d3004fa19f7f8",
+  "config_sha256": "51990063114656dd5c412b43bd3efcef28ce75df9e9d6be43a05fe9b491682ec",
   "dependency_lock_sha256": "17b67f1d9be729827ae4c600d96f95e4e75a25610991078f20e359269b2b9626",
   "config": {
     "path": "configs/analysis.yaml",
-    "sha256": "96b789123ad5ffb39da688b91b587b93da6d5da802a4bee0fc4d3004fa19f7f8"
+    "sha256": "51990063114656dd5c412b43bd3efcef28ce75df9e9d6be43a05fe9b491682ec"
   },
   "dependencies": {
     "lockfile": "requirements-lock.txt",
@@ -36,12 +36,12 @@
   },
   "aggregate_result_sha256": {
     "results/frozen/adaptive_dbs_state_sensitivity.csv": "27aac044bd16c46354dc7881687f7899fcecced4ec71bf5c40cc886b8eea1e57",
-    "results/frozen/analysis_freeze_manifest.json": "e010f442f0c529dc1f0b57b8177c7321e7666f4a96e68563daa0412dfb9cfbcc",
+    "results/frozen/analysis_freeze_manifest.json": "2b23a5da291e300db1fccdc0b1dc8c33159d067ff2cf62094204d68fad4fe935",
     "results/frozen/carepd_cohort_results.csv": "a0fc834412f1826e6834bb2770a20b4d7c227f8bb2c03f31a912fe29a212f602",
     "results/frozen/contact_validation.csv": "9522a4b633263690d12c53905a9c7241ccdd862ead748f2ebd3f8bc82eb37281",
     "results/frozen/context_robustness.csv": "4849129d6350bab3815de8f93277c0b45be2884389664c5c77581cba4d3f9040",
     "results/frozen/external_dataset_status.csv": "b2b9bbd10105e33bf27f2d8b95147a1439584d27c668a877dd3958662a1bff9a",
-    "results/frozen/external_feature_evidence_matrix.csv": "69f0f771fc4e3a1068d31b0535e7ce3a13b53f9da889a2fce3088861a5e88856",
+    "results/frozen/external_feature_evidence_matrix.csv": "b1b67e3f54a2a2169973f1b1c3cb8edfd896033171fd684ff66c11652a313785",
     "results/frozen/external_schema_audit.json": "0e43e2cfc0e52e657a57ff5e715e67be374eb2ce437d6a6fdb062baedc53a15f",
     "results/frozen/feature_evidence_matrix.csv": "ab7ce5c7adacfa7aef94c360827aacecd8a0a59acc06534b31e6aa1c5bb1254a",
     "results/frozen/longitudinal_schema_audit_summary.json": "64baec541b6ab04855542fa54e4afb5552c1d8603c849da9d0d57e072b927f24",
@@ -49,15 +49,15 @@
     "results/frozen/mendeley_cross_sectional_replication.csv": "40bf557f56af87ecfb6ffeb9ac0d1038d901e1b2ffac7a2f2b2176aa0b88d490",
     "results/frozen/mendeley_longitudinal_change.csv": "c96e76c855986af572792acab5a01c13c8e25c4f340df7c2094fcba29601a952",
     "results/frozen/mendeley_medication_timing.csv": "8c11915e689f510ee605952f9ca254cef7564a688b54a57eac682a419f12b158",
-    "results/frozen/mobilised_longitudinal_associations.csv": "c2e91d960e68ab0fb24bb762182b51acf3bfffe5ba2a28f066ca1154c609bcc6",
+    "results/frozen/mobilised_longitudinal_associations.csv": "281ed89b712d91358eb78eb0aed8d1c144ca305e2b1f22e3d5ec208fc9636453",
     "results/frozen/mobilised_missingness_summary.csv": "bbf45a8cb65d8f33a61b19dcb4b46123cdf48cb0935c23c8b16b5d0e4a4b7f4d",
     "results/frozen/mobilised_responsiveness.csv": "303c012d42296c073d44fb8a65e2c455533a990c9689ac1d9e260ef138bac24a",
-    "results/frozen/mobilised_site_robustness.csv": "cd5b2d96659d297a2f2c578ec041977d22aa8e0bd22b56c5d3b75e4507b60e2f",
+    "results/frozen/mobilised_site_robustness.csv": "6064a2c835de5423535d4143dc74b1ddf81f5691a77acef8382c574e2d3fd5f2",
     "results/frozen/negative_controls.csv": "e85b90df23b16c4857d617109f4ea753aa5cd4af28710118b121fafe09de8f0d",
     "results/frozen/participant_flow.csv": "70f10dc21a2bfe41812c667ed5ace2f01f136620c6214433e9a3cec77bd4dc32",
     "results/frozen/primary_associations.csv": "c94488da2b5541bfa93b4667b95da42299fcc42df81ca90c87ee24ab38c24f67",
     "results/frozen/reliability.csv": "cbc1c7e3589a9edb168c1324f64aafe6857ae68b53379f0a292fdfd7ba6f8aaa",
-    "results/frozen/results.json": "d3ee217544f1e6d413d5c11f1fb94790888c05a9514bc315d6478c0e06e01c85"
+    "results/frozen/results.json": "9b7649cc8ac74f0a516dc19e3e4e19a67e6fb458dec93a814fea83bb9cdaa924"
   },
   "privacy": {
     "provenance_script_read_row_level_data": false,
