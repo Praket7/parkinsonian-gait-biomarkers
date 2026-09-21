@@ -1,0 +1,11 @@
+valid_feet: [L, R]
+exclude_partial_footfalls: true
+minimum_steps_for_means: 3
+minimum_steps_for_cv: 5
+time_unit: seconds
+coordinate_unit: required_calibrated_metric_units
+step_interval_range_seconds: [0.25, 2.0]
+stride_interval_range_seconds: [0.5, 4.0]
+equivalence:
+  mean_features: {icc_min: 0.90, ccc_min: 0.90, normalized_bias_max: 0.05}
+  cv_features: {icc_min: 0.85, ccc_min: 0.85, absolute_bias_max: 2.0}
