@@ -93,6 +93,10 @@ def render(root: Path) -> tuple[str, str]:
     limits = data.get("limits") or []
     primary = _primary_summary(root) or ["- Feature-level aggregate association table was not present in the frozen bundle."]
     primary_rows = _primary_rows(root)
+    by_feature = {row.get("feature"): row for row in primary_rows}
+    def native(feature: str, unit: str) -> str:
+        value = _as_number(by_feature.get(feature, {}).get("raw_effect_per_gait_point"))
+        return f"{value:.3g} {unit}" if value is not None else "not reported"
     fdr_count = sum(1 for row in primary_rows if (lambda value: value is not None and value <= .05)(
         _as_number(row.get("q_value"))))
     feature_count = len(primary_rows)
@@ -130,6 +134,25 @@ measurement. Conversely, repeatable temporal measures need not be the
 strongest severity correlates. These statements are derived below from the
 frozen association and task-specific reliability tables rather than manually
 entered values.
+
+## The central dissociation
+
+The practical result is a three-way separation, not a ranking of coefficients.
+First, gait speed declines by {native("gait_speed", "m/s")} per one-point higher
+gait-item score in the adjusted cross-sectional model. Second, step length
+declines by {native("step_length_mean", "m")} per point, but the speed-adjusted
+step- and stride-length q-values do not meet the declared threshold; their
+primary association therefore cannot be interpreted as speed-independent.
+Third, step-time variability increases by {native("step_time_cv", "percentage points")}
+per point and retains its speed-adjusted association, yet its SP repeated-session
+ICC is below the candidate threshold. This is the project’s core observation:
+severity sensitivity, speed independence, and repeatability are empirically
+distinct properties.
+
+The primary table also contains Spearman rank and categorical-severity GEE
+sensitivities. They are reported to check that treating the ordinal gait item
+as a linear trend does not stand alone; they are sensitivities, not additional
+confirmatory endpoints.
 
 ## Aggregate associations
 

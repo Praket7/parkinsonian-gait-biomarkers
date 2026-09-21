@@ -1,0 +1,8 @@
+{
+  "source": "https://borealisdata.ca/dataset.xhtml?persistentId=doi:10.5683/SP3/TWIKMK",
+  "official_code": "https://github.com/TaatiTeam/CARE-PD",
+  "checked_release": "Dataverse latestVersion API, 2026-09-20",
+  "result": "No h36m_preprocessed files were listed in the accessible release metadata.",
+  "production_behavior": "The analysis searches CARE_PD/h36m/<cohort> for official H36M NPZ assets and runs the Appendix-B extractor only when they are present and trial keys join unambiguously.",
+  "absence_status": "OFFICIAL_H36M_ASSETS_NOT_PRESENT_IN_ACQUIRED_RELEASE"
+}

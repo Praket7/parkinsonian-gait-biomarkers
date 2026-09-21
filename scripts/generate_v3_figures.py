@@ -32,7 +32,7 @@ def main() -> int:
     wear = primary[primary.feature.eq("gait_speed")][["effect", "ci_low", "ci_high"]].assign(cohort="WearGait walkway")
     forest = pd.concat([wear, plot[["cohort", "effect", "ci_low", "ci_high"]]], ignore_index=True)
     fig, ax = plt.subplots(figsize=(7, 4)); y = range(len(forest)); ax.errorbar(forest.effect, y, xerr=[forest.effect-forest.ci_low, forest.ci_high-forest.effect], fmt="o", color="#e7298a")
-    ax.axvline(0, color="black", lw=1); ax.set_yticks(list(y), forest.cohort); ax.set_xlabel("Standardized severity association (translation-speed check)"); fig.tight_layout(); fig.savefig(output / "figure_carepd_replication_forest.png", dpi=220); plt.close(fig)
+    ax.axvline(0, color="black", lw=1); ax.set_yticks(list(y), forest.cohort); ax.set_xlabel("Standardized severity association (translation-speed check)"); fig.tight_layout(); fig.savefig(output / "figure_carepd_translation_forest.png", dpi=220); plt.close(fig)
     # The release-facing synthesis: each symbol is a frozen evidence decision,
     # never a row-level observation or a manually typed result.
     columns = [

@@ -379,7 +379,7 @@ def run_authorized_analysis(data_root, output_dir, *, config):
         "longitudinal_clinical_status": longitudinal_status,
         "interpretation": audit["interpretation"],
     }, indent=2) + "\n")
-    care = analyze_carepd_directory(care_root / "Canonicalized_SMPL_pickles", cohorts=tuple(config["carepd"]["labelled_cohorts"])); care.to_csv(outdir / "carepd_cohort_results.csv", index=False)
+    care = analyze_carepd_directory(care_root / "Canonicalized_SMPL_pickles", h36m_root=care_root / "h36m", cohorts=tuple(config["carepd"]["labelled_cohorts"])); care.to_csv(outdir / "carepd_cohort_results.csv", index=False)
     evidence = _evidence(associations, bootstrap, reliability, validation, robustness, care, config, medication)
     # Aggregate outputs are safe to publish; row-level tables remain ignored.
     for name, frame in {"primary_associations.csv":associations, "feature_evidence_matrix.csv":evidence, "reliability.csv":reliability, "contact_validation.csv":validation, "context_robustness.csv":robustness, "carepd_cohort_results.csv":care, "medication_sensitivity.csv":medication, "negative_controls.csv":controls}.items(): frame.to_csv(outdir / "frozen" / name, index=False)

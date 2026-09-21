@@ -12,6 +12,7 @@ import warnings
 import numpy as np
 import pandas as pd
 from scipy.stats import theilslopes
+from .carepd_h36m import extract_features
 
 try:  # Keep deterministic speed sensitivities usable in minimal environments.
     import statsmodels.api as sm
@@ -81,6 +82,49 @@ _TEMPORAL_KEYS = {
     "step_length_mean": ("step_length_mean",),
     "step_time_mean": ("step_time_mean",),
 }
+
+H36M_FEATURES = ("gait_speed", "cadence", "step_length_mean", "step_time_mean")
+
+
+def _h36m_trial_lookup(raw, participant, trial):
+    """Use only unambiguous official NPZ keys; never guess a subject mapping."""
+    record = raw.get(participant, {}).get(trial, {})
+    candidates = (str(trial), f"{participant}_{trial}", f"{participant}-{trial}", f"{participant}/{trial}")
+    return candidates, record
+
+
+def matched_h36m_aggregate(h36m_root, raw_by_cohort, *, min_participants=8):
+    """Run the published CARE H36M feature path, or emit precise absence rows."""
+    rows = []
+    root = Path(h36m_root)
+    for cohort, raw in raw_by_cohort.items():
+        paths = sorted((root / cohort).glob("*floorXZZplus*30f_or_longer*.npz"))
+        paths = paths or sorted((root / cohort).glob("h36m_3d_world*30f_or_longer*.npz"))
+        observations = []
+        if paths:
+            with np.load(paths[0], allow_pickle=False) as arrays:
+                for participant, trials in raw.items():
+                    for trial, record in trials.items():
+                        candidates, record = _h36m_trial_lookup(raw, participant, trial)
+                        key = next((name for name in candidates if name in arrays.files), None)
+                        if key is None:
+                            continue
+                        values = extract_features(arrays[key], record.get("fps", 30.0))
+                        severity = pd.to_numeric(pd.Series([record.get("UPDRS_GAIT")]), errors="coerce").iloc[0]
+                        if values["status"] == "OK" and pd.notna(severity):
+                            observations.append({"participant_key": f"{cohort}:{participant}", "severity": severity, **values})
+        data = pd.DataFrame(observations)
+        for feature in H36M_FEATURES:
+            if data.empty:
+                rows.append({"cohort": cohort, "outcome": feature, "n_trials": 0, "n_participants": 0,
+                             "effect": np.nan, "ci_low": np.nan, "ci_high": np.nan, "p_value": np.nan,
+                             "status": "NOT_ESTIMABLE", "estimability_reason":
+                             "OFFICIAL_H36M_ASSETS_NOT_PRESENT_IN_ACQUIRED_RELEASE" if not paths else "OFFICIAL_H36M_KEYS_NOT_JOINABLE_TO_LABELLED_TRIALS"})
+                continue
+            result = _fit(data, feature, min_participants=min_participants)
+            rows.append({"cohort": cohort, "outcome": feature, **result,
+                         "estimability_reason": "official_h36m_appendix_b_qc_passed" if result["status"] == "ok" else "official_h36m_appendix_b_qc_or_sample_insufficient"})
+    return pd.DataFrame(rows)
 
 
 def _temporal_observations(raw, cohort):
@@ -195,7 +239,7 @@ def safe_aggregate(table, *, min_participants=8):
     return pd.DataFrame(output)
 
 
-def analyze_carepd_directory(directory, *, min_participants=8, cohorts=None):
+def analyze_carepd_directory(directory, *, h36m_root=None, min_participants=8, cohorts=None):
     """Read authorized cohort pickles and return only aggregate summaries."""
     directory = Path(directory)
     output = {}
@@ -210,8 +254,8 @@ def analyze_carepd_directory(directory, *, min_participants=8, cohorts=None):
         if isinstance(raw, dict):
             output[cohort] = raw
     speed = safe_aggregate(output, min_participants=min_participants)
-    temporal = matched_temporal_aggregate(output, min_participants=min_participants)
-    return pd.concat([speed, temporal], ignore_index=True, sort=False)
+    h36m = matched_h36m_aggregate(h36m_root or directory.parent / "h36m", output, min_participants=min_participants)
+    return pd.concat([speed, h36m], ignore_index=True, sort=False)
 
 
 if __name__ == "__main__":

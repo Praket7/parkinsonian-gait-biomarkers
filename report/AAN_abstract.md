@@ -1,10 +1,9 @@
 # Context-robust Parkinsonian gait biomarkers
 
-**Background:** A cross-sectional association between gait and MDS-UPDRS gait
-severity does not by itself establish a clinically useful digital biomarker.
-We tested whether reference-walkway gait measures retain evidence across speed,
-task, site, repeat-session reliability, analytical agreement, and an external
-CARE-PD translation check.
+**Background:** A cross-sectional gait-severity association does not establish
+a clinically useful digital biomarker. We tested whether reference-walkway
+gait measures retain evidence across speed, task, site, repeat-session
+reliability, analytical agreement, and CARE-PD transport.
 
 **Methods:** We analyzed 124 straight-walk rows from 62 participants with
 Parkinson's disease. Participant-clustered Gaussian GEE models adjusted for
@@ -29,9 +28,7 @@ licensed CARE bundle available here contained canonical SMPL records but not
 the official H36M assets required for the paper's ankle-based event method, so
 matched cadence, step length, and step time were classified not estimable.
 
-**Conclusion:** The evidence supports a dissociation: several gait measures
-track concurrent clinical severity, yet none qualifies as a context-robust
-trait biomarker under the preregistered-style rule. This negative qualification
-result is informative: it identifies speed dependence, task-specific
-reliability, and missing matched external features as the next validation
-targets rather than overstating cross-sectional associations.
+**Conclusion:** Several gait measures track concurrent severity, yet none
+qualifies as a context-robust trait biomarker under the prespecified rule. This
+result identifies speed dependence, task-specific reliability, and missing
+matched external features as the next validation targets.

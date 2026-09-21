@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from src.carepd_analysis import matched_temporal_aggregate, safe_aggregate, translation_speed_sensitivities
+from src.carepd_analysis import matched_h36m_aggregate, matched_temporal_aggregate, safe_aggregate, translation_speed_sensitivities
 from src.carepd_h36m import extract_features
 
 
@@ -43,6 +43,12 @@ class CarePDAnalysisTests(unittest.TestCase):
         self.assertEqual(set(result.status), {"NOT_ESTIMABLE"})
         self.assertTrue((result.n_trials == 0).all())
         self.assertTrue(result.estimability_reason.str.contains("official_h36m").all())
+
+    def test_h36m_layer_emits_exact_prespecified_features_when_assets_absent(self):
+        raw = {"3DGait": {"person": {"walk": {"UPDRS_GAIT": 2}}}}
+        result = matched_h36m_aggregate("/path/that/does/not/exist", raw)
+        self.assertEqual(set(result.outcome), {"gait_speed", "cadence", "step_length_mean", "step_time_mean"})
+        self.assertTrue(result.estimability_reason.str.contains("OFFICIAL_H36M_ASSETS").all())
 
     def test_care_known_cadence_step_time_length_and_spacing(self):
         frames, fps = 121, 30

@@ -13,6 +13,7 @@ from src.run_pipeline import _feature_table, _primary_severity, run
 from src.stats import _design, bh_fdr
 from src.weargait import load_weargait_csv_bouts, read_weargait_csv
 from src.weargait_clinical import join_clinical_features, load_v1_clinical
+from src.final_analysis import _selected_contacts
 
 
 class PipelineTests(unittest.TestCase):
@@ -72,7 +73,18 @@ class PipelineTests(unittest.TestCase):
             cfg = root / "analysis.yaml"
             cfg.write_text("seed: 1\nprimary_tasks: [SP]\ncontext_tasks: [HP]\ndata:\n  output_dir: results\n")
             self.assertEqual(run(cfg, data_root="/licensed/data")["status"], "analysis_complete")
-            self.assertEqual(authorized.call_args.args[0], "/licensed/data")
+            authorized.assert_called_once_with("/licensed/data", "results", config={"seed": 1, "primary_tasks": ["SP"], "context_tasks": ["HP"], "data": {"output_dir": "results"}})
+
+    def test_duplicate_mat_export_cannot_inflate_reliability_input(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            native, duplicate = root / "NLS001_SP.csv", root / "NLS001_SP_mat.csv"
+            native.touch(); duplicate.touch()
+            def row(path, **_):
+                return {"participant_id": "NLS001", "session_id": "s1", "task": "SP", "source_file": str(path), "cadence": 60}
+            with patch("src.final_analysis.read_weargait_csv", side_effect=row):
+                result = _selected_contacts(root, {"SP"})
+        self.assertEqual(len(result), 1)
 
     def test_fdr_is_monotone_in_sorted_order(self):
         adjusted = bh_fdr(pd.Series([0.01, 0.04, 0.03])).sort_values().to_numpy()

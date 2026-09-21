@@ -26,6 +26,25 @@ strongest severity correlates. These statements are derived below from the
 frozen association and task-specific reliability tables rather than manually
 entered values.
 
+## The central dissociation
+
+The practical result is a three-way separation, not a ranking of coefficients.
+First, gait speed declines by -0.151 m/s per one-point higher
+gait-item score in the adjusted cross-sectional model. Second, step length
+declines by -0.0674 m per point, but the speed-adjusted
+step- and stride-length q-values do not meet the declared threshold; their
+primary association therefore cannot be interpreted as speed-independent.
+Third, step-time variability increases by 1.84 percentage points
+per point and retains its speed-adjusted association, yet its SP repeated-session
+ICC is below the candidate threshold. This is the project’s core observation:
+severity sensitivity, speed independence, and repeatability are empirically
+distinct properties.
+
+The primary table also contains Spearman rank and categorical-severity GEE
+sensitivities. They are reported to check that treating the ordinal gait item
+as a linear trend does not stand alone; they are sensitivities, not additional
+confirmatory endpoints.
+
 ## Aggregate associations
 
 - `gait_speed`: effect=-0.308, p=0.000114, q=0.000418
