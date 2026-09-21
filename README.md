@@ -31,6 +31,22 @@ length over cadence and stride duration. See the frozen
 [v4 report](results/v4/frozen/AAN_v4_report.md), [evidence matrix](results/v4/frozen/evidence_matrix.csv),
 and [five figures](results/v4/frozen/figures).
 
+### v4.1 tightly scoped validation
+
+v4.1.0 validates, but does not replace, the v4.0.6 score. Across 2,000
+healthy-reference participant resamples, the score retained the positive
+severity-association direction in every resample (median standardized effect
+0.291). In five-fold participant-grouped prediction, adding the score to gait
+speed improved rank correlation but did not improve RMSE, so this sample does
+not support incremental predictive value beyond speed. Mobilise-D's
+within/between model showed stable within-person effects for gait speed and
+stride length, while cadence and stride duration were inconclusive. WearGait
+repeated-session scoring and eight-input external transport remain explicitly
+`NOT_ESTIMABLE`; no crosswalk or reference model was improvised. Read the
+[v4.1 report](results/v4_1/frozen/AAN_v4_1_report.md), its
+[frozen manifest](results/v4_1/frozen/protocol_manifest.json), and the
+[five v4.1 figures](results/v4_1/frozen/figures).
+
 ## Run
 
 ```bash
