@@ -13,7 +13,7 @@ jobs:
         with:
           python-version: "3.11"
       - run: python -m pip install -e . pytest
-      - run: pytest -q
+      - run: PYTHONPATH=. pytest -q
       - run: python scripts/qa_release_gate.py
       # Licensed research files stay in controlled storage, never CI.
       - run: python -m src.run_pipeline --config configs/analysis.yaml
