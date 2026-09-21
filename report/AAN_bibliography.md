@@ -1,0 +1,9 @@
+# Bibliography
+
+1. Goetz CG, Tilley BC, Shaftman SR, et al. Movement Disorder Society-sponsored revision of the Unified Parkinson's Disease Rating Scale (MDS-UPDRS): scale presentation and clinimetric testing results. *Movement Disorders*. 2008;23:2129-2170. doi:10.1002/mds.22340.
+2. Goldsack JC, Coravos A, Bakker JP, et al. Verification, analytical validation, and clinical validation (V3): the foundation of determining fit-for-purpose for Biometric Monitoring Technologies. *npj Digital Medicine*. 2020;3:55. doi:10.1038/s41746-020-0260-4.
+3. Viceconti M, Hernandez Penna S, Dartee W, et al. Toward a regulatory qualification of real-world mobility performance biomarkers in Parkinson's patients using digital mobility outcomes. *Sensors*. 2020;20:5920. doi:10.3390/s20205920.
+4. Micó-Amigo ME, et al. Assessing real-world gait with digital technology? Validation, insights and recommendations from the Mobilise-D consortium. *Journal of NeuroEngineering and Rehabilitation*. 2023;20:78. doi:10.1186/s12984-023-01198-5.
+5. Adeli V, Mehraban S, Ballester I, et al. CARE-PD: A multi-site anonymized clinical dataset for Parkinson's disease gait assessment. arXiv:2510.04312, 2025. Official code and access documentation: https://github.com/TaatiTeam/CARE-PD.
+6. Del Din S, Elshehabi M, Galna B, et al. Free-living gait in Parkinson's disease: the paradox of gait quantity and quality. *Movement Disorders*. 2020;35:1125-1135. doi:10.1002/mds.28035.
+7. Zanardi APJ, da Silva ES, Costa RR, et al. Gait parameters of Parkinson's disease compared with healthy controls: a systematic review and meta-analysis. *Scientific Reports*. 2021;11:752. doi:10.1038/s41598-020-80768-2.

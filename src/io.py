@@ -5,7 +5,7 @@ import pandas as pd
 TASK_ALIASES = {
     "SelfPace": "SP", "HurriedPace": "HP", "SelfPace_mat": "SPm", "HurriedPace_mat": "HPm",
     "SelfPace_matTURN": "SPmT", "SelfPace_doorpat": "SPdoorpat",
-    "HeadPosture": "HP", "HeadPosture_matTURN": "HPm", "TimedUpAndGo": "TUG",
+    "TimedUpAndGo": "TUG",
     "FreeWalk": "FW", "TandemGait": "TG", "Balance": "B",
 }
 VALID_TASKS = {"SP", "HP", "SPm", "HPm", "SPmT", "TUG", "SPdoorpat", "FW", "TG", "B", *TASK_ALIASES}

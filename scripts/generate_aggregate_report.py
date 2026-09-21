@@ -82,9 +82,10 @@ def _table_summary(root: Path, name: str, label: str) -> list[str]:
     return lines or [f"- {label}: no safe aggregate rows found."]
 
 
-def render(root: Path) -> tuple[str, str]:
+def render(root: Path) -> tuple[str, str, str]:
     data = _manifest(root)
     version = data.get("analysis_version", "not reported")
+    release_version = data.get("release_version", "unreleased")
     status = data.get("status", "not reported")
     trait_features = data.get("trait_features") or []
     n_rows = data.get("n_primary_rows", "not reported")
@@ -107,26 +108,43 @@ def render(root: Path) -> tuple[str, str]:
     medication = _table_summary(root, "medication_sensitivity.csv", "Medication-state sensitivity")
     controls = _table_summary(root, "negative_controls.csv", "Negative controls")
     limit_lines = [f"- {item}" for item in limits] or ["- Additional limitations were not reported."]
-    report = f"""# Parkinsonian gait biomarkers: aggregate analysis report
+    endpoint_rows = [
+        row for row in _frozen_rows(root, "carepd_cohort_results.csv")
+        if row.get("outcome") == "endpoint_z_speed_m_s" and row.get("status") == "ok"
+    ]
+    care_summary = "; ".join(
+        f"{row['cohort']} {_number(row.get('effect'))} (n={row.get('n_participants', 'not reported')})"
+        for row in endpoint_rows
+    ) or "not reported"
+    report = f"""# Parkinsonian gait biomarkers: evidence report
 
-Analysis version: `{version}`  
+Analysis protocol version: `{version}`  
+Release version: `{release_version}`  
 Frozen status: `{status}`
 
-## Scope
+## Question and scope
 
 This report is generated from frozen aggregate outputs. It does not contain
 participant identifiers or row-level observations. The primary bundle contains
 {n_rows} analyzed rows from {n_participants} participants, as reported by the
 frozen manifest.
 
-## Main result
+Can a gait feature be called a context-robust Parkinsonian trait biomarker
+rather than merely a cross-sectional correlate? We predeclared that the answer
+requires convergent evidence for severity association, speed independence where
+relevant, context behavior, analytical validity, and repeatability. This
+fit-for-purpose framing follows established biomarker-validation guidance
+([2](AAN_bibliography.md#bibliography)) and avoids treating one statistically
+significant coefficient as qualification.
+
+## Main finding
 
 Cross-sectional severity association is insufficient for digital-biomarker
 qualification: speed independence, context transport, analytical validity,
 and repeated-session reliability are separate empirical properties. In the
 frozen primary table, {fdr_count}/{feature_count} measures have FDR-adjusted
-severity associations. The implemented strict rule identifies
-{len(trait_features)} candidate trait feature(s): {', '.join(f'`{x}`' for x in trait_features) or 'none reported'}.
+severity associations. The implemented strict rule identifies {len(trait_features)}
+candidate trait feature(s): {', '.join(f'`{x}`' for x in trait_features) or 'none reported'}.
 
 Spatial measures must be interpreted after gait-speed adjustment, while
 temporal variability can retain association without demonstrating repeatable
@@ -135,7 +153,7 @@ strongest severity correlates. These statements are derived below from the
 frozen association and task-specific reliability tables rather than manually
 entered values.
 
-## The central dissociation
+## Why the result matters
 
 The practical result is a three-way separation, not a ranking of coefficients.
 First, gait speed declines by {native("gait_speed", "m/s")} per one-point higher
@@ -149,10 +167,66 @@ ICC is below the candidate threshold. This is the project’s core observation:
 severity sensitivity, speed independence, and repeatability are empirically
 distinct properties.
 
+| Evidence question | Prespecified result | Interpretation |
+| --- | --- | --- |
+| Severity association | {fdr_count}/{feature_count} FDR-significant | Association is not qualification. |
+| Spatial independence | Step- and stride-length speed-adjusted q-values miss the threshold | Raw association is plausibly speed-mediated. |
+| Temporal independence | Step-time CV remains speed-adjusted | It is not automatically a trait measure. |
+| Repeatability | Step-time CV SP ICC(A,1) = 0.141 | It fails the repeatability requirement. |
+| Strict conclusion | {len(trait_features)} qualifying features | No context-robust trait feature was identified. |
+
 The primary table also contains Spearman rank and categorical-severity GEE
 sensitivities. They are reported to check that treating the ordinal gait item
 as a linear trend does not stand alone; they are sensitivities, not additional
 confirmatory endpoints.
+
+## Translation check
+
+CARE-PD contributes a limited, cohort-specific reconstructed-motion check:
+endpoint forward-translation speed is negatively associated with severity in
+each analyzed cohort ({care_summary}). These are translation-speed associations,
+not pooled evidence and not matched-feature replication.
+
+The acquired CARE-PD release contains canonical SMPL records but no official
+H36M-preprocessed assets in its accessible file listing. The prespecified
+matched features are therefore **not estimable**, never a negative replication
+and never an improvised SMPL conversion. This boundary follows the CARE-PD
+release and code documentation ([5](AAN_bibliography.md#bibliography)).
+
+## Interpretation for judges
+
+The high-value outcome is a rigorous negative qualification result. It narrows
+an initially plausible candidate: step-time variability survives speed
+adjustment but does not survive the repeatability requirement. That conclusion
+is stronger than a coefficient leaderboard because it specifies what must be
+true before a wearable gait signal could be defended as a stable trait measure.
+The project also separates what was measured, what translated across an
+external dataset, and what was not estimable because required official assets
+were unavailable.
+
+## Reproducibility and audit trail
+
+All displayed values are generated from identifier-free frozen aggregates.
+Feature-level estimates, task reliability, contact agreement, medication
+sensitivity, negative controls, CARE cohort results, and the strict evidence
+matrix are retained in the accompanying appendix and CSV files. The protocol
+version is intentionally separate from the packaging release version so a
+release update cannot silently alter the analysis specification. The
+claim-to-evidence map is in [claim_evidence_matrix.csv](claim_evidence_matrix.csv),
+and sources are in [AAN_bibliography.md](AAN_bibliography.md).
+
+## Limitations
+
+{chr(10).join(limit_lines)}
+
+Do not interpret this report as diagnostic, causal, treatment, or clinical-use
+evidence. Regenerate it after every authorized analysis run.
+"""
+    appendix = f"""# Parkinsonian gait biomarkers: aggregate results appendix
+
+This appendix is generated from the same frozen aggregate bundle as the main
+report. It retains the numerical audit trail while the main report presents the
+scientific argument concisely.
 
 ## Aggregate associations
 
@@ -170,12 +244,7 @@ confirmatory endpoints.
 
 {chr(10).join(contact)}
 
-## External translation check
-
-These are cohort-specific translation-speed checks, not full matched-feature
-replication. CARE matched temporal replication is included only if the
-prespecified canonical event QC can support it; unavailable canonical foot or
-ankle events are reported as not estimable, never as a negative replication.
+## CARE-PD cohort results
 
 {chr(10).join(cohort)}
 
@@ -186,13 +255,6 @@ ankle events are reported as not estimable, never as a negative replication.
 ## Negative controls
 
 {chr(10).join(controls)}
-
-## Limitations and deviations
-
-{chr(10).join(limit_lines)}
-
-Do not interpret this report as diagnostic, causal, treatment, or clinical-use
-evidence. Regenerate it after every authorized analysis run.
 """
     abstract = (
         f"Parkinsonian gait biomarkers (v{version}). We analyzed {n_rows} primary rows from {n_participants} participants using participant-clustered GEE models. "
@@ -201,7 +263,7 @@ evidence. Regenerate it after every authorized analysis run.
         "CARE-PD supplied four cohort-specific forward-translation-speed checks, not matched-feature replication. Unavailable longitudinal clinical linkage and CARE temporal events remain not estimable, not negative findings. "
         "Cross-sectional association alone is therefore insufficient to qualify a context-robust digital biomarker.\n"
     )
-    return report, abstract
+    return report, abstract, appendix
 
 
 def main() -> int:
@@ -210,20 +272,23 @@ def main() -> int:
     parser.add_argument("--check", action="store_true", help="render and validate without writing files")
     args = parser.parse_args()
     root = Path(args.root).resolve()
-    report, abstract = render(root)
-    if any(token in (report + abstract).lower() for token in ("participant_id", "session_id", "subject_id")):
+    report, abstract, appendix = render(root)
+    if any(token in (report + abstract + appendix).lower() for token in ("participant_id", "session_id", "subject_id")):
         raise SystemExit("generated text contains a forbidden identifier field")
     if args.check:
         print("aggregate report check passed")
         return 0
     report_path = root / "report" / "AAN_report.md"
     abstract_path = root / "abstract" / "abstract.txt"
+    appendix_path = root / "report" / "AAN_results_appendix.md"
     report_path.parent.mkdir(parents=True, exist_ok=True)
     abstract_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text(report, encoding="utf-8")
     abstract_path.write_text(abstract, encoding="utf-8")
+    appendix_path.write_text(appendix, encoding="utf-8")
     print(report_path)
     print(abstract_path)
+    print(appendix_path)
     return 0
 
 

@@ -100,6 +100,8 @@ def build_manifest(root: Path, config: Path | None = None) -> dict[str, object]:
         # commit, avoiding a self-referential release SHA.
         "analysis_results_commit": git_commit(root),
         "release_tag": git_tag(root),
+        "release_version": os.environ.get("RELEASE_TAG") or git_tag(root),
+        "analysis_protocol_version": analysis_version(config),
         "report_generation_commit": os.environ.get("REPORT_GENERATION_COMMIT"),
         "analysis_version": analysis_version(config),
         "python_version": platform.python_version(),
