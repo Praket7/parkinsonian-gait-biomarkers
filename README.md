@@ -49,16 +49,17 @@ repeated-session scoring and eight-input external transport remain explicitly
 
 ### v4.2 H4/H2 validation closure
 
-v4.2.0 tested whether raw walkway streams could recover the missing
-longitudinal eight-input score and whether the score's ranking signal was
-stable under stronger grouped validation. The raw release lacks a documented
-metric rear-foot coordinate calibration, so the all-eight PKMAS-equivalence
-gate could not be established and H4 remains `NOT_ESTIMABLE`. Across 100
-participant-grouped five-fold repeats, ranking improved consistently while
-row-level RMSE did not; the predefined interpretation is
-`RANKING_SUPPORT_ONLY`. This does not alter the frozen v4.1 absolute-prediction
-conclusion. Read the [v4.2 report](results/v4_2/frozen/AAN_v4_2_report.md) and
-[frozen evidence matrix](results/v4_2/frozen/evidence_matrix.csv).
+v4.2.0 audited 1,600 V1 and 863 longitudinal raw walkway CSVs. Contact timing
+is recoverable, but the released pressure-grid strings have no documented
+calibration to metric rear-foot coordinates; all-eight PKMAS equivalence cannot
+be validated, so H4 remains `NOT_ESTIMABLE`. Across 100 participant-grouped
+five-fold repeats, the added score improved Spearman ranking in 99% of
+row-level and 98% of participant-level analyses. It did not consistently
+improve absolute error, so the frozen interpretation is
+`RANKING_SUPPORT_ONLY`, not a full prediction pass. Read the
+[v4.2 report](results/v4_2/frozen/AAN_v4_2_report.md), [frozen evidence
+matrix](results/v4_2/frozen/evidence_matrix.csv), and the
+[reporting addendum](docs/v4_2_reporting_addendum.md).
 
 ## Run
 
