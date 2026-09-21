@@ -1,0 +1,39 @@
+{
+  "mendeley_gait": {
+    "dataset": "mendeley_gait",
+    "status": "OK",
+    "n_source_members": 103,
+    "has_raw_signal": true,
+    "has_pd": true,
+    "has_control": true,
+    "mapping_required": true,
+    "source_members_are_not_published": true
+  },
+  "mobilised_cvs": {
+    "dataset": "mobilised_cvs",
+    "status": "OK",
+    "reason": null,
+    "n_source_members": 118,
+    "pd_dataset_present": true,
+    "components": {
+      "raw_arm_foot_imu_optional": false,
+      "pd_participant_files": true,
+      "control_files_optional": false,
+      "cross_sectional_gait_table": true,
+      "six_month_repeated_assessment_table": true,
+      "medication_timing_table": true
+    },
+    "missing_components": [],
+    "participant_visit_key_unique": "REQUIRES_ROW_AUDIT",
+    "source_members_are_not_published": true
+  },
+  "adaptive_dbs": {
+    "dataset": "adaptive_dbs",
+    "status": "OK",
+    "n_source_members": 89870,
+    "has_state_metadata": true,
+    "has_gait_metadata": true,
+    "mapping_required": true,
+    "source_members_are_not_published": true
+  }
+}

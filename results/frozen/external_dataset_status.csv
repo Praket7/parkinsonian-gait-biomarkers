@@ -1,0 +1,4 @@
+dataset,enabled,status,reason
+mendeley_gait,True,OK,SOURCE_PRESENT_MAPPING_NOT_APPROVED
+mobilised_cvs,True,OK,SOURCE_PRESENT_MAPPING_NOT_APPROVED
+adaptive_dbs,True,OK,SOURCE_PRESENT_MAPPING_NOT_APPROVED

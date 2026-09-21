@@ -50,12 +50,12 @@ def git_tag(root: Path) -> str | None:
         return None
 
 
-def analysis_version(config: Path) -> str | None:
+def config_value(config: Path, name: str) -> str | None:
     if not config.is_file():
         return None
     for line in config.read_text(encoding="utf-8").splitlines():
         key, sep, value = line.partition(":")
-        if sep and key.strip() == "analysis_version":
+        if sep and key.strip() == name:
             return value.strip().strip("'\"")
     return None
 
@@ -101,9 +101,9 @@ def build_manifest(root: Path, config: Path | None = None) -> dict[str, object]:
         "analysis_results_commit": git_commit(root),
         "release_tag": git_tag(root),
         "release_version": os.environ.get("RELEASE_TAG") or git_tag(root),
-        "analysis_protocol_version": analysis_version(config),
+        "analysis_protocol_version": config_value(config, "analysis_protocol_version"),
         "report_generation_commit": os.environ.get("REPORT_GENERATION_COMMIT"),
-        "analysis_version": analysis_version(config),
+        "analysis_version": config_value(config, "analysis_version"),
         "python_version": platform.python_version(),
         "config_sha256": config_digest,
         "dependency_lock_sha256": lock_digest,

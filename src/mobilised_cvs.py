@@ -94,7 +94,7 @@ def audit(root: Path) -> dict:
     missing = [name for name in required if not components[name]]
     return {"dataset": "mobilised_cvs", "status": "OK" if members and not missing else "NOT_ESTIMABLE_SOURCE_COMPONENT_MISSING",
             "reason": None if members and not missing else "REQUIRED_RELEASE_COMPONENTS_NOT_CONFIRMED",
-            "n_source_members": len(members), "csv_headers": headers,
+            "n_source_members": len(members), "source_members": members, "csv_headers": headers,
             "pd_dataset_present": bool(pd_candidates), "pd_dataset_candidates": pd_candidates,
             "components": components, "missing_components": missing, "schema": _schema_flags(headers),
             "participant_visit_key_unique": "REQUIRES_ROW_AUDIT",

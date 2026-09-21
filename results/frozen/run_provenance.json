@@ -1,18 +1,18 @@
 {
   "schema": "run-provenance-v3",
-  "generated_at_utc": "2026-09-21T02:31:19.847892+00:00",
-  "analysis_results_commit": "86a90a58697d4363ca77c5b16fd7c54e4c12a425",
-  "release_tag": "v3.1.3",
-  "release_version": "v3.1.3",
-  "analysis_protocol_version": "3.1.1",
+  "generated_at_utc": "2026-09-21T12:25:58.558213+00:00",
+  "analysis_results_commit": "d0efe32b014a03e0aad96c1495079b3335164935",
+  "release_tag": "v3.2.1",
+  "release_version": "v3.2.1",
+  "analysis_protocol_version": "3.2.1",
   "report_generation_commit": null,
-  "analysis_version": "3.1.1",
+  "analysis_version": "3.2.0",
   "python_version": "3.11.15",
-  "config_sha256": "4361f56a7d1211258c053c15118cbe1f17c265c2dd794fc1dba91be21b0359c3",
+  "config_sha256": "edbb94db5fee63319cb0fa54fb5d03361ee37922f5ea41cbf0ec7562a756c587",
   "dependency_lock_sha256": "e288c943e8071278353d01bb202c7d305c4ec9c595f9331e7a0c9041fdba80f0",
   "config": {
     "path": "configs/analysis.yaml",
-    "sha256": "4361f56a7d1211258c053c15118cbe1f17c265c2dd794fc1dba91be21b0359c3"
+    "sha256": "edbb94db5fee63319cb0fa54fb5d03361ee37922f5ea41cbf0ec7562a756c587"
   },
   "dependencies": {
     "lockfile": "requirements-lock.txt",
@@ -27,6 +27,7 @@
     "data/metadata/carepd-hf-api.json": "0441570fcebd715e54d2d108b6fd87f61080004c92338be8b2f5a1cb45e8db08",
     "data/metadata/carepd_acquisition_manifest.json": "ebf5d54b105f3307de3c3a80bc98734dc6d596bda99c80ab807f1bc061c2abaa",
     "data/metadata/manifest.json": "7f205c0494b81ab5243c88728ab43eee976c50fafc17ec1441611cb00588378e",
+    "data/metadata/mobilised_cvs_v1_0_0.json": "dda406da77a8c94a3c615e5774cc8b326ba5bc3b41f7f512e32667c86355d5d0",
     "data/metadata/weargait-access-wiki.json": "158493fa0080928c452a971cb7fe394df91660968808ff2edaf46cd0acdf704f",
     "data/metadata/weargait-synapse-entity.json": "d3b3442b4750387d1c3430b9fa544c332753f31993b48617a3245647188cf036",
     "data/metadata/weargait-synapse-page.html": "39060169dd84dc359047ae4d353903c34e2a8963c282b4e69f707b5804e92e17",
@@ -34,17 +35,29 @@
     "data/metadata/weargait_v1_transfer.log": "4bc5ca3d1669158b0baad9ba2bbec6bf7e7ea79c00cb3a9d56a4bdb4bded1069"
   },
   "aggregate_result_sha256": {
+    "results/frozen/adaptive_dbs_state_sensitivity.csv": "29de81bbbf5e3814d6213ec184b9cafaf9ba028fa5dc3137350c9ff3c5bad4af",
+    "results/frozen/analysis_freeze_manifest.json": "4dca7155eee1ecbdf8d69f0a7f23028b749d38fdaaae05015d8d07e26874f9cf",
     "results/frozen/carepd_cohort_results.csv": "a0fc834412f1826e6834bb2770a20b4d7c227f8bb2c03f31a912fe29a212f602",
     "results/frozen/contact_validation.csv": "9522a4b633263690d12c53905a9c7241ccdd862ead748f2ebd3f8bc82eb37281",
     "results/frozen/context_robustness.csv": "4849129d6350bab3815de8f93277c0b45be2884389664c5c77581cba4d3f9040",
+    "results/frozen/external_dataset_status.csv": "62d3842b399f567d86d545ed57980afc6892be8cefe5bf0da9d8017389c9e97e",
+    "results/frozen/external_feature_evidence_matrix.csv": "4f18e0ca37d7039ac6cf5cc2e3ee95a1463df57f8835078bee62088f0f244418",
+    "results/frozen/external_schema_audit.json": "0e43e2cfc0e52e657a57ff5e715e67be374eb2ce437d6a6fdb062baedc53a15f",
     "results/frozen/feature_evidence_matrix.csv": "ab7ce5c7adacfa7aef94c360827aacecd8a0a59acc06534b31e6aa1c5bb1254a",
     "results/frozen/longitudinal_schema_audit_summary.json": "64baec541b6ab04855542fa54e4afb5552c1d8603c849da9d0d57e072b927f24",
     "results/frozen/medication_sensitivity.csv": "b6f469ee79d766681f6c3f26115dd3042b45617ccf6b4f4e61f454a054b72f8e",
+    "results/frozen/mendeley_cross_sectional_replication.csv": "5118daf8e3e82b78d055260992e8e738d2c8a99e73c18205ad37880b2526c43f",
+    "results/frozen/mendeley_longitudinal_change.csv": "5118daf8e3e82b78d055260992e8e738d2c8a99e73c18205ad37880b2526c43f",
+    "results/frozen/mendeley_medication_timing.csv": "5118daf8e3e82b78d055260992e8e738d2c8a99e73c18205ad37880b2526c43f",
+    "results/frozen/mobilised_longitudinal_associations.csv": "e1f636b8f2f2daddd6e0404465562495db2993858375433bf2cde0f99fa14c6a",
+    "results/frozen/mobilised_missingness_summary.csv": "e1f636b8f2f2daddd6e0404465562495db2993858375433bf2cde0f99fa14c6a",
+    "results/frozen/mobilised_responsiveness.csv": "e1f636b8f2f2daddd6e0404465562495db2993858375433bf2cde0f99fa14c6a",
+    "results/frozen/mobilised_site_robustness.csv": "e1f636b8f2f2daddd6e0404465562495db2993858375433bf2cde0f99fa14c6a",
     "results/frozen/negative_controls.csv": "e85b90df23b16c4857d617109f4ea753aa5cd4af28710118b121fafe09de8f0d",
     "results/frozen/participant_flow.csv": "70f10dc21a2bfe41812c667ed5ace2f01f136620c6214433e9a3cec77bd4dc32",
     "results/frozen/primary_associations.csv": "c94488da2b5541bfa93b4667b95da42299fcc42df81ca90c87ee24ab38c24f67",
     "results/frozen/reliability.csv": "cbc1c7e3589a9edb168c1324f64aafe6857ae68b53379f0a292fdfd7ba6f8aaa",
-    "results/frozen/results.json": "d376bc98635e101a1091a6ab271c93592e45fae87a64f8a430588b4b659eb418"
+    "results/frozen/results.json": "2da63c3a0d8f46d39da31e37d697a4fe3f850f61908cbee03a04326c75a197db"
   },
   "privacy": {
     "provenance_script_read_row_level_data": false,

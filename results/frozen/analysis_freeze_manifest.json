@@ -1,0 +1,7 @@
+{
+  "analysis_config_sha256": "edbb94db5fee63319cb0fa54fb5d03361ee37922f5ea41cbf0ec7562a756c587",
+  "analysis_protocol_sha256": "4e6c8fc856fd046f8b34449dd4f728e756cc24bed95c672498684b4eabd9ccb8",
+  "feature_mapping_sha256": "221335b448e0ad1c5a5bfc4315057e1aa63216f68517c3fb3bfe2db7f90a2776",
+  "analysis_freeze_commit_sha": "d0efe32b014a03e0aad96c1495079b3335164935",
+  "schema": "analysis-freeze-v1"
+}
