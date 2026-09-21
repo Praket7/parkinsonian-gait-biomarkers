@@ -1,0 +1,47 @@
+seed: 20260920
+analysis_version: "3.1.1"
+# V1 PKMAS reference summaries contain SP/HP only.  The other straight-walk
+# tasks are used in the contact-signal reliability/context layer.
+primary_tasks: [SP, HP]
+contact_tasks: [SP, HP, SPm, HPm]
+context_tasks: [SPmT, TUG, SPdoorpat, FW]
+minimum_clean_walk_seconds: 3.0
+fdr_alpha: 0.05
+bootstrap_iterations: 2000
+permutation_iterations: 5000
+minimum_model_participants: 20
+interaction_alpha: 0.05
+speed_strata: 2
+data:
+  input_dir: data/raw
+  output_dir: results
+  file_glob: "*.csv"
+quality:
+  max_missing_fraction: 0.20
+  minimum_steps: 3
+  minimum_alternation_fraction: 0.50
+reliability:
+  icc_candidate_threshold: 0.60
+  preferred_threshold: 0.75
+  trait_primary_task: SP
+  require_ci_informative: true
+  bootstrap_iterations: 1000
+  minimum_participants: 8
+stability:
+  minimum_direction_consistency: 0.80
+validation:
+  minimum_spearman_rho: 0.70
+  cadence_min_steps_per_minute: 40
+  cadence_max_steps_per_minute: 200
+external_validation:
+  same_direction_required: true
+speed_adjustment:
+  require_same_direction: true
+  fdr_alpha: 0.05
+predictive_validation:
+  participant_grouped: true
+  leave_site_out: true
+carepd:
+  labelled_cohorts: [3DGait, BMCLab, PD-GaM, T-SDU-PD]
+resampling:
+  n_jobs: 4
