@@ -1,23 +1,23 @@
 {
   "schema": "run-provenance-v3",
-  "generated_at_utc": "2026-09-21T12:25:58.558213+00:00",
-  "analysis_results_commit": "d0efe32b014a03e0aad96c1495079b3335164935",
-  "release_tag": "v3.2.1",
-  "release_version": "v3.2.1",
-  "analysis_protocol_version": "3.2.1",
+  "generated_at_utc": "2026-09-21T13:14:38.158003+00:00",
+  "analysis_results_commit": "eb384d03831ba81f48d73fa292948cd985366a6f",
+  "release_tag": "v3.2.2",
+  "release_version": "v3.2.2",
+  "analysis_protocol_version": "3.2.2",
   "report_generation_commit": null,
-  "analysis_version": "3.2.0",
+  "analysis_version": "3.2.2",
   "python_version": "3.11.15",
-  "config_sha256": "edbb94db5fee63319cb0fa54fb5d03361ee37922f5ea41cbf0ec7562a756c587",
-  "dependency_lock_sha256": "e288c943e8071278353d01bb202c7d305c4ec9c595f9331e7a0c9041fdba80f0",
+  "config_sha256": "91ce3f751c9ba8c670cbb7d3d48b7e6016e15b4f9f7fb6c21ef0e77dc36b7ebc",
+  "dependency_lock_sha256": "17b67f1d9be729827ae4c600d96f95e4e75a25610991078f20e359269b2b9626",
   "config": {
     "path": "configs/analysis.yaml",
-    "sha256": "edbb94db5fee63319cb0fa54fb5d03361ee37922f5ea41cbf0ec7562a756c587"
+    "sha256": "91ce3f751c9ba8c670cbb7d3d48b7e6016e15b4f9f7fb6c21ef0e77dc36b7ebc"
   },
   "dependencies": {
     "lockfile": "requirements-lock.txt",
-    "lockfile_sha256": "e288c943e8071278353d01bb202c7d305c4ec9c595f9331e7a0c9041fdba80f0",
-    "requirements_sha256": "76b7439f4a3542c4b51a3724cd678fa90e859361a3254bd16100360e2c44b2ba"
+    "lockfile_sha256": "17b67f1d9be729827ae4c600d96f95e4e75a25610991078f20e359269b2b9626",
+    "requirements_sha256": "46e386435922007df40d57f601da15c27c9239666684d8c9c33b79208f83e95a"
   },
   "dataset_metadata_sha256": {
     "data/metadata/CARE-PD-README.md": "ba346f093693e829445b46bb4793290c82b134a610795fd452e1da85fde79565",
@@ -35,29 +35,29 @@
     "data/metadata/weargait_v1_transfer.log": "4bc5ca3d1669158b0baad9ba2bbec6bf7e7ea79c00cb3a9d56a4bdb4bded1069"
   },
   "aggregate_result_sha256": {
-    "results/frozen/adaptive_dbs_state_sensitivity.csv": "29de81bbbf5e3814d6213ec184b9cafaf9ba028fa5dc3137350c9ff3c5bad4af",
-    "results/frozen/analysis_freeze_manifest.json": "4dca7155eee1ecbdf8d69f0a7f23028b749d38fdaaae05015d8d07e26874f9cf",
+    "results/frozen/adaptive_dbs_state_sensitivity.csv": "27aac044bd16c46354dc7881687f7899fcecced4ec71bf5c40cc886b8eea1e57",
+    "results/frozen/analysis_freeze_manifest.json": "0ae400986a4f0e736089aea6bfeec5d6d3b543d8c02b9fdafeb7b1a5efa4f9c1",
     "results/frozen/carepd_cohort_results.csv": "a0fc834412f1826e6834bb2770a20b4d7c227f8bb2c03f31a912fe29a212f602",
     "results/frozen/contact_validation.csv": "9522a4b633263690d12c53905a9c7241ccdd862ead748f2ebd3f8bc82eb37281",
     "results/frozen/context_robustness.csv": "4849129d6350bab3815de8f93277c0b45be2884389664c5c77581cba4d3f9040",
-    "results/frozen/external_dataset_status.csv": "62d3842b399f567d86d545ed57980afc6892be8cefe5bf0da9d8017389c9e97e",
+    "results/frozen/external_dataset_status.csv": "b2b9bbd10105e33bf27f2d8b95147a1439584d27c668a877dd3958662a1bff9a",
     "results/frozen/external_feature_evidence_matrix.csv": "4f18e0ca37d7039ac6cf5cc2e3ee95a1463df57f8835078bee62088f0f244418",
     "results/frozen/external_schema_audit.json": "0e43e2cfc0e52e657a57ff5e715e67be374eb2ce437d6a6fdb062baedc53a15f",
     "results/frozen/feature_evidence_matrix.csv": "ab7ce5c7adacfa7aef94c360827aacecd8a0a59acc06534b31e6aa1c5bb1254a",
     "results/frozen/longitudinal_schema_audit_summary.json": "64baec541b6ab04855542fa54e4afb5552c1d8603c849da9d0d57e072b927f24",
     "results/frozen/medication_sensitivity.csv": "b6f469ee79d766681f6c3f26115dd3042b45617ccf6b4f4e61f454a054b72f8e",
-    "results/frozen/mendeley_cross_sectional_replication.csv": "5118daf8e3e82b78d055260992e8e738d2c8a99e73c18205ad37880b2526c43f",
-    "results/frozen/mendeley_longitudinal_change.csv": "5118daf8e3e82b78d055260992e8e738d2c8a99e73c18205ad37880b2526c43f",
-    "results/frozen/mendeley_medication_timing.csv": "5118daf8e3e82b78d055260992e8e738d2c8a99e73c18205ad37880b2526c43f",
-    "results/frozen/mobilised_longitudinal_associations.csv": "e1f636b8f2f2daddd6e0404465562495db2993858375433bf2cde0f99fa14c6a",
-    "results/frozen/mobilised_missingness_summary.csv": "e1f636b8f2f2daddd6e0404465562495db2993858375433bf2cde0f99fa14c6a",
-    "results/frozen/mobilised_responsiveness.csv": "e1f636b8f2f2daddd6e0404465562495db2993858375433bf2cde0f99fa14c6a",
-    "results/frozen/mobilised_site_robustness.csv": "e1f636b8f2f2daddd6e0404465562495db2993858375433bf2cde0f99fa14c6a",
+    "results/frozen/mendeley_cross_sectional_replication.csv": "40bf557f56af87ecfb6ffeb9ac0d1038d901e1b2ffac7a2f2b2176aa0b88d490",
+    "results/frozen/mendeley_longitudinal_change.csv": "a523718c1ff0f3bd2eb8f8a5121883d33dd0bf832d6e1a0421f5e1c78e4e78f7",
+    "results/frozen/mendeley_medication_timing.csv": "8d3e2cdbabbe77a0be36a41d3a6d9d453122ae7e380db911e3ffb0bb3fa3f1a5",
+    "results/frozen/mobilised_longitudinal_associations.csv": "cc371f65defa752f945ebb7744c3f4779cfa6da1f8603a71077d4232c823122f",
+    "results/frozen/mobilised_missingness_summary.csv": "bbf45a8cb65d8f33a61b19dcb4b46123cdf48cb0935c23c8b16b5d0e4a4b7f4d",
+    "results/frozen/mobilised_responsiveness.csv": "7d558ff9927c9419355c78afc27a60ee3363752965cd00c37ae36a94b314ccc2",
+    "results/frozen/mobilised_site_robustness.csv": "cd5b2d96659d297a2f2c578ec041977d22aa8e0bd22b56c5d3b75e4507b60e2f",
     "results/frozen/negative_controls.csv": "e85b90df23b16c4857d617109f4ea753aa5cd4af28710118b121fafe09de8f0d",
     "results/frozen/participant_flow.csv": "70f10dc21a2bfe41812c667ed5ace2f01f136620c6214433e9a3cec77bd4dc32",
     "results/frozen/primary_associations.csv": "c94488da2b5541bfa93b4667b95da42299fcc42df81ca90c87ee24ab38c24f67",
     "results/frozen/reliability.csv": "cbc1c7e3589a9edb168c1324f64aafe6857ae68b53379f0a292fdfd7ba6f8aaa",
-    "results/frozen/results.json": "2da63c3a0d8f46d39da31e37d697a4fe3f850f61908cbee03a04326c75a197db"
+    "results/frozen/results.json": "2fa1695bb0e90adfa293fd037bd7d15748ea9c0fb3e2c31878f147d830ff1eac"
   },
   "privacy": {
     "provenance_script_read_row_level_data": false,

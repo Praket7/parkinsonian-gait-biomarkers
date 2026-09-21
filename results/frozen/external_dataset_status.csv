@@ -1,4 +1,4 @@
-dataset,enabled,status,reason
-mendeley_gait,True,OK,SOURCE_PRESENT_MAPPING_NOT_APPROVED
-mobilised_cvs,True,OK,SOURCE_PRESENT_MAPPING_NOT_APPROVED
-adaptive_dbs,True,OK,SOURCE_PRESENT_MAPPING_NOT_APPROVED
+dataset,enabled,status,mapping_status,reason
+mobilised_cvs,True,OK,APPROVED,RELEASE_MAPPING_V3_2_2
+mendeley_gait,True,OK,APPROVED,PROCESSED_TABLES_V3_2_2
+adaptive_dbs,True,NOT_ESTIMABLE,NOT_APPROVED,STATE_PAIR_MAPPING_NOT_FROZEN

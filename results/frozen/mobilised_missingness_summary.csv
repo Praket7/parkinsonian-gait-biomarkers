@@ -1,2 +1,2 @@
-dataset,status,reason
-mobilised_cvs,NOT_ESTIMABLE,SOURCE_PRESENT_MAPPING_NOT_APPROVED
+dataset,status,n_rows_all,n_rows_reliable,n_participants_all,n_participants_reliable
+mobilised_cvs,OK,2853,2138,601,575

@@ -1,2 +1,5 @@
-dataset,status,reason
-mobilised_cvs,NOT_ESTIMABLE,SOURCE_PRESENT_MAPPING_NOT_APPROVED
+feature,status,n_participants,mean_change,median_change,srm,delta_anchor_spearman_rho,dataset
+gait_speed,OK,574,-0.018693379790940767,-0.010000000000000009,-0.19332648066154776,-0.1351070157054857,mobilised_cvs
+stride_length_mean,OK,574,-1.2386759581881532,0.0,-0.13943695726138583,-0.15498694282083286,mobilised_cvs
+cadence,OK,574,-0.8850174216027874,0.0,-0.17618496545190368,-0.06086292881617396,mobilised_cvs
+stride_time_mean,OK,574,0.0020209059233449555,0.0,0.026709733520746536,-0.015906274487787538,mobilised_cvs

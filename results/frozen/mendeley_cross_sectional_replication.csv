@@ -1,2 +1,9 @@
-dataset,status,reason
-mendeley_gait,NOT_ESTIMABLE,SOURCE_PRESENT_MAPPING_NOT_APPROVED
+dataset,feature,anchor_used,anchor_compatibility,n,spearman_rho,status
+mendeley_gait,stride_amplitude_cm,Gait evaluation MDS-UPDRS,gait_item,42,-0.6168041407125993,OK
+mendeley_gait,stride_amplitude_sd_cm,Gait evaluation MDS-UPDRS,gait_item,42,-0.009443978756991421,OK
+mendeley_gait,gait_speed_m_s,Gait evaluation MDS-UPDRS,gait_item,42,-0.6561934750869166,OK
+mendeley_gait,stride_speed_sd,Gait evaluation MDS-UPDRS,gait_item,42,-0.07188406108856062,OK
+mendeley_gait,speed_correlation,Gait evaluation MDS-UPDRS,gait_item,42,-0.22751266727150884,OK
+mendeley_gait,foot_lift_cm,Gait evaluation MDS-UPDRS,gait_item,42,-0.37284465587565263,OK
+mendeley_gait,foot_lift_sd_cm,Gait evaluation MDS-UPDRS,gait_item,42,-0.31375083376027546,OK
+mendeley_gait,arm_swing_indicator,Gait evaluation MDS-UPDRS,gait_item,42,-0.7613086291399388,OK
