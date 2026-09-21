@@ -170,6 +170,79 @@ def _check_public_headers(base: Path, failures: list[str]) -> None:
                 failures.append(f"row-level identifiers published in {path.relative_to(base)}: {', '.join(leaked)}")
 
 
+_EXTERNAL_OUTPUTS = {
+    "mendeley_gait": (
+        "mendeley_cross_sectional_replication.csv",
+        "mendeley_longitudinal_change.csv",
+        "mendeley_medication_timing.csv",
+    ),
+    "mobilised_cvs": (
+        "mobilised_longitudinal_associations.csv",
+        "mobilised_responsiveness.csv",
+        "mobilised_site_robustness.csv",
+        "mobilised_missingness_summary.csv",
+    ),
+    "adaptive_dbs": ("adaptive_dbs_state_sensitivity.csv",),
+}
+
+
+def _check_external_contract(base: Path, config: dict, failures: list[str]) -> None:
+    """Require every enabled source to end in an aggregate or explicit NA.
+
+    ``SCHEMA_AUDIT_REQUIRED`` is an acquisition-stage state, not a scientific
+    result.  It must never survive into a release with an enabled source.
+    """
+    frozen = base / "results" / "frozen"
+    status_path = frozen / "external_dataset_status.csv"
+    enabled = {
+        name for name, options in (config.get("external_data") or {}).items()
+        if isinstance(options, dict) and bool(options.get("enabled"))
+    }
+    if not enabled:
+        return
+    if not status_path.is_file():
+        failures.append("enabled external datasets lack external_dataset_status.csv")
+        return
+    status_rows = {row.get("dataset"): row for row in _csv(status_path)}
+    allowed = {"OK", "PASS", "FAIL", "NOT_ESTIMABLE"}
+    for dataset in sorted(enabled):
+        row = status_rows.get(dataset)
+        if row is None:
+            failures.append(f"enabled external dataset missing status row: {dataset}")
+            continue
+        source_status = (row.get("status") or "").strip().upper()
+        if not source_status:
+            failures.append(f"enabled external dataset has empty source status: {dataset}")
+        if source_status == "OK" and not any(
+            (frozen / output).is_file() for output in _EXTERNAL_OUTPUTS.get(dataset, ())
+        ):
+            failures.append(f"enabled external dataset lacks aggregate output: {dataset}")
+        outputs = _EXTERNAL_OUTPUTS.get(dataset, ())
+        if not outputs:
+            failures.append(f"enabled external dataset has no declared output contract: {dataset}")
+        for output in outputs:
+            path = frozen / output
+            if not path.is_file():
+                failures.append(f"enabled external dataset missing output: {output}")
+                continue
+            rows = _csv(path)
+            if not rows or "status" not in rows[0]:
+                failures.append(f"external output lacks explicit status: {output}")
+                continue
+            values = {(item.get("status") or "").strip().upper() for item in rows}
+            if not values or "" in values:
+                failures.append(f"external output has empty status: {output}")
+            if not values <= allowed:
+                failures.append(f"external output has non-final status {output}: {sorted(values - allowed)}")
+            if source_status != "OK" and values != {"NOT_ESTIMABLE"}:
+                failures.append(f"missing external source is not explicitly NOT_ESTIMABLE: {output}")
+            if source_status == "OK" and values == {"NOT_ESTIMABLE"}:
+                # This is valid: a present source may still fail prespecified
+                # QC, but the output must say so explicitly (and not be a
+                # schema-stage placeholder).
+                continue
+
+
 def _git(base: Path, *args: str) -> str | None:
     try:
         return subprocess.run(["git", "-C", str(base), *args], check=True, capture_output=True, text=True).stdout.strip()
@@ -264,6 +337,7 @@ def main(root: str) -> int:
             _check_fdr(base, failures)
         _check_numeric_trace(base, failures)
         _check_public_headers(base, failures)
+        _check_external_contract(base, config, failures)
     # If a user supplies explicit split CSVs, enforce participant grouping.
     split_paths = list(base.glob("**/*[Tt]rain*.csv")) + list(base.glob("**/*[Tt]est*.csv"))
     splits = {p.name: _ids(p) for p in split_paths}

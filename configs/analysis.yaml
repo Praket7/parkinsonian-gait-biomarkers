@@ -1,8 +1,7 @@
 seed: 20260920
-analysis_version: "3.1.1"
-# Statistical protocol is frozen at 3.1.1; release packaging may advance
-# without silently changing the analysis protocol.
-release_version: "v3.1.3"
+analysis_version: "3.2.0"
+analysis_protocol_version: "3.2.1"
+release_version: "v3.2.1"
 # V1 PKMAS reference summaries contain SP/HP only.  The other straight-walk
 # tasks are used in the contact-signal reliability/context layer.
 primary_tasks: [SP, HP]
@@ -38,6 +37,32 @@ validation:
   cadence_max_steps_per_minute: 200
 external_validation:
   same_direction_required: true
+  never_retune_primary_thresholds: true
+external_data:
+  mendeley_gait: {enabled: true, folder: Mendeley_Gait_PD_v2, doi: "10.17632/gdgw7m36v3.2", source_version: 2}
+  mobilised_cvs: {enabled: true, folder: MobiliseD_CVS_v1_0_0, doi: "10.5281/zenodo.21060991", source_version: "V1.0.0"}
+  adaptive_dbs: {enabled: true, folder: AdaptiveDBS_Gait_2026, doi_or_record: "zenodo:19371521"}
+  ppmi: {enabled: false, folder: PPMI}
+longitudinal:
+  minimum_repeated_participants_gee: 20
+  minimum_repeated_participants_mixedlm: 30
+  minimum_visits_random_slope: 3
+  bootstrap_iterations: 2000
+  permutation_iterations: 5000
+  fdr_alpha: 0.05
+  require_measurement_error_context: true
+context_of_use:
+  preserve_original_trait_rule: true
+  monitoring_progression_track: true
+  state_response_track: true
+  pace_domain_track: true
+mobilised:
+  require_reliable_week_for_confirmatory: true
+  confirmatory_features: [walking_speed, stride_length, cadence, stride_duration]
+  exploratory_family_separate_fdr: true
+  attrition_sensitivity: true
+analysis_freeze:
+  enforce_hash_match_for_confirmatory: true
 speed_adjustment:
   require_same_direction: true
   fdr_alpha: 0.05

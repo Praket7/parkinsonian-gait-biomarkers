@@ -6,6 +6,8 @@ __pycache__/
 data/raw/
 data/interim/
 data/processed/
+external_data/
+authorized_data/
 results/*
 !results/frozen/
 !results/frozen/*.csv

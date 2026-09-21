@@ -1,0 +1,17 @@
+{
+  "dataset": "Mobilise-D Clinical Validation Study (CVS) dataset",
+  "doi": "10.5281/zenodo.21060991",
+  "version": "V1.0.0",
+  "source_url": "https://zenodo.org/records/21060991",
+  "license_api": "CC BY 4.0",
+  "license_interpretation": "Treat as non-commercial research until the record's textual license statement is reconciled.",
+  "acquired_files": {
+    "Clinical Data.zip": {"md5": "3b3d8305fa7ef6923341a85bfd4a3945"},
+    "Data Dictionary.zip": {"md5": "20c43429f655575c6868ea2ef8343176"},
+    "Aggregated DMO Data.zip": {"md5": "b6497e3cdcad2166f3ba38d5d3d64e35"},
+    "Main datasets for analysis.zip": {"md5": "6b28660706b791d9a4afa2a718f9389b"},
+    "ChangeLog.txt": {"md5": "f98e8a92f44cce4e822b51789f1abfc9"}
+  },
+  "stage_two_deferred": {"file": "Walking Bout DMO Data.zip", "md5": "4e9b7952cf2015ee3cc6615c0e626323", "reason": "Aggregate longitudinal gate is implemented first."},
+  "privacy": "Raw and participant-level data remain outside Git; public outputs are aggregate only."
+}
