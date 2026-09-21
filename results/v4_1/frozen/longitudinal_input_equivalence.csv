@@ -1,0 +1,9 @@
+feature,source,unit,task,session,definition_match,availability
+gait_speed,WearGait_PD_Longitudinal authorized release,not released as PKMAS-equivalent table,free-walk,longitudinal,UNAVAILABLE,UNAVAILABLE
+cadence,WearGait_PD_Longitudinal authorized release,not released as PKMAS-equivalent table,free-walk,longitudinal,UNAVAILABLE,UNAVAILABLE
+step_length_mean,WearGait_PD_Longitudinal authorized release,not released as PKMAS-equivalent table,free-walk,longitudinal,UNAVAILABLE,UNAVAILABLE
+stride_length_mean,WearGait_PD_Longitudinal authorized release,not released as PKMAS-equivalent table,free-walk,longitudinal,UNAVAILABLE,UNAVAILABLE
+step_time_mean,WearGait_PD_Longitudinal authorized release,not released as PKMAS-equivalent table,free-walk,longitudinal,UNAVAILABLE,UNAVAILABLE
+stride_time_mean,WearGait_PD_Longitudinal authorized release,not released as PKMAS-equivalent table,free-walk,longitudinal,UNAVAILABLE,UNAVAILABLE
+step_time_cv,WearGait_PD_Longitudinal authorized release,not released as PKMAS-equivalent table,free-walk,longitudinal,UNAVAILABLE,UNAVAILABLE
+stride_time_cv,WearGait_PD_Longitudinal authorized release,not released as PKMAS-equivalent table,free-walk,longitudinal,UNAVAILABLE,UNAVAILABLE

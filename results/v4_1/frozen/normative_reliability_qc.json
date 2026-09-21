@@ -1,0 +1,9 @@
+{
+  "source_release_present": true,
+  "all_inputs_equivalent": false,
+  "model_refit": false,
+  "model_serialized": true,
+  "score_reconstruction_max_abs_difference": 0.0,
+  "score_reconstruction_tolerance": 1e-10,
+  "reason": "No repeated PKMAS-equivalent table supports the frozen eight-input score."
+}

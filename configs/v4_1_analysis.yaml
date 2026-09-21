@@ -1,0 +1,13 @@
+analysis_version: "4.1.0"
+development_release: "v4.1-dev"
+parent_release: "v4.0.6"
+seed: 20260921
+normative_features: [gait_speed, cadence, step_length_mean, stride_length_mean, step_time_mean, stride_time_mean, step_time_cv, stride_time_cv]
+control_crossfit_folds: 5
+control_bootstrap_iterations: 2000
+prediction_bootstrap_iterations: 2000
+mobilised_half_resamples: 200
+minimum_model_participants: 20
+reliability_minimum_participants: 8
+frozen_covariance_methods: [sample, ledoit_wolf]
+mobilised_features: [gait_speed, stride_length_mean, cadence, stride_time_mean]

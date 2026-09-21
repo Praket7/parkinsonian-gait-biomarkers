@@ -1,0 +1,17 @@
+{
+  "schema": "v4.1-protocol-freeze-v1",
+  "analysis_freeze_commit_sha": "7d997dac1880964f3114efcdcf2a217f496ec072",
+  "files": {
+    "configs/v4_1_analysis.yaml": "36eec667ff3dbf4927974c761b99f2480c58d34f01473996d70f125b9ea691c2",
+    "docs/v4_1_preregistration.md": "dae4e5bc4232796a6a72ce0c18a945cee0e035527781312b0dd91f8a8d29788f",
+    "docs/v4_1_validation_questions.md": "9755437f91f37827c4399912298161095760135343b3f5be279cee7c5b9a57c6",
+    "src/v4_1/__init__.py": "1b69f7d3af44e9d1f2a030af4d46db6d59a3f3b336bc7162e677cee405384c50",
+    "src/v4_1/normative.py": "a92f86c323f2e09c3ec94271b830d22b059bf5b3e0610c63378ffc995fe0dc91",
+    "src/v4_1/validation.py": "ba0dab4f5831d7f264de46e23582deb33afec5ad4df8834d0f385f4aad0c01a6",
+    "scripts/run_v4_1_external_transport.py": "7084a361312160d06b88447cfc37db07744c3c0109f1a5c7f6171b31782f613b",
+    "scripts/run_v4_1_incremental_value.py": "6c978450f3619ded7fefdac51eef1e1aedd36b86d1f6ba60e98192d954e36e3b",
+    "scripts/run_v4_1_mobilised_longitudinal.py": "18b9b6032b7378c80a9452f81fbc941bdbcef47cfb716758ae4d48a472030f71",
+    "scripts/run_v4_1_normative_validation.py": "71c5c183ad89ca5f598bfaa7db968c828b7ce0fab4d43df2b0fe0ff699d5cf23",
+    "scripts/run_v4_1_reliability.py": "1a8e2fd82aecad6c707abd12566e60ed57ec4a8d0c5136c8db42cfc0ae29255a"
+  }
+}
