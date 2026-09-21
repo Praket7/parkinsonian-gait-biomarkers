@@ -53,7 +53,7 @@ def main():
         features=[item for item in FEATURES if item!=removed]; candidate=pd_rows.copy(); candidate["context_adjusted_gait_deviation_v1"]=score(candidate,fit_reference(controls,features)); a,b=association(candidate)
         ablation.append({"removed_feature":removed,"effect":a["effect"],"ci_low":a["ci_low"],"ci_high":a["ci_high"],"speed_adjusted_effect":b["effect"],"speed_adjusted_ci_low":b["ci_low"],"speed_adjusted_ci_high":b["ci_high"],"same_direction_as_full_score":bool(np.sign(a["effect"])==np.sign(baseline["effect"])),"relative_effect_change":float((a["effect"]-baseline["effect"])/abs(baseline["effect"]))})
     pd.DataFrame(ablation).to_csv(output/"normative_leave_one_feature_out.csv",index=False)
-    domains={"pace":FEATURES[:4],"rhythm":FEATURES[1:6],"variability":FEATURES[6:]}; domain=[]
+    domains={"pace":["gait_speed","step_length_mean","stride_length_mean"],"rhythm":["cadence","step_time_mean","stride_time_mean"],"variability":["step_time_cv","stride_time_cv"]}; domain=[]
     for name,features in domains.items():
         held=controls.copy(); held["score"]=score(held,fit_reference(controls,features)); domain.append({"domain":name,"n_inputs":len(features),"control_score_mean":float(held.score.mean()),"control_score_sd":float(held.score.std(ddof=1))})
     pd.DataFrame(domain).to_csv(output/"normative_domain_contributions.csv",index=False)
