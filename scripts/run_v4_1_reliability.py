@@ -20,6 +20,7 @@ def main():
     model_path=output/"v4_1_control_model.json"; reconstruction=np.nan
     if model_path.exists():
         model=json.loads(model_path.read_text()); probe=pd.DataFrame([[0.0]*len(FEATURES)],columns=FEATURES).assign(age=0.0,height_m=0.0)
+        model["features"]=model["feature_order"]
         reconstruction=float(np.max(np.abs(score(probe,model).to_numpy()-score(probe,model).to_numpy())))
     (output/"normative_reliability_qc.json").write_text(json.dumps({"source_release_present":root.exists(),"all_inputs_equivalent":False,"model_refit":False,"model_serialized":model_path.exists(),"score_reconstruction_max_abs_difference":reconstruction,"score_reconstruction_tolerance":1e-10,"reason":"No repeated PKMAS-equivalent table supports the frozen eight-input score."},indent=2)+"\n")
 if __name__=="__main__": main()
