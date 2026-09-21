@@ -9,4 +9,4 @@ def axial_rotation_smoothness(yaw_velocity, sampling_hz):
         return {"status": "NOT_ESTIMABLE", "reason": "SENSOR_QC_INSUFFICIENT"}
     spectrum = abs(np.fft.rfft(signal - signal.mean())); freq = np.fft.rfftfreq(len(signal), 1/sampling_hz)
     use = (freq > 0) & (freq <= 10) & (spectrum > 0)
-    return {"status": "OK", "axial_rotation_smoothness_v1": float(-np.trapz(np.sqrt(1 + np.diff(np.log(spectrum[use]))**2), np.log(freq[use])[1:])) if use.sum() > 2 else np.nan}
+    return {"status": "OK", "axial_rotation_smoothness_v1": float(-np.trapezoid(np.sqrt(1 + np.diff(np.log(spectrum[use]))**2), np.log(freq[use])[1:])) if use.sum() > 2 else np.nan}
