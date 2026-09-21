@@ -234,11 +234,12 @@ def main(root: str) -> int:
             if not provenance.get("analysis_results_commit"):
                 failures.append("provenance lacks analysis_results_commit")
             _check_release_identity(base, provenance, failures)
-        # Authorized files live outside the repository by design.  Require an
-        # auditable derived table instead of requiring a redistributable copy.
+        # Authorized files live outside the repository by design.  The public
+        # release proves cohort flow from the aggregate table, not by exposing
+        # an identifier-bearing derived audit table.
         feature_path = base / "results" / "v1_reference_walkway_clinical.csv"
-        if (not raw.exists() or not any(p.is_file() for p in raw.rglob("*"))) and not feature_path.exists():
-            failures.append("neither local raw input nor authorized derived audit table is present")
+        if (not raw.exists() or not any(p.is_file() for p in raw.rglob("*"))) and not (base / "results" / "frozen" / "participant_flow.csv").exists():
+            failures.append("neither local raw input nor public aggregate participant flow is present")
         if feature_path.exists() and feature_path.stat().st_size:
             import csv
 
