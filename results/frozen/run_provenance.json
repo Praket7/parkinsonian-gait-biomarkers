@@ -1,17 +1,16 @@
 {
-  "schema": "run-provenance-v2",
-  "generated_at_utc": "2026-09-20T21:37:09.299817+00:00",
-  "analysis_code_commit": "f1757a48651ed1bb48dccd32e6a68e7e915a955d",
-  "release_commit": "f1757a48651ed1bb48dccd32e6a68e7e915a955d",
-  "release_tag": "v3.1.0",
-  "report_generation_commit": "f1757a48651ed1bb48dccd32e6a68e7e915a955d",
-  "analysis_version": "3.1",
+  "schema": "run-provenance-v3",
+  "generated_at_utc": "2026-09-21T01:22:08.760066+00:00",
+  "analysis_results_commit": "59b61f8ca68aa92fa9c07772af226e599895f6e7",
+  "release_tag": "v3.1.1",
+  "report_generation_commit": null,
+  "analysis_version": "3.1.1",
   "python_version": "3.11.15",
-  "config_sha256": "bf00fd8028c2abec22015aa42881e29764ee2ae17a8b58402a2237795b75164f",
+  "config_sha256": "5608d2b2736d95b60285176c02703f3ca5ae8dc4578cf380f0d57136a9863555",
   "dependency_lock_sha256": "e288c943e8071278353d01bb202c7d305c4ec9c595f9331e7a0c9041fdba80f0",
   "config": {
     "path": "configs/analysis.yaml",
-    "sha256": "bf00fd8028c2abec22015aa42881e29764ee2ae17a8b58402a2237795b75164f"
+    "sha256": "5608d2b2736d95b60285176c02703f3ca5ae8dc4578cf380f0d57136a9863555"
   },
   "dependencies": {
     "lockfile": "requirements-lock.txt",
@@ -35,14 +34,14 @@
     "results/frozen/carepd_cohort_results.csv": "a26227ed6e84da377ecc5275c1531fd980aa361a338dc9133a050939e32e7bc7",
     "results/frozen/contact_validation.csv": "9522a4b633263690d12c53905a9c7241ccdd862ead748f2ebd3f8bc82eb37281",
     "results/frozen/context_robustness.csv": "4849129d6350bab3815de8f93277c0b45be2884389664c5c77581cba4d3f9040",
-    "results/frozen/feature_evidence_matrix.csv": "805335d9335ddf424ddbbfec43f5d6f92d8c82f345c52f52d6837dc7f0ae6918",
+    "results/frozen/feature_evidence_matrix.csv": "ab7ce5c7adacfa7aef94c360827aacecd8a0a59acc06534b31e6aa1c5bb1254a",
     "results/frozen/longitudinal_schema_audit_summary.json": "64baec541b6ab04855542fa54e4afb5552c1d8603c849da9d0d57e072b927f24",
     "results/frozen/medication_sensitivity.csv": "b6f469ee79d766681f6c3f26115dd3042b45617ccf6b4f4e61f454a054b72f8e",
     "results/frozen/negative_controls.csv": "e85b90df23b16c4857d617109f4ea753aa5cd4af28710118b121fafe09de8f0d",
     "results/frozen/participant_flow.csv": "70f10dc21a2bfe41812c667ed5ace2f01f136620c6214433e9a3cec77bd4dc32",
-    "results/frozen/primary_associations.csv": "80d07147813ee8a99fa74a663a2f9d10a0029002d1912e93275e0049d80d67c9",
+    "results/frozen/primary_associations.csv": "c94488da2b5541bfa93b4667b95da42299fcc42df81ca90c87ee24ab38c24f67",
     "results/frozen/reliability.csv": "cbc1c7e3589a9edb168c1324f64aafe6857ae68b53379f0a292fdfd7ba6f8aaa",
-    "results/frozen/results.json": "6d90f9e4bc6855685d7a5386587594aaec438922ef77012790011df5480a75f9"
+    "results/frozen/results.json": "38ec960748b5ffb02b5feec0726d478ed09c74b463396391cb6091dd2bb17189"
   },
   "privacy": {
     "provenance_script_read_row_level_data": false,
