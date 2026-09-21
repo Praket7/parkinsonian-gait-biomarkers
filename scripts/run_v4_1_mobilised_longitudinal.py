@@ -27,7 +27,8 @@ def main():
     failures=check()
     if failures: raise SystemExit("\n".join(failures))
     config=yaml.safe_load(Path(args.config).read_text()); output=Path(args.output); output.mkdir(parents=True,exist_ok=True)
-    table=build_mobilised_canonical(load_pd_dataset(Path(args.source),RELEASE_MAPPING)); features=config["mobilised_features"]
+    mapping={**RELEASE_MAPPING,"features":{**RELEASE_MAPPING["features"],"strlen_30_avg_w":{"canonical":"stride_length_mean","source_unit":"cm","canonical_unit":"m"}}}
+    table=build_mobilised_canonical(load_pd_dataset(Path(args.source),mapping),mapping); features=config["mobilised_features"]
     original=[fit(table,feature) for feature in features]; pd.DataFrame(original).to_csv(output/"mobilised_within_between.csv",index=False)
     rng,people=np.random.default_rng(config["seed"]+2),table.participant_key.unique(); rows=[]
     for number in range(config["mobilised_half_resamples"]):
