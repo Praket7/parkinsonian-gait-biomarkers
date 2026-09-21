@@ -3,6 +3,7 @@
 from __future__ import annotations
 import argparse, json
 from pathlib import Path
+import numpy as np
 import pandas as pd
 from check_v4_1_freeze import check
 from src.v4_1.normative import FEATURES, score
