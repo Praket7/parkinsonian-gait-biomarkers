@@ -1,0 +1,8 @@
+{
+  "analysis_protocol_version": "4.2.0",
+  "parent_release": "v4.1.1",
+  "row_level_data_published": false,
+  "h4_execution": "stopped at frozen raw-walkway spatial-equivalence gate",
+  "h2_execution": "100 repeated participant-grouped five-fold CV runs; nested ridge sensitivity; ordinal sensitivity gate",
+  "outcome": "aggregate-only release"
+}

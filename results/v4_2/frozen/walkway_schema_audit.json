@@ -1,0 +1,42 @@
+{
+  "v1": {
+    "status": "SCHEMA_AUDITED",
+    "n_csv_files": 1600,
+    "fields_present": {
+      "Time": true,
+      "L Foot Contact": true,
+      "R Foot Contact": true,
+      "Walkway_X": true,
+      "Walkway_Y": true,
+      "WalkwayFoot": true
+    },
+    "initial_contact": "DERIVABLE_FROM_CONTACT_RISING_EDGES",
+    "foot_label": "WalkwayFoot",
+    "time_unit": "seconds from Time header examples",
+    "coordinate_fields": "pressure-grid strings, not documented calibrated rear-foot metric coordinates",
+    "coordinate_compatibility": "UNAVAILABLE",
+    "sp_hp_separation": "filename task labels",
+    "repeated_sessions": "filename s1/s2 labels where present",
+    "spatial_reconstruction_status": "NOT_ESTIMABLE_COORDINATE_CALIBRATION_UNAVAILABLE"
+  },
+  "longitudinal": {
+    "status": "SCHEMA_AUDITED",
+    "n_csv_files": 863,
+    "fields_present": {
+      "Time": true,
+      "L Foot Contact": true,
+      "R Foot Contact": true,
+      "Walkway_X": true,
+      "Walkway_Y": true,
+      "WalkwayFoot": true
+    },
+    "initial_contact": "DERIVABLE_FROM_CONTACT_RISING_EDGES",
+    "foot_label": "WalkwayFoot",
+    "time_unit": "seconds from Time header examples",
+    "coordinate_fields": "pressure-grid strings, not documented calibrated rear-foot metric coordinates",
+    "coordinate_compatibility": "UNAVAILABLE",
+    "sp_hp_separation": "filename task labels",
+    "repeated_sessions": "filename s1/s2 labels where present",
+    "spatial_reconstruction_status": "NOT_ESTIMABLE_COORDINATE_CALIBRATION_UNAVAILABLE"
+  }
+}

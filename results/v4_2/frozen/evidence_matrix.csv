@@ -1,0 +1,4 @@
+question,status,evidence
+H4 raw-walkway recovery,NOT_ESTIMABLE,No documented calibrated metric rear-foot coordinate; V1 all-eight analytical equivalence cannot be established.
+H2-R repeated grouped CV,RANKING_SUPPORT_ONLY,Median delta Spearman=0.0545; median delta RMSE=0.0123.
+Original v4.1 H2,UNCHANGED_NOT_ESTABLISHED,v4.2 is a robustness extension only.

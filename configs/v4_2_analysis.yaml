@@ -1,0 +1,9 @@
+analysis_protocol_version: "4.2.0"
+development_release: "v4.2-dev"
+parent_release: "v4.1.1"
+seed: 20260922
+h2_repetitions: 100
+h2_outer_folds: 5
+ridge_alpha_grid: [0.001, 0.01, 0.1, 1, 10, 100]
+participant_bootstrap_iterations: 2000
+frozen_features: [gait_speed, cadence, step_length_mean, stride_length_mean, step_time_mean, stride_time_mean, step_time_cv, stride_time_cv]

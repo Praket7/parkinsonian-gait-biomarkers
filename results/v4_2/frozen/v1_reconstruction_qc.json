@@ -1,0 +1,5 @@
+{
+  "all_eight_equivalent": false,
+  "h4_status": "NOT_ESTIMABLE",
+  "stop_reason": "V1 spatial analytic-equivalence bridge cannot be validated without documented metric coordinate calibration; no longitudinal score generated."
+}

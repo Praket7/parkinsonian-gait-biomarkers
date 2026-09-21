@@ -1,0 +1,29 @@
+{
+  "schema": "v4.2-freeze-v1",
+  "commit": "8ff377b6f628fe2dcfc7c2c40a1a9c0fde718b17",
+  "files": {
+    "configs/v4_2_analysis.yaml": "010e0be7f63cbd866c6b120b6ca42c50c3116908d16447f3756c0bf8443bfe52",
+    "configs/v4_2_walkway_qc.yaml": "2af35b137b8b7ac3d9974fff177911aa3144e10caa38526ea6a254da9af311f9",
+    "docs/v4_2_analysis_freeze.md": "454a5285e7963943470c64b6abc0f57c110a3350c53d30ff41ec950daf231b55",
+    "docs/v4_2_preregistration.md": "9d1be7f63df82d12a99393ec41245bda6224ea0a448c525143d5c7b1051a5757",
+    "docs/v4_2_walkway_reconstruction.md": "903cb362a82642da6358874d0c21be7456e4e8b54ad8499bef1ebbf9534616a8",
+    "src/v4_2/__init__.py": "de446748eef44344bb713151483bbd80e2c2d800589cd9f7d8b9703d54aae610",
+    "src/v4_2/analytical_equivalence.py": "df4cdeb91ec0fa815264dc1176b52e6ecd37ec64fb43dc47d91ae95cd7cdfb50",
+    "src/v4_2/repeated_group_cv.py": "0d18cc956853d0c584e8d69393461a91268ebae0e0973a6f435865f833aefce7",
+    "src/v4_2/walkway_footfalls.py": "b56910f29abd0769d60e603030f2a4d65ff973e557fc46d3d377ad6459b811bc",
+    "src/v4_2/walkway_metrics.py": "b9be83544b6cf7c98156de65b496c648b6438ec7076fd3b3da50f5a34029067f",
+    "src/v4_2/walkway_schema.py": "90e79a9eb4662d483b460943d7e76bff1140a9418c4f48edd5d081f68ac0c1a4",
+    "scripts/audit_v4_2_walkway_schema.py": "1f43798ddae99fda12f4419a73ba2d88dbbc970b820bd3ac590d105755fbf3ec",
+    "scripts/check_v4_2_freeze.py": "53969551abdc9262cd2613669602818ae5c626999043fa6bcd2fbf69bc1a415d",
+    "scripts/freeze_v4_2_protocol.py": "7ad3556d138352928b2f4eeea447892f57c005e339557eeddeb4e7b1c970d675",
+    "scripts/generate_v4_2_figures.py": "69a321c1a30117467ccf473efd0788557a6fb4075acca271349a3b49f969c242",
+    "scripts/generate_v4_2_report.py": "f5f33a484d5083805db811f1b7d61d196cce999382723771075cd46e3cfce6fb",
+    "scripts/run_v4_2_h2_ordinal.py": "04943c75856e7feb79159f4818758aae5be4c2f6e72290407c5500f5c204e6f0",
+    "scripts/run_v4_2_h2_participant_level.py": "d90c36d95614164449a78924373fb4007c1f831a14ebacf7a32278d1dd25cf41",
+    "scripts/run_v4_2_h2_repeated_cv.py": "60d1069691be851b0505a17293079c3418388a6831bc8014ec842c12a8831ab6",
+    "scripts/run_v4_2_h2_ridge.py": "44126610b8a3b547a8c5ed6d5d7c6f2b9ba055ae64f23f6071ddfc09e8245305",
+    "scripts/run_v4_2_h4_longitudinal.py": "74802f26099a9dbd981bd155f42c8df3ff039bb713d7121ed8a69cc4e85f08e6",
+    "scripts/run_v4_2_h4_within_session.py": "512940361902dcc99d00db0d755a8e3e084da0d57f996be4e816aa2847ee2423",
+    "scripts/validate_v4_2_walkway_reconstruction.py": "397741aaf9dad3b9605c5800a17142d3549f0f02b2812f754d7c34685ba3b607"
+  }
+}
