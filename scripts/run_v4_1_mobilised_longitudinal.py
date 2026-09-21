@@ -29,6 +29,11 @@ def main():
     config=yaml.safe_load(Path(args.config).read_text()); output=Path(args.output); output.mkdir(parents=True,exist_ok=True)
     mapping={**RELEASE_MAPPING,"features":{**RELEASE_MAPPING["features"],"strlen_30_avg_w":{"canonical":"stride_length_mean","source_unit":"cm","canonical_unit":"m"}}}
     table=build_mobilised_canonical(load_pd_dataset(Path(args.source),mapping),mapping); features=config["mobilised_features"]
+    # Demographics are recorded at baseline in this release; preserve that declared
+    # participant-level covariate across the participant's later visits.
+    table=table.sort_values(["participant_key","months_from_baseline"]).copy()
+    for column in ("age","height","sex","site"):
+        table[column]=table.groupby("participant_key")[column].transform(lambda values: values.ffill().bfill())
     original=[fit(table,feature) for feature in features]; pd.DataFrame(original).to_csv(output/"mobilised_within_between.csv",index=False)
     rng,people=np.random.default_rng(config["seed"]+2),table.participant_key.unique(); rows=[]
     for number in range(config["mobilised_half_resamples"]):
