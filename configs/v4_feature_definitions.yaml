@@ -2,13 +2,13 @@ step_time_cv_longbout_v1:
   construct: variability_rescue
   formula: "100 * sample_sd(all alternating inter-foot intervals) / mean(interval)"
   source: "WearGait annotated walking contact CSV"
-  minimum_cycles: 30
+  minimum_cycles: 15
   context_of_use: trait_candidate
 stride_time_cv_longbout_v1:
   construct: variability_rescue
   formula: "100 * sample_sd(same-foot intervals) / mean(interval)"
   source: "WearGait annotated walking contact CSV"
-  minimum_cycles: 30
+  minimum_cycles: 15
   context_of_use: trait_candidate
 arm_swing_rom_v1:
   construct: arm_axial

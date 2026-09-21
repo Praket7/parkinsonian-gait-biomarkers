@@ -63,7 +63,7 @@ def main():
     output=Path(args.output); output.mkdir(parents=True,exist_ok=True)
     associations.to_csv(output/"primary_associations.csv",index=False)
     full.groupby("clinical_cohort")["context_adjusted_gait_deviation_v1"].agg(["count","mean","std"]).reset_index().to_csv(output/"normative_deviation.csv",index=False)
-    scaling.drop(columns="participant_id",errors="ignore").to_csv(output/"speed_response.csv",index=False)
+    scaling.groupby("clinical_cohort",dropna=False)[["delta_speed","stride_scaling_response_v1","cadence_scaling_response_v1"]].agg(["count","mean","std","median"]).to_csv(output/"speed_response.csv")
     build_evidence(associations,definitions).to_csv(output/"evidence_matrix.csv",index=False)
     (output/"primary_qc.json").write_text(json.dumps({"freeze_checked":True,"n_pd":int(full.clinical_cohort.eq("pd").sum()),"n_contact_recordings":len(contact),"clinical_outcomes_accessed_after_freeze":True},indent=2)+"\n")
 

@@ -1,12 +1,12 @@
-analysis_version: "4.0.4"
-analysis_protocol_version: "4.0.4"
-release_version: "v4.0.4"
+analysis_version: "4.0.5"
+analysis_protocol_version: "4.0.5"
+release_version: "v4.0.5"
 seed: 20260921
 fdr_alpha: 0.05
 bootstrap_iterations: 2000
 permutation_iterations: 5000
 minimum_model_participants: 20
-minimum_cycles: 30
+minimum_cycles: 15
 source_tasks: [SP, HP, TUG, FW]
 contact_association_tasks: [FW]
 convergence:
