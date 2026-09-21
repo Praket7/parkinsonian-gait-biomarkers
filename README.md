@@ -6,7 +6,7 @@ measures dominated by task, speed, site, or short-term state.
 
 ## Current evidence status
 
-The authorized analysis release is complete. In the primary WearGait V1 reference
+The authorized v3.2.4 integration release is complete. In the primary WearGait V1 reference
 walkway analysis (124 SP/HP rows from 62 PD participants), several measures
 were associated with MDS-UPDRS Part III gait-item severity; **no feature met
 the full context-robust trait criterion**. CARE-PD provides a limited,
@@ -23,7 +23,8 @@ bash scripts/reproduce_final_results.sh
 
 Keep authorized, non-redistributable files outside the repository (for example
 in controlled Drive storage), then set `PARKINSON_GAIT_DATA_ROOT` to the folder
-containing `WearGait_PD_V1`, `WearGait_PD_Longitudinal`, and `CARE_PD`.
+containing `WearGait_PD_V1`, `WearGait_PD_Longitudinal`, `CARE_PD`,
+`MobiliseD_CVS_v1_0_0`, `Mendeley_Gait_PD_v2`, and `AdaptiveDBS_Gait_2026`.
 
 ```bash
 export PARKINSON_GAIT_DATA_ROOT="/path/to/authorized/Parkinsonian_Gait_Data"

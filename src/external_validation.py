@@ -61,10 +61,22 @@ def run_external_analysis(root: Path, frozen: Path, config: dict) -> dict:
     features = [item["canonical"] for item in mobi_map["confirmatory_features"].values()]
     rows = [longitudinal_gee(reliable, f, "mdsscore3") for f in features]
     output = pd.DataFrame(rows); output["q_value"] = bh_fdr(output.p_value) if "p_value" in output else float("nan")
+    output["estimability_status"] = output["status"]
+    output["association_status"] = output.q_value.le(.05).map({True:"PASS", False:"FAIL"})
+    output["monitoring_progression_status"] = output.apply(lambda r: "PASS" if r.estimability_status == "OK" and r.association_status == "PASS" else "FAIL" if r.estimability_status == "OK" else "INCOMPLETE", axis=1)
     output["dataset"] = "mobilised_cvs"; output["anchor_compatibility"] = "broad_motor"; output.to_csv(frozen / "mobilised_longitudinal_associations.csv", index=False)
     paired = pd.DataFrame([paired_change_summary(reliable, f, "mdsscore3") for f in features]); paired["dataset"] = "mobilised_cvs"; paired.to_csv(frozen / "mobilised_responsiveness.csv", index=False)
     pd.DataFrame([{ "dataset":"mobilised_cvs", "status":"OK", "n_rows_all":len(mobi), "n_rows_reliable":len(reliable), "n_participants_all":mobi.participant_key.nunique(), "n_participants_reliable":reliable.participant_key.nunique()}]).to_csv(frozen / "mobilised_missingness_summary.csv",index=False)
-    pd.DataFrame([{ "dataset":"mobilised_cvs", "status":"NOT_ESTIMABLE", "reason":"SITE_SENSITIVITY_NOT_YET_IMPLEMENTED"}]).to_csv(frozen / "mobilised_site_robustness.csv",index=False)
+    site_rows=[]
+    for feature in features:
+        estimates=[]
+        for site in sorted(reliable.site.dropna().astype(str).unique()):
+            result=longitudinal_gee(reliable[reliable.site.astype(str).ne(site)], feature, "mdsscore3")
+            if result["status"] == "OK": estimates.append(result["within_effect"])
+        full=output.loc[output.feature.eq(feature),"within_effect"].iloc[0]
+        consistent=bool(estimates) and all((x >= 0) == (full >= 0) for x in estimates)
+        site_rows.append({"dataset":"mobilised_cvs","feature":feature,"n_leave_site_out_models":len(estimates),"status":"PASS" if consistent else "FAIL" if estimates else "NOT_ESTIMABLE","reason":"LEAVE_ONE_SITE_OUT_DIRECTION" if estimates else "SITE_UNAVAILABLE_OR_INSUFFICIENT"})
+    pd.DataFrame(site_rows).to_csv(frozen / "mobilised_site_robustness.csv",index=False)
     tables = mendeley_gait.load_mendeley_processed_tables(root / "Mendeley_Gait_PD_v2")
     indicators = [c for c in tables["cross_sectional"].columns if c in set(mendeley_gait.PROCESSED_COLUMNS.values()) and c != "gait_evaluation"]
     cross=[]
@@ -86,8 +98,8 @@ def run_external_analysis(root: Path, frozen: Path, config: dict) -> dict:
     pd.DataFrame(status).to_csv(frozen / "external_dataset_status.csv",index=False)
     evidence = []
     for row in output.to_dict("records"):
-        evidence.append({"feature": row["feature"], "external_dataset": "mobilised_cvs", "anchor_used": "mdsscore3", "anchor_compatibility": "broad_motor", "cross_sectional_status": "NOT_APPLICABLE", "within_person_status": row["status"], "responsiveness_status": "OK", "measurement_error_status": "NOT_ESTIMABLE", "site_transport_status": "NOT_ESTIMABLE", "state_response_status": "NOT_APPLICABLE", "monitoring_progression_status": row["status"], "trait_status_original": "UNCHANGED", "overall_reason": "Real-world repeated-visit broad-motor association; not a trait claim."})
+        evidence.append({"feature": row["feature"], "external_dataset": "mobilised_cvs", "anchor_used": "mdsscore3", "anchor_compatibility": "broad_motor", "estimability_status":row["estimability_status"],"association_status":row["association_status"], "cross_sectional_status": "NOT_APPLICABLE", "within_person_status": row["estimability_status"], "responsiveness_status": "INCOMPLETE", "measurement_error_status": "NOT_ESTIMABLE", "site_transport_status": "PENDING_TABLE", "state_response_status": "NOT_APPLICABLE", "monitoring_progression_status": row["monitoring_progression_status"], "trait_status_original": "UNCHANGED", "overall_reason": "Real-world repeated-visit broad-motor association; not a trait claim."})
     for row in cross.to_dict("records"):
-        evidence.append({"feature": row["feature"], "external_dataset": "mendeley_gait", "anchor_used": row["anchor_used"], "anchor_compatibility": row["anchor_compatibility"], "cross_sectional_status": row["status"], "within_person_status": "OK", "responsiveness_status": "OK", "measurement_error_status": "NOT_ESTIMABLE", "site_transport_status": "NOT_APPLICABLE", "state_response_status": "TIMING_ANALYSIS_AVAILABLE", "monitoring_progression_status": "SMALL_N_LONGITUDINAL", "trait_status_original": "UNCHANGED", "overall_reason": "Processed-table transport evidence; raw IDs were not joined."})
+        evidence.append({"feature": row["feature"], "external_dataset": "mendeley_gait", "anchor_used": row["anchor_used"], "anchor_compatibility": row["anchor_compatibility"], "estimability_status":row["status"],"association_status":"INCOMPLETE", "cross_sectional_status": row["status"], "within_person_status": "INCOMPLETE", "responsiveness_status": "INCOMPLETE", "measurement_error_status": "NOT_ESTIMABLE", "site_transport_status": "NOT_APPLICABLE", "state_response_status": "TIMING_ANALYSIS_AVAILABLE", "monitoring_progression_status": "INCOMPLETE", "trait_status_original": "UNCHANGED", "overall_reason": "Processed-table transport evidence; raw IDs were not joined."})
     pd.DataFrame(evidence).to_csv(frozen / "external_feature_evidence_matrix.csv", index=False)
     return audits

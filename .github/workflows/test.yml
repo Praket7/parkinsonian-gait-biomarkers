@@ -19,7 +19,9 @@ jobs:
       - run: PYTHONPATH=. pytest -q
       # Release-integrity checks require a complete frozen bundle and therefore
       # run on the public release branch, not intermediate protocol-freeze refs.
-      - if: github.ref == 'refs/heads/main'
+      - if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
         run: python scripts/qa_release_gate.py
+      - if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
+        run: python scripts/check_analysis_freeze.py
       # Licensed research files stay in controlled storage, never CI.
       - run: python -m src.run_pipeline --config configs/analysis.yaml

@@ -1,7 +1,7 @@
 seed: 20260920
-analysis_version: "3.2.3"
-analysis_protocol_version: "3.2.3"
-release_version: "v3.2.3"
+analysis_version: "3.2.4"
+analysis_protocol_version: "3.2.4"
+release_version: "v3.2.4"
 # V1 PKMAS reference summaries contain SP/HP only.  The other straight-walk
 # tasks are used in the contact-signal reliability/context layer.
 primary_tasks: [SP, HP]

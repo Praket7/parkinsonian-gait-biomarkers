@@ -107,6 +107,7 @@ def render(root: Path) -> tuple[str, str, str]:
     cohort = _table_summary(root, "carepd_cohort_results.csv", "CARE-PD cohort results")
     medication = _table_summary(root, "medication_sensitivity.csv", "Medication-state sensitivity")
     controls = _table_summary(root, "negative_controls.csv", "Negative controls")
+    external = _table_summary(root, "mobilised_longitudinal_associations.csv", "Mobilise-D longitudinal associations") + _table_summary(root, "mendeley_cross_sectional_replication.csv", "Mendeley cross-sectional transport")
     limit_lines = [f"- {item}" for item in limits] or ["- Additional limitations were not reported."]
     endpoint_rows = [
         row for row in _frozen_rows(root, "carepd_cohort_results.csv")
@@ -195,6 +196,12 @@ release and code documentation ([5](AAN_bibliography.md#bibliography)).
 
 ## Interpretation for judges
 
+## Independent external evidence
+
+Mobilise-D contributes repeated real-world broad-motor-anchor evidence: walking speed and stride length meet the frozen four-feature FDR criterion, whereas cadence and stride duration do not. Mendeley supplies independent processed-table transport evidence. These contexts do not alter the original WearGait trait decision.
+
+{chr(10).join(external)}
+
 The high-value outcome is a rigorous negative qualification result. It narrows
 an initially plausible candidate: step-time variability survives speed
 adjustment but does not survive the repeatability requirement. That conclusion
@@ -255,6 +262,10 @@ scientific argument concisely.
 ## Negative controls
 
 {chr(10).join(controls)}
+
+## External evidence
+
+{chr(10).join(external)}
 """
     abstract = (
         f"Parkinsonian gait biomarkers (v{version}). We analyzed {n_rows} primary rows from {n_participants} participants using participant-clustered GEE models. "
