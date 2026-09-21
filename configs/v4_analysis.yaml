@@ -1,0 +1,41 @@
+analysis_version: "4.0.6"
+analysis_protocol_version: "4.0.6"
+release_version: "v4.0.6"
+seed: 20260921
+fdr_alpha: 0.05
+bootstrap_iterations: 2000
+permutation_iterations: 5000
+minimum_model_participants: 20
+minimum_cycles: 15
+source_tasks: [SP, HP, TUG, FW]
+contact_association_tasks: [FW]
+convergence:
+  grid: [5, 10, 15, 20, 25, 30, 40, 50]
+  median_relative_error_max: 0.10
+  p90_relative_error_max: 0.20
+quality:
+  interval_min_seconds: 0.25
+  interval_max_seconds: 2.00
+  alternation_fraction_min: 0.80
+  minimum_duration_seconds: 15
+families:
+  variability_rescue: [step_time_cv_longbout_v1, stride_time_cv_longbout_v1]
+  arm_axial: [arm_swing_rom_v1, arm_swing_asymmetry_v1, arm_swing_coordination_v1, axial_rotation_smoothness_v1]
+  normative: [context_adjusted_gait_deviation_v1]
+  speed_response: [stride_scaling_response_v1, cadence_scaling_response_v1]
+  turning: [turn_duration_v1, turn_step_count_v1, turn_step_duration_v1, peak_yaw_velocity_v1, turn_angle_per_step_v1]
+  harmonicity: [harmonic_ratio_ap_v1, harmonic_ratio_vertical_v1, harmonic_ratio_ml_v1, stride_regularity_ap_v1]
+  mobilised_stability: [walking_speed, stride_length_mean, cadence, stride_time_mean]
+speed_construct:
+  step_time_cv_longbout_v1: requires_speed_adjustment
+  stride_time_cv_longbout_v1: requires_speed_adjustment
+  context_adjusted_gait_deviation_v1: requires_speed_adjustment
+  stride_scaling_response_v1: speed_is_part_of_construct
+  cadence_scaling_response_v1: speed_is_part_of_construct
+reliability:
+  icc_candidate_threshold: 0.60
+  preferred_threshold: 0.75
+  bootstrap_iterations: 2000
+  minimum_participants: 8
+resampling:
+  n_jobs: 4

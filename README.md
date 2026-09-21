@@ -13,6 +13,24 @@ the full context-robust trait criterion**. CARE-PD provides a limited,
 translation-only directional check, not a matched feature replication. Read
 [the full report](report/AAN_report.md) before using these findings.
 
+### v4 prospective extension
+
+The separately frozen v4.0.6 redesign tested new candidates without changing
+the v3.2.4 result. A control-trained, severity-blind Context-Adjusted Gait
+Deviation Score was associated with gait-item severity (standardized GEE
+effect 0.301, 95% CI 0.089–0.513, q=0.0055) and remained associated after
+speed adjustment. It is **not** yet a qualified trait biomarker: repeatability
+and transport gates remain unestimated. Prespecified speed-scaling candidates
+were not associated after family-level FDR. The long-bout, arm/axial, and
+harmonic sensor candidates are explicitly `NOT_ESTIMABLE` in this release,
+not negative findings, because the eligible free-walk recordings did not meet
+the required model sample size and have no validated speed covariate.
+
+Mobilise-D half-sample stability independently favored walking speed and stride
+length over cadence and stride duration. See the frozen
+[v4 report](results/v4/frozen/AAN_v4_report.md), [evidence matrix](results/v4/frozen/evidence_matrix.csv),
+and [five figures](results/v4/frozen/figures).
+
 ## Run
 
 ```bash

@@ -1,0 +1,82 @@
+step_time_cv_longbout_v1:
+  construct: variability_rescue
+  formula: "100 * sample_sd(all alternating inter-foot intervals) / mean(interval)"
+  source: "WearGait annotated walking contact CSV"
+  minimum_cycles: 15
+  context_of_use: trait_candidate
+stride_time_cv_longbout_v1:
+  construct: variability_rescue
+  formula: "100 * sample_sd(same-foot intervals) / mean(interval)"
+  source: "WearGait annotated walking contact CSV"
+  minimum_cycles: 15
+  context_of_use: trait_candidate
+arm_swing_rom_v1:
+  construct: arm_axial
+  formula: "mean bilateral wrist sagittal-angle range during QC-passing gait"
+  source: "WearGait bilateral wrist IMU, official readable export required"
+  context_of_use: monitoring_candidate
+arm_swing_asymmetry_v1:
+  construct: arm_axial
+  formula: "abs(left_rom-right_rom)/(0.5*(left_rom+right_rom))"
+  source: "WearGait bilateral wrist IMU, official readable export required"
+  context_of_use: monitoring_candidate
+arm_swing_coordination_v1:
+  construct: arm_axial
+  formula: "maximum absolute normalized cross-correlation of bilateral wrist signals"
+  source: "WearGait bilateral wrist IMU, official readable export required"
+  context_of_use: state_response_candidate
+axial_rotation_smoothness_v1:
+  construct: arm_axial
+  formula: "spectral arc length of trunk yaw angular velocity"
+  source: "WearGait trunk gyroscope, official readable export required"
+  context_of_use: monitoring_candidate
+context_adjusted_gait_deviation_v1:
+  construct: normative
+  formula: "sqrt(z^T Sigma^-1 z), with models and covariance fitted only in controls"
+  source: "WearGait PKMAS reference walkway"
+  context_of_use: trait_candidate
+stride_scaling_response_v1:
+  construct: speed_response
+  formula: "(stride_length_HP-stride_length_SP)/(speed_HP-speed_SP)"
+  source: "WearGait PKMAS reference walkway"
+  context_of_use: challenge_response_candidate
+cadence_scaling_response_v1:
+  construct: speed_response
+  formula: "(cadence_HP-cadence_SP)/(speed_HP-speed_SP)"
+  source: "WearGait PKMAS reference walkway"
+  context_of_use: challenge_response_candidate
+turn_duration_v1:
+  construct: turning
+  formula: "time above preregistered trunk-yaw threshold during a detected turn"
+  source: "WearGait xiphoid gyroscope"
+  context_of_use: challenge_response_candidate
+turn_step_count_v1:
+  construct: turning
+  formula: "prespecified turn-contact count"
+  source: "WearGait xiphoid gyroscope and contacts"
+  context_of_use: challenge_response_candidate
+turn_step_duration_v1:
+  construct: turning
+  formula: "turn duration divided by turn-contact count"
+  source: "WearGait xiphoid gyroscope and contacts"
+  context_of_use: challenge_response_candidate
+peak_yaw_velocity_v1:
+  construct: turning
+  formula: "maximum absolute xiphoid yaw velocity during detected turn"
+  source: "WearGait xiphoid gyroscope"
+  context_of_use: challenge_response_candidate
+turn_angle_per_step_v1:
+  construct: turning
+  formula: "integrated absolute yaw velocity during detected turn"
+  source: "WearGait xiphoid gyroscope"
+  context_of_use: challenge_response_candidate
+harmonic_ratio_ap_v1:
+  construct: harmonicity
+  formula: "even/odd AP trunk-acceleration harmonic power through harmonic 10"
+  source: "WearGait lower-back accelerometer"
+  context_of_use: monitoring_candidate
+stride_regularity_ap_v1:
+  construct: harmonicity
+  formula: "AP trunk-acceleration autocorrelation at the frozen stride lag"
+  source: "WearGait lower-back accelerometer"
+  context_of_use: monitoring_candidate
