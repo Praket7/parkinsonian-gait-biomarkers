@@ -1,8 +1,8 @@
 {
   "schema": "run-provenance-v3",
-  "generated_at_utc": "2026-09-21T01:22:08.760066+00:00",
-  "analysis_results_commit": "59b61f8ca68aa92fa9c07772af226e599895f6e7",
-  "release_tag": "v3.1.1",
+  "generated_at_utc": "2026-09-21T01:51:24.192429+00:00",
+  "analysis_results_commit": "c7c0d67810531612aa038da96ee42f234b5b74ab",
+  "release_tag": "v3.1.2",
   "report_generation_commit": null,
   "analysis_version": "3.1.1",
   "python_version": "3.11.15",
@@ -21,6 +21,7 @@
     "data/metadata/CARE-PD-README.md": "ba346f093693e829445b46bb4793290c82b134a610795fd452e1da85fde79565",
     "data/metadata/acquisition_attempt_2026-09-20.json": "438f8f40061cd718c6e56291785692c8fdabb83a4449f572ddcc7720c4bba27e",
     "data/metadata/carepd-dataverse-api.json": "144b9c74ceb9691511154f9b3eae98481e1614789705c56ffbe97cc5e86cb80f",
+    "data/metadata/carepd-h36m-acquisition-audit.json": "c76c8ea14e02f7713625bd6db5133fe53de487ff626607b2046c919c25f87d3d",
     "data/metadata/carepd-hf-api.json": "0441570fcebd715e54d2d108b6fd87f61080004c92338be8b2f5a1cb45e8db08",
     "data/metadata/carepd_acquisition_manifest.json": "ebf5d54b105f3307de3c3a80bc98734dc6d596bda99c80ab807f1bc061c2abaa",
     "data/metadata/manifest.json": "7f205c0494b81ab5243c88728ab43eee976c50fafc17ec1441611cb00588378e",
@@ -31,7 +32,7 @@
     "data/metadata/weargait_v1_transfer.log": "4bc5ca3d1669158b0baad9ba2bbec6bf7e7ea79c00cb3a9d56a4bdb4bded1069"
   },
   "aggregate_result_sha256": {
-    "results/frozen/carepd_cohort_results.csv": "a26227ed6e84da377ecc5275c1531fd980aa361a338dc9133a050939e32e7bc7",
+    "results/frozen/carepd_cohort_results.csv": "a0fc834412f1826e6834bb2770a20b4d7c227f8bb2c03f31a912fe29a212f602",
     "results/frozen/contact_validation.csv": "9522a4b633263690d12c53905a9c7241ccdd862ead748f2ebd3f8bc82eb37281",
     "results/frozen/context_robustness.csv": "4849129d6350bab3815de8f93277c0b45be2884389664c5c77581cba4d3f9040",
     "results/frozen/feature_evidence_matrix.csv": "ab7ce5c7adacfa7aef94c360827aacecd8a0a59acc06534b31e6aa1c5bb1254a",
