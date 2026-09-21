@@ -4,7 +4,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 import yaml
-from scripts.check_v4_freeze import check
+from check_v4_freeze import check
 from src.mobilised_cvs import load_pd_dataset, build_mobilised_canonical
 from src.v4.mobilised_stability import stability_selection
 from src.v4.carepd_matched import run as carepd_run

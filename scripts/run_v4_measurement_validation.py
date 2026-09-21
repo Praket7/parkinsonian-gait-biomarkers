@@ -30,10 +30,12 @@ def extract_file(path, config):
     p, session=_participant_session(Path(path)); item.update(participant_id=p,session_id=session,site=derive_site(p),task=canonical_task(infer_task(Path(path)) or "unknown"),source="contact_csv")
     steps=np.diff(np.sort(np.r_[left,right])); item["convergence"] = convergence_errors(steps,config["convergence"]["grid"])
     if {"L_Wrist_Pitch","R_Wrist_Pitch"}.issubset(frame):
-        arm=arm_features(frame.L_Wrist_Pitch,frame.R_Wrist_Pitch); item.update({f"arm_{k}":v for k,v in arm.items()})
+        arm=arm_features(frame.L_Wrist_Pitch,frame.R_Wrist_Pitch)
+        item.update({k if k.endswith("_v1") else f"arm_{k}":v for k,v in arm.items()})
     if "Xiphoid_Gyr_Z" in frame and len(time)>2:
-        hz=1/np.nanmedian(np.diff(time)); item.update({f"axial_{k}":v for k,v in axial_rotation_smoothness(frame.Xiphoid_Gyr_Z,hz).items()})
-        turn=turning_features(frame.Xiphoid_Gyr_Z,hz); item.update({f"turn_{k}":v for k,v in turn.items()})
+        hz=1/np.nanmedian(np.diff(time)); axial=axial_rotation_smoothness(frame.Xiphoid_Gyr_Z,hz)
+        item.update({k if k.endswith("_v1") else f"axial_{k}":v for k,v in axial.items()})
+        turn=turning_features(frame.Xiphoid_Gyr_Z,hz); item.update({k if k.endswith("_v1") else f"turn_{k}":v for k,v in turn.items()})
     if "LowerBack_Acc_X" in frame: item["harmonic_ratio_ap_v1"], item["stride_regularity_ap_v1"] = harmonic_ratio(frame.LowerBack_Acc_X), stride_regularity(frame.LowerBack_Acc_X,max(1,len(frame)//10))
     return item
 

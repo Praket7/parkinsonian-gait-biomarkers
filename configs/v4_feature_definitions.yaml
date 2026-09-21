@@ -45,3 +45,38 @@ cadence_scaling_response_v1:
   formula: "(cadence_HP-cadence_SP)/(speed_HP-speed_SP)"
   source: "WearGait PKMAS reference walkway"
   context_of_use: challenge_response_candidate
+turn_duration_v1:
+  construct: turning
+  formula: "time above preregistered trunk-yaw threshold during a detected turn"
+  source: "WearGait xiphoid gyroscope"
+  context_of_use: challenge_response_candidate
+turn_step_count_v1:
+  construct: turning
+  formula: "prespecified turn-contact count"
+  source: "WearGait xiphoid gyroscope and contacts"
+  context_of_use: challenge_response_candidate
+turn_step_duration_v1:
+  construct: turning
+  formula: "turn duration divided by turn-contact count"
+  source: "WearGait xiphoid gyroscope and contacts"
+  context_of_use: challenge_response_candidate
+peak_yaw_velocity_v1:
+  construct: turning
+  formula: "maximum absolute xiphoid yaw velocity during detected turn"
+  source: "WearGait xiphoid gyroscope"
+  context_of_use: challenge_response_candidate
+turn_angle_per_step_v1:
+  construct: turning
+  formula: "integrated absolute yaw velocity during detected turn"
+  source: "WearGait xiphoid gyroscope"
+  context_of_use: challenge_response_candidate
+harmonic_ratio_ap_v1:
+  construct: harmonicity
+  formula: "even/odd AP trunk-acceleration harmonic power through harmonic 10"
+  source: "WearGait lower-back accelerometer"
+  context_of_use: monitoring_candidate
+stride_regularity_ap_v1:
+  construct: harmonicity
+  formula: "AP trunk-acceleration autocorrelation at the frozen stride lag"
+  source: "WearGait lower-back accelerometer"
+  context_of_use: monitoring_candidate

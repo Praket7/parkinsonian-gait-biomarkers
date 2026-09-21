@@ -6,14 +6,15 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import yaml
-from scripts.check_v4_freeze import check
-from scripts.run_v4_measurement_validation import extract_file
+from check_v4_freeze import check
+from run_v4_measurement_validation import extract_file
 from src.walkway import load_walkway_metrics
 from src.weargait_clinical import load_v1_clinical, join_clinical_features
 from src.stats_v3 import association_table, gee_bootstrap, participant_permutations
 from src.v4.normative_deviation import fit_controls, score
 from src.v4.speed_response import response_indices
 from src.v4.evidence_synthesis import build_evidence
+from src.stats import bh_fdr
 
 
 def _paths(root):
@@ -35,6 +36,8 @@ def main():
     # clinical fields are joined only here, after freeze validation.
     contacts=[]
     for path in sorted(root.rglob("*.csv")):
+        if "FW" not in set(config["contact_association_tasks"]) or "FreeWalk" not in path.stem:
+            continue
         try:
             item=extract_file(path,config)
             if item and item.get("longbout_status")=="OK": contacts.append(item)
@@ -47,17 +50,20 @@ def main():
     associations=association_table(primary,["context_adjusted_gait_deviation_v1",*list(scaling.filter(regex="_v1$").columns)],config) if not scaling.empty else association_table(primary,["context_adjusted_gait_deviation_v1"],config)
     if not contact.empty:
         contact_pd=contact[contact.clinical_cohort.eq("pd")]
-        contact_assoc=association_table(contact_pd,[candidate],config)
+        contact_features=[c for c in config["families"]["variability_rescue"] + config["families"]["arm_axial"] + config["families"]["turning"] + config["families"]["harmonicity"] if c in contact_pd and contact_pd[c].notna().sum()]
+        contact_assoc=association_table(contact_pd,contact_features,config)
         associations=pd.concat([associations,contact_assoc],ignore_index=True)
-        boot=gee_bootstrap(contact_pd,contact_assoc,config); perm=participant_permutations(contact_pd,[candidate],config)
+        boot=gee_bootstrap(contact_pd,contact_assoc,config); perm=participant_permutations(contact_pd,contact_features,config)
         associations=associations.merge(boot,on="feature",how="left").merge(perm,on="feature",how="left")
+    definitions=yaml.safe_load(Path("configs/v4_feature_definitions.yaml").read_text())
+    for feature, meta in definitions.items():
+        meta["speed_construct"] = config["speed_construct"].get(feature, "not_applicable")
+    for _, indexes in associations.groupby(associations.feature.map(lambda x: definitions.get(x,{}).get("construct","unknown"))).groups.items():
+        associations.loc[indexes,"q_value"] = bh_fdr(associations.loc[indexes,"p_value"])
     output=Path(args.output); output.mkdir(parents=True,exist_ok=True)
     associations.to_csv(output/"primary_associations.csv",index=False)
     full.groupby("clinical_cohort")["context_adjusted_gait_deviation_v1"].agg(["count","mean","std"]).reset_index().to_csv(output/"normative_deviation.csv",index=False)
     scaling.drop(columns="participant_id",errors="ignore").to_csv(output/"speed_response.csv",index=False)
-    definitions=yaml.safe_load(Path("configs/v4_feature_definitions.yaml").read_text())
-    definitions["context_adjusted_gait_deviation_v1"]["speed_construct"]="requires_speed_adjustment"
-    definitions[candidate]["speed_construct"]="requires_speed_adjustment"
     build_evidence(associations,definitions).to_csv(output/"evidence_matrix.csv",index=False)
     (output/"primary_qc.json").write_text(json.dumps({"freeze_checked":True,"n_pd":int(full.clinical_cohort.eq("pd").sum()),"n_contact_recordings":len(contact),"clinical_outcomes_accessed_after_freeze":True},indent=2)+"\n")
 
