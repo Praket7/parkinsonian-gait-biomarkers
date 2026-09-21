@@ -1,2 +1,13 @@
-feature,overall_measurement_class,overall_reason
-external,insufficient_evidence,External source audits are not inferential evidence.
+feature,external_dataset,anchor_used,anchor_compatibility,cross_sectional_status,within_person_status,responsiveness_status,measurement_error_status,site_transport_status,state_response_status,monitoring_progression_status,trait_status_original,overall_reason
+gait_speed,mobilised_cvs,mdsscore3,broad_motor,NOT_APPLICABLE,OK,OK,NOT_ESTIMABLE,NOT_ESTIMABLE,NOT_APPLICABLE,OK,UNCHANGED,Real-world repeated-visit broad-motor association; not a trait claim.
+stride_length_mean,mobilised_cvs,mdsscore3,broad_motor,NOT_APPLICABLE,OK,OK,NOT_ESTIMABLE,NOT_ESTIMABLE,NOT_APPLICABLE,OK,UNCHANGED,Real-world repeated-visit broad-motor association; not a trait claim.
+cadence,mobilised_cvs,mdsscore3,broad_motor,NOT_APPLICABLE,OK,OK,NOT_ESTIMABLE,NOT_ESTIMABLE,NOT_APPLICABLE,OK,UNCHANGED,Real-world repeated-visit broad-motor association; not a trait claim.
+stride_time_mean,mobilised_cvs,mdsscore3,broad_motor,NOT_APPLICABLE,OK,OK,NOT_ESTIMABLE,NOT_ESTIMABLE,NOT_APPLICABLE,OK,UNCHANGED,Real-world repeated-visit broad-motor association; not a trait claim.
+stride_amplitude_cm,mendeley_gait,Gait evaluation MDS-UPDRS,gait_item,OK,OK,OK,NOT_ESTIMABLE,NOT_APPLICABLE,TIMING_ANALYSIS_AVAILABLE,SMALL_N_LONGITUDINAL,UNCHANGED,Processed-table transport evidence; raw IDs were not joined.
+stride_amplitude_sd_cm,mendeley_gait,Gait evaluation MDS-UPDRS,gait_item,OK,OK,OK,NOT_ESTIMABLE,NOT_APPLICABLE,TIMING_ANALYSIS_AVAILABLE,SMALL_N_LONGITUDINAL,UNCHANGED,Processed-table transport evidence; raw IDs were not joined.
+gait_speed_m_s,mendeley_gait,Gait evaluation MDS-UPDRS,gait_item,OK,OK,OK,NOT_ESTIMABLE,NOT_APPLICABLE,TIMING_ANALYSIS_AVAILABLE,SMALL_N_LONGITUDINAL,UNCHANGED,Processed-table transport evidence; raw IDs were not joined.
+stride_speed_sd,mendeley_gait,Gait evaluation MDS-UPDRS,gait_item,OK,OK,OK,NOT_ESTIMABLE,NOT_APPLICABLE,TIMING_ANALYSIS_AVAILABLE,SMALL_N_LONGITUDINAL,UNCHANGED,Processed-table transport evidence; raw IDs were not joined.
+speed_correlation,mendeley_gait,Gait evaluation MDS-UPDRS,gait_item,OK,OK,OK,NOT_ESTIMABLE,NOT_APPLICABLE,TIMING_ANALYSIS_AVAILABLE,SMALL_N_LONGITUDINAL,UNCHANGED,Processed-table transport evidence; raw IDs were not joined.
+foot_lift_cm,mendeley_gait,Gait evaluation MDS-UPDRS,gait_item,OK,OK,OK,NOT_ESTIMABLE,NOT_APPLICABLE,TIMING_ANALYSIS_AVAILABLE,SMALL_N_LONGITUDINAL,UNCHANGED,Processed-table transport evidence; raw IDs were not joined.
+foot_lift_sd_cm,mendeley_gait,Gait evaluation MDS-UPDRS,gait_item,OK,OK,OK,NOT_ESTIMABLE,NOT_APPLICABLE,TIMING_ANALYSIS_AVAILABLE,SMALL_N_LONGITUDINAL,UNCHANGED,Processed-table transport evidence; raw IDs were not joined.
+arm_swing_indicator,mendeley_gait,Gait evaluation MDS-UPDRS,gait_item,OK,OK,OK,NOT_ESTIMABLE,NOT_APPLICABLE,TIMING_ANALYSIS_AVAILABLE,SMALL_N_LONGITUDINAL,UNCHANGED,Processed-table transport evidence; raw IDs were not joined.

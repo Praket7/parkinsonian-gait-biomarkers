@@ -1,8 +1,8 @@
 {
-  "analysis_config_sha256": "91ce3f751c9ba8c670cbb7d3d48b7e6016e15b4f9f7fb6c21ef0e77dc36b7ebc",
+  "analysis_config_sha256": "96b789123ad5ffb39da688b91b587b93da6d5da802a4bee0fc4d3004fa19f7f8",
   "analysis_protocol_sha256": "4e6c8fc856fd046f8b34449dd4f728e756cc24bed95c672498684b4eabd9ccb8",
   "feature_mapping_sha256": "221335b448e0ad1c5a5bfc4315057e1aa63216f68517c3fb3bfe2db7f90a2776",
-  "external_mappings_sha256": "67c5bc910fa7575e8d422aa4a2bc3e594940b5390e8ec16f701a8503f169f0a5",
-  "analysis_freeze_commit_sha": "ce6a80d9e5faa941316e953df1f2b054d4945240",
+  "external_mappings_sha256": "e783042d656adc5f082238dcdc0002dd61ce272a0c4df3ffdc26bcc964a76b4e",
+  "analysis_freeze_commit_sha": "cba0923d0d5e69c37f8ddfa35bf525ea3fbd5fbe",
   "schema": "analysis-freeze-v1"
 }
