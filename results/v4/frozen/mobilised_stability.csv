@@ -1,0 +1,5 @@
+feature,n_participants,selection_probability,sign_consistency,median_standardized_effect,status
+gait_speed,574,1.0,1.0,-0.2333555997618989,OK
+stride_length_mean,574,1.0,1.0,-0.2507997057276341,OK
+cadence,574,0.06,0.97,-0.053825258791566855,OK
+stride_time_mean,574,0.01,0.85,0.02897920308564992,OK

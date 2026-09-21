@@ -1,0 +1,26 @@
+{
+  "schema": "v4-protocol-freeze-v1",
+  "analysis_freeze_commit_sha": "91f8f6053ec17a333ed799f35e5ef9486ec63dec",
+  "files": {
+    "configs/v4_analysis.yaml": "62dc68909f06ef6157cdb0265b55070d399a31dcdbb10546606dce58df66b44c",
+    "configs/v4_feature_definitions.yaml": "06048b4c3d21ce3ecf70efde8760f6583573c239e847a7b55e0936e98e9cb6a5",
+    "configs/external_mappings.yaml": "e783042d656adc5f082238dcdc0002dd61ce272a0c4df3ffdc26bcc964a76b4e",
+    "docs/v4_preregistration.md": "e818fdc8a8343e5b9cc6010d6d2df2e22c94a8380e6c321a86565e0df37bce8d",
+    "src/v4/__init__.py": "bf18c2e001105108aa4c931a575db9bfbe9d28202dc420d56070b2a767b63157",
+    "src/v4/arm_swing.py": "fa76e3a32500b722b641a8b566fed84c99216dc769a31ccd86a223a87e522a40",
+    "src/v4/axial_control.py": "28f16c98476cdb64e56f3967b03225b41bff632424ec71b67aebf3d07cdb269e",
+    "src/v4/carepd_matched.py": "5d7409f4100638f141acc2d3475902e212bf90f937fea8a086e61a8bc0249424",
+    "src/v4/evidence_synthesis.py": "1768b4b55c6c76a15636541cc84836831383311b7dd4d9a3421a0fa74b8ae014",
+    "src/v4/gait_events.py": "cc265249657430c473213d61947eae9a8d6962c49cc2a0a2b6c2a0ebed4fd506",
+    "src/v4/harmonic_features.py": "2dc1c75bb8d146570f3495f69a7c345a2f2beeb6a8efbac20fedee217acecc72",
+    "src/v4/mobilised_stability.py": "3cfe47c9d4f6059e159c9672391b73ff6a32b497f927ffdac9887c87584722ac",
+    "src/v4/normative_deviation.py": "c3c255ea50d6f44f608f50a7c95518632c0ec31fbe4b4c53319e01b89fe74fef",
+    "src/v4/qualification.py": "8f72cca1e90560096bb1d482790f57dae435ec8fe7337e65ad2c0f5f8e7d2b25",
+    "src/v4/speed_response.py": "6833abe6f41c27293ed5865fdcdde502e6edf15e8a03af42386c22bef9b99ad8",
+    "src/v4/turning.py": "855ebe75b3ca5bd2de949825e9f8ede6b22ee50757c88687aa7911d2712e179d",
+    "src/v4/variability_rescue.py": "1ee9a9f7c806e99ff5430469f00565e40f6d844535498817f55824de8fbd1d01",
+    "scripts/run_v4_measurement_validation.py": "39794d61400b56ef67aebe150189685bb90c62eb527d02751821fa46aa90a58f",
+    "scripts/run_v4_primary_analysis.py": "c8f651230bc628d97569679884170123579f5ef6d371b8ea859ae23051ae929d",
+    "scripts/run_v4_external_validation.py": "fa988c16c4b9dd75e4d7b81e699d6d22d74726313e83920b81bf181f52ef5010"
+  }
+}

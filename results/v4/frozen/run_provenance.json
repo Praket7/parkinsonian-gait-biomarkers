@@ -1,0 +1,10 @@
+{
+  "schema": "v4-run-provenance-v1",
+  "row_level_data_published": false,
+  "inputs_sha256": {
+    "configs/v4_analysis.yaml": "62dc68909f06ef6157cdb0265b55070d399a31dcdbb10546606dce58df66b44c",
+    "configs/v4_feature_definitions.yaml": "06048b4c3d21ce3ecf70efde8760f6583573c239e847a7b55e0936e98e9cb6a5",
+    "docs/v4_preregistration.md": "e818fdc8a8343e5b9cc6010d6d2df2e22c94a8380e6c321a86565e0df37bce8d",
+    "results/v4/frozen/protocol_manifest.json": "4262f3b693cc33dd82f9657945c330996d1967e51d63cfc156bff703d31e6740"
+  }
+}
