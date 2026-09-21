@@ -13,7 +13,7 @@ class LongitudinalStatsTests(unittest.TestCase):
         self.assertEqual(result.anchor_within.tolist(), [-1,1,-1,1])
 
     def test_measurement_error_and_change_are_explicit(self):
-        frame = pd.DataFrame({"participant_key":list("abcde")*2,"visit_order":[0]*5+[1]*5,"feature":[0]*5+[2]*5})
+        frame = pd.DataFrame({"participant_key":list("abcde")*2,"visit_order":[0]*5+[1]*5,"feature":[0]*5+[2]*5,"reliability_context":["stable_repeat"]*10})
         row=measurement_error(frame,"feature")
         self.assertEqual(row["status"],"OK")
         self.assertEqual(row["proportion_exceeding_mdc95"], 0)

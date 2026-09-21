@@ -1,4 +1,4 @@
-mapping_version: "3.2.2"
+mapping_version: "3.2.3"
 mobilised_cvs:
   participant: participantid
   visit: visit.number
@@ -6,7 +6,11 @@ mobilised_cvs:
   valid_days: n_days_w
   minimum_valid_days: 3
   visit_months: {t1: 0, t2: 6, t3: 12, t4: 18, t5: 24}
-  confirmatory_features: {ws_30_avg_w: gait_speed, strlen_30_avg_w: stride_length_mean, cadence_30_avg_w: cadence, strdur_30_avg_w: stride_time_mean}
+  confirmatory_features:
+    ws_30_avg_w: {canonical: gait_speed, source_unit: m/s, canonical_unit: m/s}
+    strlen_30_avg_w: {canonical: stride_length_mean, source_unit: cm, canonical_unit: m}
+    cadence_30_avg_w: {canonical: cadence, source_unit: steps/min, canonical_unit: steps/min}
+    strdur_30_avg_w: {canonical: stride_time_mean, source_unit: s, canonical_unit: s}
   anchor_compatibility: broad_motor
 mendeley_gait:
   processed_tables_only: true

@@ -27,6 +27,8 @@ def standardized_response_mean(change) -> float:
 
 
 def measurement_error(repeated: pd.DataFrame, feature: str, participant: str = "participant_key") -> dict:
+    if "reliability_context" not in repeated or not repeated.reliability_context.eq("stable_repeat").all():
+        return {"feature": feature, "status": NOT_ESTIMABLE, "reason": "NO_STABLE_REPEATABILITY_CONTEXT", "n_participants": 0}
     pairs = repeated.pivot_table(index=participant, columns="visit_order", values=feature, aggfunc="mean").dropna()
     if pairs.shape[0] < 5 or pairs.shape[1] < 2:
         return {"feature": feature, "status": NOT_ESTIMABLE, "n_participants": int(pairs.shape[0])}
@@ -42,11 +44,14 @@ def measurement_error(repeated: pd.DataFrame, feature: str, participant: str = "
 
 def paired_change_summary(table: pd.DataFrame, feature: str, anchor: str, participant: str = "participant_key") -> dict:
     frame = table[[participant, "visit_order", feature, anchor]].dropna().sort_values([participant, "visit_order"])
-    first_last = frame.groupby(participant, as_index=False).agg({feature: lambda x: x.iloc[-1] - x.iloc[0], anchor: lambda x: x.iloc[-1] - x.iloc[0]})
+    total = int(frame[participant].nunique())
+    counts = frame.groupby(participant).visit_order.nunique()
+    frame = frame[frame[participant].isin(counts[counts >= 2].index)]
+    first_last = frame.groupby(participant, as_index=False).agg({feature: lambda x: x.iloc[-1] - x.iloc[0], anchor: lambda x: x.iloc[-1] - x.iloc[0], "visit_order": lambda x: x.iloc[-1] - x.iloc[0]})
     if len(first_last) < 2:
-        return {"feature": feature, "status": NOT_ESTIMABLE, "n_participants": int(len(first_last))}
+        return {"feature": feature, "status": NOT_ESTIMABLE, "n_participants_total": total, "n_repeated_participants": int(len(first_last))}
     rho = spearmanr(first_last[feature], first_last[anchor]).statistic if len(first_last) > 2 else np.nan
-    return {"feature": feature, "status": OK, "n_participants": int(len(first_last)), "mean_change": float(first_last[feature].mean()),
+    return {"feature": feature, "status": OK, "n_participants_total": total, "n_repeated_participants": int(len(first_last)), "n_anchor_changers": int(first_last[anchor].ne(0).sum()), "median_followup_visits": float(first_last.visit_order.median()), "mean_change": float(first_last[feature].mean()),
             "median_change": float(first_last[feature].median()), "srm": standardized_response_mean(first_last[feature]),
             "delta_anchor_spearman_rho": float(rho) if np.isfinite(rho) else np.nan}
 

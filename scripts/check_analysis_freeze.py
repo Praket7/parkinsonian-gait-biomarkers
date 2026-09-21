@@ -23,7 +23,7 @@ def check_freeze(root: Path) -> list[str]:
     failures: list[str] = []
     if manifest.get("schema") != "analysis-freeze-v1":
         failures.append("analysis freeze schema is not analysis-freeze-v1")
-    paths = {"analysis_config_sha256": "configs/analysis.yaml", "analysis_protocol_sha256": "docs/v3_2_analysis_freeze.md", "feature_mapping_sha256": "docs/external_feature_mapping.md"}
+    paths = {"analysis_config_sha256": "configs/analysis.yaml", "analysis_protocol_sha256": "docs/v3_2_analysis_freeze.md", "feature_mapping_sha256": "docs/external_feature_mapping.md", "external_mappings_sha256": "configs/external_mappings.yaml"}
     for key, relative in paths.items():
         path = root / relative
         if not path.is_file():

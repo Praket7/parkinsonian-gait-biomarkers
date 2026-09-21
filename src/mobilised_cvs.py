@@ -169,7 +169,8 @@ def load_pd_dataset(root: Path, mapping: dict | None = None) -> pd.DataFrame:
     archive, member = find_pd_dataset_member(root)
     with zipfile.ZipFile(archive) as handle:
         frame = pd.read_csv(handle.open(member), low_memory=False)
-    needed = {mapping["participant"], mapping["visit"], mapping["anchor"], mapping["valid_days"], *mapping["features"]}
+    features = mapping.get("features") or mapping["confirmatory_features"]
+    needed = {mapping["participant"], mapping["visit"], mapping["anchor"], mapping["valid_days"], *features}
     missing = needed - set(frame.columns)
     if missing:
         raise ValueError(f"Mobilise-D mapped release fields missing: {sorted(missing)}")
@@ -193,7 +194,15 @@ def build_mobilised_canonical(table: pd.DataFrame, mapping: dict | None = None) 
                            "months_from_baseline": table[mapping["visit"]].astype(str).str.lower().map(months),
                            "mdsscore3": pd.to_numeric(table[mapping["anchor"]], errors="coerce"),
                            "n_days_w": pd.to_numeric(table[mapping["valid_days"]], errors="coerce")})
-    for source, target in mapping["features"].items(): output[target] = pd.to_numeric(table[source], errors="coerce")
+    features = mapping.get("features") or mapping["confirmatory_features"]
+    for source, definition in features.items():
+        target = definition if isinstance(definition, str) else definition["canonical"]
+        values = pd.to_numeric(table[source], errors="coerce")
+        if isinstance(definition, dict) and definition.get("source_unit") == "cm" and definition.get("canonical_unit") == "m":
+            values = values / 100
+        output[target] = values
+    if "stride_length_mean" in output and not output.stride_length_mean.dropna().between(.3, 2.5).all():
+        raise ValueError("Mobilise-D stride-length conversion failed plausibility guard")
     for source, target in (("participant.site", "site"), ("age", "age"), ("height", "height"), ("gender", "sex"), ("ledd", "ledd")):
         if source in table: output[target] = table[source]
     output["reliable_week_status"] = output.n_days_w.ge(3).map({True: "PASS", False: "FAIL"})

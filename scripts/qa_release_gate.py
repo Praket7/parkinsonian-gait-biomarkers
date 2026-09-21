@@ -18,6 +18,7 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from src.stats import bh_fdr
 from src.stats_v3 import site_sign_consistency
+from scripts.check_analysis_freeze import check_freeze
 
 
 def _sha256(path: Path) -> str:
@@ -271,6 +272,7 @@ def _ids(path: Path) -> set[str]:
 def main(root: str) -> int:
     base = Path(root)
     failures: list[str] = []
+    failures.extend(check_freeze(base))
     raw = base / "data" / "raw"
     manifest_path = base / "results" / "frozen" / "results.json"
     if not manifest_path.exists():

@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 import pandas as pd
+import yaml
 
 from . import mendeley_gait, mobilised_cvs, adaptive_dbs
 from .longitudinal_stats import longitudinal_gee, paired_change_summary
@@ -52,9 +53,12 @@ def run_external_analysis(root: Path, frozen: Path, config: dict) -> dict:
     """Execute approved, archive-native external analyses; write aggregates only."""
     audits = run_external_audits(root, frozen, config)
     status = []
-    mobi = mobilised_cvs.build_mobilised_canonical(mobilised_cvs.load_pd_dataset(root / "MobiliseD_CVS_v1_0_0"))
+    mapping = yaml.safe_load((Path("configs") / "external_mappings.yaml").read_text())
+    mobi_map = mapping["mobilised_cvs"]
+    runtime_map = {"participant": mobi_map["participant"], "visit": mobi_map["visit"], "anchor": mobi_map["mds_updrs_iii"], "valid_days": mobi_map["valid_days"], "confirmatory_features": mobi_map["confirmatory_features"]}
+    mobi = mobilised_cvs.build_mobilised_canonical(mobilised_cvs.load_pd_dataset(root / "MobiliseD_CVS_v1_0_0", runtime_map), runtime_map)
     reliable = mobilised_cvs.filter_reliable_week(mobi)
-    features = list(mobilised_cvs.RELEASE_MAPPING["features"].values())
+    features = [item["canonical"] for item in mobi_map["confirmatory_features"].values()]
     rows = [longitudinal_gee(reliable, f, "mdsscore3") for f in features]
     output = pd.DataFrame(rows); output["q_value"] = bh_fdr(output.p_value) if "p_value" in output else float("nan")
     output["dataset"] = "mobilised_cvs"; output["anchor_compatibility"] = "broad_motor"; output.to_csv(frozen / "mobilised_longitudinal_associations.csv", index=False)
@@ -71,9 +75,19 @@ def run_external_analysis(root: Path, frozen: Path, config: dict) -> dict:
     six=pd.DataFrame([paired_change_summary(tables["six_month"],f,"gait_evaluation") for f in indicators]); six["dataset"]="mendeley_gait"; six.to_csv(frozen / "mendeley_longitudinal_change.csv",index=False)
     timing=tables["medication_timing"]; timing_rows=[]
     for f in indicators:
-        frame=timing[[f,"time_since_medication_min"]].dropna(); timing_rows.append({"dataset":"mendeley_gait","feature":f,"n":len(frame),"spearman_rho":spearmanr(frame[f],frame.time_since_medication_min).statistic if len(frame)>2 else float("nan"),"status":"OK" if len(frame)>=3 else "NOT_ESTIMABLE"})
+        frame=timing[["participant_key", f,"time_since_medication_min"]].dropna().copy()
+        frame["feature_within"] = frame[f] - frame.groupby("participant_key")[f].transform("mean")
+        frame["timing_within"] = frame.time_since_medication_min - frame.groupby("participant_key").time_since_medication_min.transform("mean")
+        usable = frame.groupby("participant_key").size(); frame = frame[frame.participant_key.isin(usable[usable >= 2].index)]
+        timing_rows.append({"dataset":"mendeley_gait","feature":f,"n_rows":len(frame),"n_repeated_participants":frame.participant_key.nunique(),"within_person_spearman_rho":spearmanr(frame.feature_within,frame.timing_within).statistic if len(frame)>2 else float("nan"),"status":"OK" if frame.participant_key.nunique()>=2 else "NOT_ESTIMABLE"})
     pd.DataFrame(timing_rows).to_csv(frozen / "mendeley_medication_timing.csv",index=False)
     pd.DataFrame([{ "dataset":"adaptive_dbs", "status":"NOT_ESTIMABLE", "reason":"STATE_PAIR_MAPPING_NOT_FROZEN"}]).to_csv(frozen / "adaptive_dbs_state_sensitivity.csv",index=False)
     status += [{"dataset":"mobilised_cvs","enabled":True,"status":"OK","mapping_status":"APPROVED","reason":"RELEASE_MAPPING_V3_2_2"},{"dataset":"mendeley_gait","enabled":True,"status":"OK","mapping_status":"APPROVED","reason":"PROCESSED_TABLES_V3_2_2"},{"dataset":"adaptive_dbs","enabled":True,"status":"NOT_ESTIMABLE","mapping_status":"NOT_APPROVED","reason":"STATE_PAIR_MAPPING_NOT_FROZEN"}]
     pd.DataFrame(status).to_csv(frozen / "external_dataset_status.csv",index=False)
+    evidence = []
+    for row in output.to_dict("records"):
+        evidence.append({"feature": row["feature"], "external_dataset": "mobilised_cvs", "anchor_used": "mdsscore3", "anchor_compatibility": "broad_motor", "cross_sectional_status": "NOT_APPLICABLE", "within_person_status": row["status"], "responsiveness_status": "OK", "measurement_error_status": "NOT_ESTIMABLE", "site_transport_status": "NOT_ESTIMABLE", "state_response_status": "NOT_APPLICABLE", "monitoring_progression_status": row["status"], "trait_status_original": "UNCHANGED", "overall_reason": "Real-world repeated-visit broad-motor association; not a trait claim."})
+    for row in cross.to_dict("records"):
+        evidence.append({"feature": row["feature"], "external_dataset": "mendeley_gait", "anchor_used": row["anchor_used"], "anchor_compatibility": row["anchor_compatibility"], "cross_sectional_status": row["status"], "within_person_status": "OK", "responsiveness_status": "OK", "measurement_error_status": "NOT_ESTIMABLE", "site_transport_status": "NOT_APPLICABLE", "state_response_status": "TIMING_ANALYSIS_AVAILABLE", "monitoring_progression_status": "SMALL_N_LONGITUDINAL", "trait_status_original": "UNCHANGED", "overall_reason": "Processed-table transport evidence; raw IDs were not joined."})
+    pd.DataFrame(evidence).to_csv(frozen / "external_feature_evidence_matrix.csv", index=False)
     return audits

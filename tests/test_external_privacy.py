@@ -42,6 +42,7 @@ def test_freeze_checks_protocol_and_release_identity(tmp_path: Path):
     frozen = tmp_path / "results" / "frozen"
     frozen.mkdir(parents=True)
     (tmp_path / "configs" / "analysis.yaml").write_text("analysis_protocol_version: '3.2.1'\nrelease_version: 'v3.2.1'\n")
+    (tmp_path / "configs" / "external_mappings.yaml").write_text("mapping_version: 'test'\n")
     (tmp_path / "docs" / "v3_2_analysis_freeze.md").write_text("protocol\n")
     (tmp_path / "docs" / "external_feature_mapping.md").write_text("mapping\n")
     digest = lambda path: __import__("hashlib").sha256(path.read_bytes()).hexdigest()
@@ -49,7 +50,8 @@ def test_freeze_checks_protocol_and_release_identity(tmp_path: Path):
         "schema": "analysis-freeze-v1",
         "analysis_config_sha256": digest(tmp_path / "configs" / "analysis.yaml"),
         "analysis_protocol_sha256": digest(tmp_path / "docs" / "v3_2_analysis_freeze.md"),
-        "feature_mapping_sha256": digest(tmp_path / "docs" / "external_feature_mapping.md"),
+            "feature_mapping_sha256": digest(tmp_path / "docs" / "external_feature_mapping.md"),
+            "external_mappings_sha256": digest(tmp_path / "configs" / "external_mappings.yaml"),
     }))
     (frozen / "results.json").write_text(json.dumps({"analysis_protocol_version": "3.2.1", "release_version": "v3.2.1"}))
     (frozen / "run_provenance.json").write_text(json.dumps({"analysis_protocol_version": "3.2.1", "release_version": "v3.2.1"}))
@@ -65,10 +67,11 @@ def test_freeze_rejects_mismatched_release_identity(tmp_path: Path):
     protocol = tmp_path / "docs" / "v3_2_analysis_freeze.md"
     mapping = tmp_path / "docs" / "external_feature_mapping.md"
     config.write_text("analysis_protocol_version: '3.2.1'\nrelease_version: 'v3.2.1'\n")
+    (tmp_path / "configs" / "external_mappings.yaml").write_text("mapping_version: 'test'\n")
     protocol.write_text("protocol\n")
     mapping.write_text("mapping\n")
     digest = lambda path: __import__("hashlib").sha256(path.read_bytes()).hexdigest()
-    (frozen / "analysis_freeze_manifest.json").write_text(json.dumps({"schema": "analysis-freeze-v1", "analysis_config_sha256": digest(config), "analysis_protocol_sha256": digest(protocol), "feature_mapping_sha256": digest(mapping)}))
+    (frozen / "analysis_freeze_manifest.json").write_text(json.dumps({"schema": "analysis-freeze-v1", "analysis_config_sha256": digest(config), "analysis_protocol_sha256": digest(protocol), "feature_mapping_sha256": digest(mapping), "external_mappings_sha256": digest(tmp_path / "configs" / "external_mappings.yaml")}))
     (frozen / "results.json").write_text(json.dumps({"analysis_protocol_version": "3.2.1", "release_version": "v3.1.3"}))
     failures = check_freeze(tmp_path)
     assert "results and config release_version differ" in failures
