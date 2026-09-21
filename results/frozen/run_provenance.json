@@ -1,16 +1,18 @@
 {
   "schema": "run-provenance-v3",
-  "generated_at_utc": "2026-09-21T01:54:33.123892+00:00",
-  "analysis_results_commit": "33804fdee6fe701b5e615c2aa4c3b43d821d5ef1",
-  "release_tag": "v3.1.2",
+  "generated_at_utc": "2026-09-21T02:31:19.847892+00:00",
+  "analysis_results_commit": "86a90a58697d4363ca77c5b16fd7c54e4c12a425",
+  "release_tag": "v3.1.3",
+  "release_version": "v3.1.3",
+  "analysis_protocol_version": "3.1.1",
   "report_generation_commit": null,
   "analysis_version": "3.1.1",
   "python_version": "3.11.15",
-  "config_sha256": "5608d2b2736d95b60285176c02703f3ca5ae8dc4578cf380f0d57136a9863555",
+  "config_sha256": "4361f56a7d1211258c053c15118cbe1f17c265c2dd794fc1dba91be21b0359c3",
   "dependency_lock_sha256": "e288c943e8071278353d01bb202c7d305c4ec9c595f9331e7a0c9041fdba80f0",
   "config": {
     "path": "configs/analysis.yaml",
-    "sha256": "5608d2b2736d95b60285176c02703f3ca5ae8dc4578cf380f0d57136a9863555"
+    "sha256": "4361f56a7d1211258c053c15118cbe1f17c265c2dd794fc1dba91be21b0359c3"
   },
   "dependencies": {
     "lockfile": "requirements-lock.txt",
@@ -42,7 +44,7 @@
     "results/frozen/participant_flow.csv": "70f10dc21a2bfe41812c667ed5ace2f01f136620c6214433e9a3cec77bd4dc32",
     "results/frozen/primary_associations.csv": "c94488da2b5541bfa93b4667b95da42299fcc42df81ca90c87ee24ab38c24f67",
     "results/frozen/reliability.csv": "cbc1c7e3589a9edb168c1324f64aafe6857ae68b53379f0a292fdfd7ba6f8aaa",
-    "results/frozen/results.json": "38ec960748b5ffb02b5feec0726d478ed09c74b463396391cb6091dd2bb17189"
+    "results/frozen/results.json": "d376bc98635e101a1091a6ab271c93592e45fae87a64f8a430588b4b659eb418"
   },
   "privacy": {
     "provenance_script_read_row_level_data": false,
