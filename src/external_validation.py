@@ -62,7 +62,7 @@ def run_external_analysis(root: Path, frozen: Path, config: dict) -> dict:
     pd.DataFrame([{ "dataset":"mobilised_cvs", "status":"OK", "n_rows_all":len(mobi), "n_rows_reliable":len(reliable), "n_participants_all":mobi.participant_key.nunique(), "n_participants_reliable":reliable.participant_key.nunique()}]).to_csv(frozen / "mobilised_missingness_summary.csv",index=False)
     pd.DataFrame([{ "dataset":"mobilised_cvs", "status":"NOT_ESTIMABLE", "reason":"SITE_SENSITIVITY_NOT_YET_IMPLEMENTED"}]).to_csv(frozen / "mobilised_site_robustness.csv",index=False)
     tables = mendeley_gait.load_mendeley_processed_tables(root / "Mendeley_Gait_PD_v2")
-    indicators = [c for c in tables["cross_sectional"].columns if c in set(mendeley_gait.PROCESSED_COLUMNS.values())]
+    indicators = [c for c in tables["cross_sectional"].columns if c in set(mendeley_gait.PROCESSED_COLUMNS.values()) and c != "gait_evaluation"]
     cross=[]
     for f in indicators:
         frame=tables["cross_sectional"][[f,"gait_evaluation"]].dropna(); rho=spearmanr(frame[f],frame.gait_evaluation).statistic if len(frame)>2 else float("nan")
