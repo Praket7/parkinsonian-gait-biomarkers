@@ -1,0 +1,12 @@
+analysis_version: "4.4.0"
+parent_release: "v4.3.0"
+endpoint_name: "context_adjusted_gait_deviation_v1_median_4pass"
+aggregation: "featurewise_median"
+required_valid_passes_per_session: 4
+bootstrap_iterations: 2000
+seed: 20260923
+reliability_lower_ci_threshold: 0.80
+clinical_responsiveness:
+  required_anchor: "repeated MDS-UPDRS Part III collected at each gait session"
+  required_context: "medication state and time since medication at each gait session"
+  status_if_missing: "NOT_ESTIMABLE"

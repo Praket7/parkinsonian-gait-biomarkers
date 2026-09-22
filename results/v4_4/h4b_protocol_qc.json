@@ -1,0 +1,11 @@
+{
+  "protocol": "4.4.0",
+  "parent_release": "v4.3.0",
+  "model_refit": false,
+  "v4_3_bridge": "PASS",
+  "endpoint": "context_adjusted_gait_deviation_v1_median_4pass",
+  "required_valid_passes_per_session": 4,
+  "eligible_session_endpoints": 181,
+  "excluded_session_files": 3,
+  "clinical_responsiveness_status": "NOT_ESTIMABLE"
+}

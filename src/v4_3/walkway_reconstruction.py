@@ -100,3 +100,23 @@ def reconstruct_csv(path: str) -> dict[str, float]:
     columns = ["Time", "GeneralEvent", "L Foot Contact", "R Foot Contact", "Walkway_X", "Walkway_Y", "WalkwayFoot"]
     return summarize_footfalls(initial_footfalls(pd.read_csv(path, usecols=columns, low_memory=False)))
 
+
+def reconstruct_passes_csv(path: str) -> pd.DataFrame:
+    """Return independently reconstructed valid walkway passes from one CSV.
+
+    This deliberately does not pool passes.  A caller may define a new
+    multi-pass protocol endpoint, while the original file-level reconstruction
+    remains unchanged for the frozen v4.3 endpoint.
+    """
+    columns = ["Time", "GeneralEvent", "L Foot Contact", "R Foot Contact", "Walkway_X", "Walkway_Y", "WalkwayFoot"]
+    events = initial_footfalls(pd.read_csv(path, usecols=columns, low_memory=False))
+    rows: list[dict[str, float | int]] = []
+    for passage, group in events.groupby("pass", sort=True):
+        try:
+            rows.append({"pass": int(passage), **summarize_footfalls(group)})
+        except ValueError:
+            continue
+    result = pd.DataFrame(rows)
+    if result.empty:
+        raise ValueError("no valid independently reconstructed walking passes")
+    return result

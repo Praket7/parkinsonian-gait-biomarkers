@@ -1,0 +1,7 @@
+claim,status,evidence,interpretation
+V4.3 raw-to-PKMAS analytical bridge,PASS,All eight V1 inputs passed locked analytical-equivalence gates on 252 matched trials.,Raw walkway reconstruction is analytically valid.
+V4.3 frozen single-score test-retest reliability,FAIL,"Self-paced ICC(A,1)=0.707 (CI 0.462 to 0.844); hurried ICC(A,1)=0.390 (CI 0.073 to 0.657).",The original score is not a qualified stable trait biomarker.
+V4.4 four-pass median protocol reliability,FAIL,"HurriedPace: ICC(A,1)=0.282, 95% CI -0.001 to 0.547; MDC95=1.946.",A new four-pass median endpoint is not qualified unless its lower CI reaches 0.80.
+V4.4 four-pass median protocol reliability,FAIL,"SelfPace: ICC(A,1)=0.647, 95% CI 0.331 to 0.819; MDC95=1.928.",A new four-pass median endpoint is not qualified unless its lower CI reaches 0.80.
+v4.4 overlapping-site transport sensitivity,INCOMPLETE,"VA_Seattle: effect=0.578, 95% CI 0.186 to 0.970; ONE_OVERLAPPING_SITE_ONLY; CONTROL_REFERENCE_DERIVED_FROM_OTHER_SITE; NO_OUTCOME_TUNING; NOT_SUFFICIENT_FOR_GENERAL_TRANSPORT_CLAIM","A single overlapping-site holdout is a transport sensitivity, not a general transport pass."
+clinical responsiveness,NOT_ESTIMABLE,NO_REPEATED_CLINICAL_OR_MEDICATION_FIELDS_IN_LONGITUDINAL_WALKWAY_CSVS,Authorization and schema boundary; no substitute analysis was fitted.
