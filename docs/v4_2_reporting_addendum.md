@@ -2,6 +2,8 @@
 
 This addendum clarifies the immutable v4.2.0 analytical bundle; it does not alter its protocol, outputs, or v4.1 conclusions.
 
+Later v4.3 work established the missing spatial transform and validated all eight WearGait inputs. The v4.2 H4 boundary below is historical. The v4.2 calibration favorable fractions used the wrong direction rule; use the [v4.5 corrected fractions](../results/v4_5/h2_favorable_fraction_corrected.csv). Ranking and absolute-error conclusions are unchanged.
+
 ## H4: documented data-provenance boundary
 
 The raw V1 and longitudinal releases were audited across 1,600 and 863 CSV files, respectively. Both contain `Time`, left/right foot-contact streams, `Walkway_X`, `Walkway_Y`, and `WalkwayFoot`, so temporal contacts are recoverable. The released `Walkway_X/Y` fields are pressure-grid strings, however, not documented calibrated metric rear-foot coordinates. Step length, stride length, and gait speed therefore cannot be validated as PKMAS-equivalent. The all-eight analytical-equivalence gate did not pass, no partial 5/8 score was generated, and H4 remains `NOT_ESTIMABLE`.

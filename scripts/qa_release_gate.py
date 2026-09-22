@@ -19,6 +19,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from src.stats import bh_fdr
 from src.stats_v3 import site_sign_consistency
 from scripts.check_analysis_freeze import check_freeze
+from src.v4_1.normative import load_frozen_model
+from src.v4_2.repeated_group_cv import favorable_fraction
 
 
 def _sha256(path: Path) -> str:
@@ -269,6 +271,46 @@ def _ids(path: Path) -> set[str]:
         return {row["participant_id"] for row in rows if row.get("participant_id")}
 
 
+def _check_v4_5(base: Path, failures: list[str]) -> None:
+    root = base / "results" / "v4_5"
+    if not root.exists():
+        return
+    try:
+        load_frozen_model(base / "results/v4_1/frozen/v4_1_control_model.json")
+        audit = json.loads((root / "source_audit.json").read_text())
+        if audit["task_csv_headers_read"] + audit["failed_csv_count"] != audit["task_files"]:
+            failures.append("v4.5 longitudinal CSV audit coverage mismatch")
+        if audit["session_mat_structures_read"] + audit["failed_mat_count"] != audit["session_mat_files_inventoried"]:
+            failures.append("v4.5 longitudinal MAT audit coverage mismatch")
+        if audit["clinical_audit_completeness"] != "COMPLETE":
+            failures.append("v4.5 longitudinal metadata audit is incomplete")
+        if audit["care_lodo_status"] == "PASS" and any(status != "VALIDATED" for status in audit["care_eight_input_equivalence"].values()):
+            failures.append("v4.5 CARE transport passed without eight-input bridge")
+        for row in _csv(root / "h4b_endpoint_error_corrected.csv"):
+            sd = float(row["session_difference_sd"])
+            if not math.isclose(float(row["longitudinal_sem_equivalent"]), sd / math.sqrt(2), rel_tol=1e-10):
+                failures.append("v4.5 endpoint SEM equivalent is inconsistent")
+            if not math.isclose(float(row["longitudinal_mdc95_equivalent"]), 1.96 * sd, rel_tol=1e-10):
+                failures.append("v4.5 endpoint MDC equivalent is inconsistent")
+            if row["short_term_reliability_status"] != "NOT_ESTIMABLE":
+                failures.append("v4.5 mislabels six-month visits as short-term reliability")
+        for path in root.glob("*.csv"):
+            with path.open(newline="") as handle:
+                columns = next(csv.reader(handle))
+            if any(name in columns for name in ("participant", "participant_id", "source_file")):
+                failures.append(f"v4.5 public aggregate contains row-level identifiers: {path.name}")
+        import pandas as pd
+        runs = pd.read_csv(base / "results/v4_2/frozen/h2_repeated_cv_runs.csv")
+        corrected = pd.read_csv(root / "h2_favorable_fraction_corrected.csv").set_index("level")
+        for level, group in runs.groupby("level"):
+            for metric in ("calibration_slope", "calibration_intercept"):
+                actual = corrected.loc[level, f"delta_{metric}_favorable_fraction"]
+                if not math.isclose(actual, favorable_fraction(group, metric), abs_tol=1e-12):
+                    failures.append(f"v4.5 {level} calibration favorability mismatch")
+    except (OSError, ValueError, KeyError) as error:
+        failures.append(f"v4.5 aggregate gate could not complete: {error}")
+
+
 def main(root: str) -> int:
     base = Path(root)
     failures: list[str] = []
@@ -340,6 +382,7 @@ def main(root: str) -> int:
         _check_numeric_trace(base, failures)
         _check_public_headers(base, failures)
         _check_external_contract(base, config, failures)
+        _check_v4_5(base, failures)
     # If a user supplies explicit split CSVs, enforce participant grouping.
     split_paths = list(base.glob("**/*[Tt]rain*.csv")) + list(base.glob("**/*[Tt]est*.csv"))
     splits = {p.name: _ids(p) for p in split_paths}

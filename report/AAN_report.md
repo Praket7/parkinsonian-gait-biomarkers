@@ -4,10 +4,10 @@ Analysis protocol version: `3.2.4`
 Release version: `v3.2.4`  
 Frozen status: `analysis_complete`
 
-> **Current-release note (v4.4.0):** This report preserves the frozen v3.2.4
+> **Current-release note (v4.5):** This report preserves the frozen v3.2.4
 > primary analysis. The subsequent raw-walkway and measurement-protocol
 > closures are reported separately in [v4.3 H4 reconstruction](../docs/v4_3_h4_reconstruction.md)
-> and the [v4.4 evidence report](../results/v4_4/AAN_v4_4_report.md). The
+> and the [v4.5 scientific correction](../results/v4_5/AAN_v4_5_report.md). The
 > current conclusion remains that no gait feature or composite is qualified as
 > a stable context-robust trait biomarker under the strict criteria.
 

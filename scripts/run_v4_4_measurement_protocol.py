@@ -13,17 +13,9 @@ import yaml
 
 from run_v4_3_h4_longitudinal import bootstrap_icc, clinical_covariates
 from run_v4_3_v1_equivalence import icc_a1
-from src.v4_1.normative import score
+from src.v4_1.normative import load_frozen_model, score
 from src.v4_3.walkway_reconstruction import FEATURES, reconstruct_passes_csv
 from src.v4_4.measurement_protocol import median_pass_endpoint, variance_components
-
-
-def _model(path: Path) -> dict:
-    model = json.loads(path.read_text())
-    model["features"] = model.pop("feature_order")
-    model["beta"] = np.asarray(model["beta"])
-    model["covariance"] = np.asarray(model["covariance"])
-    return model
 
 
 def _files(root: Path):
@@ -67,14 +59,16 @@ def main() -> None:
     raw_passes = all_rows[all_rows["pass"].astype(str).ne("median_4pass")].copy()
     endpoints = all_rows[all_rows["pass"].astype(str).eq("median_4pass")].copy()
     covariates = clinical_covariates(args.v1_root)
-    model = _model(args.model)
+    model = load_frozen_model(args.model)
     raw_passes = raw_passes.merge(covariates, on="participant", how="inner")
     endpoints = endpoints.merge(covariates, on="participant", how="inner")
     raw_passes["score"] = _score(raw_passes, model)
     endpoints["score"] = _score(endpoints, model)
     records = []
     for task, group in endpoints.groupby("task", sort=True):
-        paired = group.pivot_table(index="participant", columns="session", values="score", aggfunc="first").dropna()
+        if group.duplicated(["participant", "session"]).any():
+            raise ValueError("duplicate participant/session endpoint")
+        paired = group.pivot(index="participant", columns="session", values="score").dropna()
         lower, upper = bootstrap_icc(paired["1"].to_numpy(), paired["2"].to_numpy(), seed=config["seed"], n=config["bootstrap_iterations"])
         components = variance_components(raw_passes[raw_passes.task.eq(task) & raw_passes.participant.isin(paired.index)])
         records.append({"task": task, "endpoint": config["endpoint_name"], "aggregation": config["aggregation"],

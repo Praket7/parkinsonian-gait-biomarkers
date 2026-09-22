@@ -13,6 +13,12 @@ from sklearn.preprocessing import OneHotEncoder,StandardScaler
 BASE=["age","height_m","sex","task","site","gait_speed"]
 NUM=["age","height_m","gait_speed","context_adjusted_gait_deviation_v1"]
 CAT=["sex","task","site"]
+def favorable_fraction(group, metric):
+    if metric in ("calibration_intercept", "calibration_slope"):
+        target = 0 if metric.endswith("intercept") else 1
+        return float(((group[f"extended_{metric}"]-target).abs() < (group[f"baseline_{metric}"]-target).abs()).mean())
+    delta = group[f"delta_{metric}"]
+    return float((delta < 0).mean()) if metric in ("mae", "rmse") else float((delta > 0).mean())
 def metric(y,p):
     slope,intercept=np.polyfit(p,y,1) if np.std(p) else (np.nan,np.nan)
     return {"mae":float(np.abs(y-p).mean()),"rmse":float(np.sqrt(np.mean((y-p)**2))),"spearman_rho":float(spearmanr(y,p).statistic),"pearson_r":float(pearsonr(y,p).statistic),"calibration_slope":float(slope),"calibration_intercept":float(intercept)}

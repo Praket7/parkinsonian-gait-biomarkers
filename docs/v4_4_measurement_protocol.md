@@ -15,6 +15,14 @@ Clinical responsiveness requires repeated MDS-UPDRS Part III at each longitudina
 
 This protects the central conclusion: analytical validity, reliability, responsiveness, and transport are separate evidence layers. See the generated aggregate-only [v4.4 report](../results/v4_4/AAN_v4_4_report.md).
 
+**v4.5 correction:** The two visits are at least six months apart, so the ICC
+addresses longitudinal stability, not short-term test-retest reliability. The
+v4.4 ANOVA SEM/MDC95/G values were based on pass-level scores and a mean-of-four
+rule that does not describe the nonlinear featurewise-median endpoint. Use the
+[v4.5 corrected endpoint analysis](../results/v4_5/AAN_v4_5_report.md) for
+absolute-error interpretation. The original v4.4 aggregate is retained for
+historical traceability.
+
 Reporting both relative reliability and absolute measurement error follows
 instrumented-walkway synthesis and Parkinson-specific test-retest studies
 ([8](../report/AAN_bibliography.md#bibliography), [9](../report/AAN_bibliography.md#bibliography),
