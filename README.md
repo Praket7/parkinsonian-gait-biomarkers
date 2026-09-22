@@ -123,7 +123,7 @@ To reproduce the v4.5 correction after the v4.3 equivalence QC is present:
 
 ```bash
 PYTHONPATH=. python scripts/run_v4_4_measurement_protocol.py --v1-root "$PARKINSON_GAIT_DATA_ROOT/WearGait_PD_V1" --longitudinal-root "$PARKINSON_GAIT_DATA_ROOT/WearGait_PD_Longitudinal"
-PYTHONPATH=. python scripts/run_v4_5_repair.py
+PYTHONPATH=. python scripts/run_v4_5_repair.py --v1-root "$PARKINSON_GAIT_DATA_ROOT/WearGait_PD_V1"
 PYTHONPATH=. python scripts/audit_v4_5_sources.py --data-root "$PARKINSON_GAIT_DATA_ROOT" --hydrate-unreadable
 PYTHONPATH=. python scripts/generate_v4_5_report.py
 PYTHONPATH=. python scripts/qa_release_gate.py

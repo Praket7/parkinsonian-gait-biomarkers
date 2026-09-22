@@ -1,0 +1,5 @@
+task,group,n_participants,n_v1_gait_item,v1_gait_item_median,v1_age_mean,interpretation
+HurriedPace,complete_pair,44,42,1.0,66.61363636363636,Descriptive identifier overlap only; V1 assessment date is not verified as longitudinal session 1
+HurriedPace,excluded_four_pass,2,2,0.5,67.0,Descriptive identifier overlap only; V1 assessment date is not verified as longitudinal session 1
+SelfPace,complete_pair,45,43,1.0,66.46666666666667,Descriptive identifier overlap only; V1 assessment date is not verified as longitudinal session 1
+SelfPace,excluded_four_pass,1,1,2.0,74.0,Descriptive identifier overlap only; V1 assessment date is not verified as longitudinal session 1

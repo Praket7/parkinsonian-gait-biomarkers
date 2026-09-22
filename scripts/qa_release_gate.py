@@ -286,6 +286,7 @@ def _check_v4_5(base: Path, failures: list[str]) -> None:
             failures.append("v4.5 longitudinal metadata audit is incomplete")
         if audit["care_lodo_status"] == "PASS" and any(status != "VALIDATED" for status in audit["care_eight_input_equivalence"].values()):
             failures.append("v4.5 CARE transport passed without eight-input bridge")
+        instability = {row["task"]: row for row in _csv(root / "instability_descriptive.csv")}
         for row in _csv(root / "h4b_endpoint_error_corrected.csv"):
             sd = float(row["session_difference_sd"])
             if not math.isclose(float(row["longitudinal_sem_equivalent"]), sd / math.sqrt(2), rel_tol=1e-10):
@@ -294,6 +295,11 @@ def _check_v4_5(base: Path, failures: list[str]) -> None:
                 failures.append("v4.5 endpoint MDC equivalent is inconsistent")
             if row["short_term_reliability_status"] != "NOT_ESTIMABLE":
                 failures.append("v4.5 mislabels six-month visits as short-term reliability")
+            if not math.isclose(float(instability[row["task"]]["between_visit_endpoint_difference_sd"]), sd, rel_tol=1e-10):
+                failures.append("v4.5 descriptive visit variation does not match endpoint differences")
+        selection = _csv(root / "complete_case_selection.csv")
+        if sum(int(row["n_participants"]) for row in selection if row["group"] == "excluded_four_pass") != 3:
+            failures.append("v4.5 four-pass exclusion count mismatch")
         for path in root.glob("*.csv"):
             with path.open(newline="") as handle:
                 columns = next(csv.reader(handle))

@@ -13,6 +13,8 @@ def main() -> None:
     audit = json.loads((root / "source_audit.json").read_text())
     error = pd.read_csv(root / "h4b_endpoint_error_corrected.csv")
     h2 = pd.read_csv(root / "h2_favorable_fraction_corrected.csv")
+    instability = pd.read_csv(root / "instability_descriptive.csv").set_index("task")
+    selection = pd.read_csv(root / "complete_case_selection.csv")
     historical = pd.read_csv("results/v4_4/h4b_multipass_reliability.csv")
     rows = []
     for task in ("SelfPace", "HurriedPace"):
@@ -36,6 +38,23 @@ This correction preserves the v4.1 score and historical v4.4 results. The [FDA d
 {chr(10).join(rows)}
 
 The conditional bootstrap resamples the four observed passes, recomputes the median of each of the eight input features, then applies the SHA256-checked frozen model. It estimates pass-selection precision conditional on those passes. The paired-difference SD and its 1.96 multiple include disease change, medication/state differences, and measurement noise; they are **not** pure SEM or MDC for a stable clinical state. The v4.4 pass-score ANOVA's SEM, MDC95 and G coefficient used a mean-of-four residual rule and must not be used for this nonlinear endpoint. The pass-score variance components remain descriptive only. Three session files had only three valid passes; with so few exclusions, the selection effect cannot be estimated reliably.
+
+## Sources of observed variation
+
+| Task | Between-person endpoint SD | Between-visit difference SD | Within-session single-pass-score SD |
+| --- | ---: | ---: | ---: |
+| SelfPace | {instability.loc['SelfPace','between_person_endpoint_sd']:.3f} | {instability.loc['SelfPace','between_visit_endpoint_difference_sd']:.3f} | {instability.loc['SelfPace','within_session_pass_score_sd']:.3f} |
+| HurriedPace | {instability.loc['HurriedPace','between_person_endpoint_sd']:.3f} | {instability.loc['HurriedPace','between_visit_endpoint_difference_sd']:.3f} | {instability.loc['HurriedPace','within_session_pass_score_sd']:.3f} |
+
+These SDs describe different units and are not additive variance components. Across {int(instability.loc['SelfPace','n_paired_task_sessions'])} participant-visits with both tasks, the hurried-minus-self endpoint contrast averaged {instability.loc['SelfPace','hurried_minus_self_mean']:.3f} (SD {instability.loc['SelfPace','hurried_minus_self_sd']:.3f}). Medication and other visit-state effects cannot be separated without session-linked anchors. The sizeable between-visit spread gives no empirical basis for claiming that additional passes alone would qualify a stable trait score.
+
+## Four-pass complete-case check
+
+| Task | Group | Participants | V1 gait item available | Median V1 gait item | Mean V1 age |
+| --- | --- | ---: | ---: | ---: | ---: |
+{chr(10).join(f"| {r.task} | {r.group} | {int(r.n_participants)} | {int(r.n_v1_gait_item)} | {r.v1_gait_item_median:.1f} | {r.v1_age_mean:.1f} |" for r in selection.itertuples())}
+
+Only three participants were excluded for lacking the fourth valid pass, so this is a descriptive selection check, not a statistical test. V1 clinical scores are linked by identifier; their assessment dates have not been shown to coincide with longitudinal session 1.
 
 ## Clinical-source audit
 
