@@ -6,12 +6,12 @@ measures dominated by task, speed, site, or short-term state.
 
 ## Current evidence status
 
-The authorized v3.2.4 integration release is complete. In the primary WearGait V1 reference
-walkway analysis (124 SP/HP rows from 62 PD participants), several measures
-were associated with MDS-UPDRS Part III gait-item severity; **no feature met
-the full context-robust trait criterion**. CARE-PD provides a limited,
-translation-only directional check, not a matched feature replication. Read
-[the full report](report/AAN_report.md) before using these findings.
+The primary WearGait V1 analysis contains 124 SP/HP rows from 62 PD
+participants. Several measures were associated with MDS-UPDRS Part III gait-item
+severity, but **no feature met the full context-robust trait criterion**.
+CARE-PD remains a limited translation-only directional check, not a matched
+feature replication. The newest evidence is the [v4.4 measurement-protocol
+report](results/v4_4/AAN_v4_4_report.md).
 
 ### v4 prospective extension
 
@@ -60,6 +60,32 @@ improve absolute error, so the frozen interpretation is
 [v4.2 report](results/v4_2/frozen/AAN_v4_2_report.md), [frozen evidence
 matrix](results/v4_2/frozen/evidence_matrix.csv), and the
 [reporting addendum](docs/v4_2_reporting_addendum.md).
+
+### v4.3 raw-walkway reconstruction closure
+
+The documented WearGait Supplementary Table S5/Figure S5 coordinate contract
+enabled an all-eight raw-to-PKMAS equivalence bridge: all eight inputs passed on
+252 matched V1 trials. The frozen v4.1 score was then applied without refitting
+to 182 longitudinal trials. H4 became estimable but failed the strict
+test-retest criterion: self-paced ICC(A,1)=0.707 (95% bootstrap CI 0.462 to
+0.844) and hurried ICC(A,1)=0.390 (0.073 to 0.657). Read the [H4
+closure](docs/v4_3_h4_reconstruction.md).
+
+### v4.4 measurement-error and transport extension
+
+v4.4 tested a new, prespecified four-valid-pass featurewise-median endpoint
+without changing the v4.1 model or v4.3 conclusion. It did not rescue
+reliability: self-paced ICC(A,1)=0.647 (95% CI 0.331 to 0.819) and hurried
+ICC(A,1)=0.282 (-0.001 to 0.547), both below the frozen lower-CI threshold of
+0.80. It reports SEM/MDC95 and preserves the result as `FAIL`, not a revised
+trait claim. A VA Seattle holdout whose control reference was derived only
+from the other site, without clinical-outcome tuning, had a positive severity
+association (effect 0.578, 95% CI 0.186 to 0.970) but is explicitly
+`INCOMPLETE` because it is only one overlapping site. Linked repeated clinical
+severity and medication-timing fields are absent from the authorized
+longitudinal task schema, so responsiveness remains `NOT_ESTIMABLE`. See the
+[v4.4 report](results/v4_4/AAN_v4_4_report.md), [evidence
+matrix](results/v4_4/v4_4_evidence_matrix.csv), and [protocol](docs/v4_4_measurement_protocol.md).
 
 ## Run
 

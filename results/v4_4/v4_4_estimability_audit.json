@@ -1,0 +1,14 @@
+{
+  "protocol": "4.4.0",
+  "longitudinal_task_csv_count": 186,
+  "header_schema_probe_csv_count": 1,
+  "longitudinal_anchor_like_fields": [],
+  "reference_sites": [
+    "Johns_Hopkins_Bayview",
+    "VA_Seattle"
+  ],
+  "pd_sites": [
+    "Johns_Hopkins_Outpatient",
+    "VA_Seattle"
+  ]
+}

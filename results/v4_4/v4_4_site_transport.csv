@@ -1,0 +1,2 @@
+held_out_site,reference_control_participants,target_pd_participants,estimability_status,association_effect,ci_low,ci_high,p_value,association_status,transport_status,reason
+VA_Seattle,46,16,OK,0.5782006013632425,0.18641414059765232,0.9699870621288327,0.003821580773849495,PASS,INCOMPLETE,ONE_OVERLAPPING_SITE_ONLY; CONTROL_REFERENCE_DERIVED_FROM_OTHER_SITE; NO_OUTCOME_TUNING; NOT_SUFFICIENT_FOR_GENERAL_TRANSPORT_CLAIM
