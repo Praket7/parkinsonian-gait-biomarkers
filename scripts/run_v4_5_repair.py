@@ -79,16 +79,64 @@ def analyze(passes: pd.DataFrame, endpoints: pd.DataFrame, model: dict) -> pd.Da
     return pd.DataFrame(records)
 
 
+def describe_instability(passes: pd.DataFrame, endpoints: pd.DataFrame) -> pd.DataFrame:
+    """Observed spread at each design level; these are not causal variance components."""
+    rows = []
+    for task, group in endpoints.groupby("task", sort=True):
+        paired = group.pivot(index="participant", columns="session", values="score").dropna()
+        kept = passes.loc[passes.task.eq(task) & passes.participant.isin(paired.index)]
+        pass_variances = kept.groupby(["participant", "session"]).score.var(ddof=1)
+        rows.append({"task": task, "n_paired": len(paired),
+                     "between_person_endpoint_sd": float(paired.mean(axis=1).std(ddof=1)),
+                     "between_visit_endpoint_difference_sd": float((paired["2"]-paired["1"]).std(ddof=1)),
+                     "within_session_pass_score_sd": float(np.sqrt(pass_variances.mean())),
+                     "state_variance_status": "NOT_ESTIMABLE_NO_SESSION_MEDICATION_ANCHOR"})
+    both = endpoints.pivot(index=["participant", "session"], columns="task", values="score").dropna()
+    contrast = both["HurriedPace"]-both["SelfPace"]
+    for row in rows:
+        row.update(n_paired_task_sessions=int(len(contrast)),
+                   hurried_minus_self_mean=float(contrast.mean()),
+                   hurried_minus_self_sd=float(contrast.std(ddof=1)))
+    return pd.DataFrame(rows)
+
+
+def selection_summary(endpoints: pd.DataFrame, exclusions: pd.DataFrame, v1_root: Path) -> pd.DataFrame:
+    clinical = pd.read_csv(v1_root / "PD - Demographic+Clinical - datasetV1.csv", header=1)
+    clinical = clinical.rename(columns={"Subject ID": "participant", "Age (years)": "age", "MDSUPDRS_3-10": "gait_item"})
+    clinical["participant"] = clinical.participant.astype(str).str.strip()
+    if clinical.duplicated("participant").any():
+        raise ValueError("V1 clinical participant identifiers are not unique")
+    clinical = clinical.set_index("participant")
+    rows = []
+    for task, group in endpoints.groupby("task", sort=True):
+        paired = group.pivot(index="participant", columns="session", values="score").dropna()
+        missing = set(exclusions.loc[exclusions.task.eq(task), "participant"])
+        for label, people in (("complete_pair", set(paired.index)), ("excluded_four_pass", missing)):
+            matched = clinical.reindex(sorted(people))
+            gait = pd.to_numeric(matched.gait_item, errors="coerce")
+            age = pd.to_numeric(matched.age, errors="coerce")
+            rows.append({"task": task, "group": label, "n_participants": len(people),
+                         "n_v1_gait_item": int(gait.notna().sum()),
+                         "v1_gait_item_median": float(gait.median()) if gait.notna().any() else np.nan,
+                         "v1_age_mean": float(age.mean()) if age.notna().any() else np.nan,
+                         "interpretation": "Descriptive identifier overlap only; V1 assessment date is not verified as longitudinal session 1"})
+    return pd.DataFrame(rows)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", type=Path, default=Path("results/v4_4"))
     parser.add_argument("--output", type=Path, default=Path("results/v4_5"))
+    parser.add_argument("--v1-root", required=True, type=Path)
     args = parser.parse_args()
     model = load_frozen_model("results/v4_1/frozen/v4_1_control_model.json")
     passes = pd.read_csv(args.input / "h4b_pass_scores_local.csv", dtype={"session": str})
     endpoints = pd.read_csv(args.input / "h4b_session_endpoints_local.csv", dtype={"session": str})
     args.output.mkdir(parents=True, exist_ok=True)
     analyze(passes, endpoints, model).to_csv(args.output / "h4b_endpoint_error_corrected.csv", index=False)
+    describe_instability(passes, endpoints).to_csv(args.output / "instability_descriptive.csv", index=False)
+    exclusions = pd.read_csv(args.input / "h4b_multipass_exclusions.csv")
+    selection_summary(endpoints, exclusions, args.v1_root).to_csv(args.output / "complete_case_selection.csv", index=False)
     runs = pd.read_csv("results/v4_2/frozen/h2_repeated_cv_runs.csv")
     summary = []
     for level, group in runs.groupby("level"):

@@ -1,0 +1,3 @@
+task,n_paired,between_person_endpoint_sd,between_visit_endpoint_difference_sd,within_session_pass_score_sd,state_variance_status,n_paired_task_sessions,hurried_minus_self_mean,hurried_minus_self_sd
+HurriedPace,44,0.7878506479621649,1.1731029848307404,1.0292621197123497,NOT_ESTIMABLE_NO_SESSION_MEDICATION_ANCHOR,89,-0.19029025600847768,1.275583993747693
+SelfPace,45,1.135988186181404,1.059371796375674,0.8720286312946592,NOT_ESTIMABLE_NO_SESSION_MEDICATION_ANCHOR,89,-0.19029025600847768,1.275583993747693
