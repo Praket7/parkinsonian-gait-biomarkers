@@ -1,0 +1,11 @@
+{
+  "protocol": "v4.3.0",
+  "model_refit": false,
+  "model_source": "results/v4_1/frozen/v4_1_control_model.json",
+  "v1_bridge": "PASS",
+  "reconstructed_trials": 184,
+  "scored_trials": 182,
+  "excluded_trials": 0,
+  "h4_status": "ESTIMABLE"
+}
+
