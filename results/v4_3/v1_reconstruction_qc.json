@@ -1,0 +1,10 @@
+{
+  "protocol": "v4.3.0",
+  "coordinate_source": "WearGait-PD Supplementary Table S5 and Figure S5",
+  "cell_pitch_cm": 1.27,
+  "matched_trials": 252,
+  "excluded_raw_trials": 5,
+  "all_eight_equivalent": true,
+  "h4_bridge_status": "PASS"
+}
+
