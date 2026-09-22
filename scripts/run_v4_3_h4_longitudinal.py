@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 
 from run_v4_3_v1_equivalence import icc_a1
-from src.v4_1.normative import score
+from src.v4_1.normative import load_frozen_model, score
 from src.v4_3.walkway_reconstruction import FEATURES, reconstruct_csv
 
 
@@ -47,10 +47,7 @@ def main() -> None:
     args = parser.parse_args()
     if not json.loads(args.v1_qc.read_text())["all_eight_equivalent"]:
         raise SystemExit("V1 analytical-equivalence gate failed")
-    model = json.loads(args.model.read_text())
-    model["features"] = model.pop("feature_order")
-    model["beta"] = np.asarray(model["beta"])
-    model["covariance"] = np.asarray(model["covariance"])
+    model = load_frozen_model(args.model)
     if args.reconstructed:
         reconstructed, exclusions = pd.read_csv(args.reconstructed), []
     else:
@@ -73,7 +70,9 @@ def main() -> None:
     valid["context_adjusted_gait_deviation_v1"] = score(valid, model)
     records = []
     for task, group in valid.groupby("task"):
-        paired = group.pivot_table(index="participant", columns="session", values="context_adjusted_gait_deviation_v1", aggfunc="first").dropna()
+        if group.duplicated(["participant", "session"]).any():
+            raise ValueError("duplicate participant/session endpoint")
+        paired = group.pivot(index="participant", columns="session", values="context_adjusted_gait_deviation_v1").dropna()
         first, second = paired["1"].to_numpy(), paired["2"].to_numpy()
         lower, upper = bootstrap_icc(first, second)
         records.append({"task": task, "estimability_status": "OK", "n_participants": len(paired), "icc_a1": icc_a1(first, second), "icc_a1_ci_low": lower, "icc_a1_ci_high": upper, "mean_change_s2_minus_s1": float(np.mean(second - first)), "mae": float(np.mean(abs(second - first))), "test_retest_status": "PASS" if lower >= 0.80 else "FAIL"})
@@ -90,4 +89,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

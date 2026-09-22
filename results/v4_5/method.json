@@ -1,0 +1,12 @@
+{
+  "model_sha256": "b3d04cc17a08de4c213abe3d01f7d378b161a75df847da8022659c11312dfb53",
+  "source": "v4.4 local reconstructed passes and endpoints",
+  "input_sha256": {
+    "h4b_pass_scores_local.csv": "fb95fe3b7413d2937091c4da1713410a658770ad67fbcdff951dddb5fb98fe56",
+    "h4b_session_endpoints_local.csv": "5f4167451d1623634756f3ca46e1d163e068718e63e040e785f3b6d5a903167f"
+  },
+  "seed": 20260924,
+  "pass_resamples_per_session": 2000,
+  "endpoint": "frozen score(featurewise median of four passes)",
+  "longitudinal_error_caveat": "Six-plus-month paired change includes progression and state effects; SEM/MDC equivalents are not pure measurement error"
+}

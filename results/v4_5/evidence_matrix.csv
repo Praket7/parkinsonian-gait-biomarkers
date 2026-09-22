@@ -1,0 +1,6 @@
+claim,status,reason
+Six-plus-month four-pass score stability,FAIL,Both ICC lower confidence bounds remain below 0.80; real progression and state change may contribute
+Short-term four-pass test-retest reliability,NOT_ESTIMABLE,"No state-controlled, short-interval repeated visits"
+Longitudinal clinical responsiveness,NOT_ESTIMABLE,"No verified session-specific MDS-UPDRS, dose timing, medication state or DBS variable in inspected schemas; all session MAT structures were inspected; ClinicalEvent is a task annotation stream, and V1 identifiers do not establish session-2 clinical anchors"
+CARE-PD eight-input score transport,NOT_ESTIMABLE,No validated CARE-to-PKMAS analytical bridge for all eight inputs
+CARE-PD paired medication response of frozen score,NOT_ESTIMABLE,Medication labels alone cannot validate an unbridged frozen score
