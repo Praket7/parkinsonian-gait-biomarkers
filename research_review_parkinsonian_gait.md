@@ -52,3 +52,9 @@ Pre-register the primary feature, outcome window, exclusion rules, split strateg
 ## Evidence boundary
 
 The strongest immediately defensible deliverable is a reproducible, context-labeled **candidate digital outcome** with analytical and clinical validity evidence. A clinical diagnostic claim, a disease-progression claim, or a claim of universal real-world robustness requires a substantially larger prospective, multi-site study and a locked external test set.
+
+## Literature checked during the September 2026 audit
+
+Recent work reinforces the separation between measurement reliability, association with a clinical measure, medication sensitivity, and change over time. A small ObjectivePD analysis of 24 people with Parkinson's disease plus 22 controls reported that digital measure performance depended on the intended use. This supports defining a specific context of use before judging a gait measure. It is a preprint with a modest sample, not independent validation of this repository's score. [Scotina et al., 2025 preprint](https://doi.org/10.1101/2025.10.14.25337984).
+
+Research on sources of variability in Parkinson's digital outcomes emphasizes device, context, and clinical purpose as parts of measurement validity. The Mobilise-D consortium's validation recommendations likewise support checking the measurement system within its intended real world setting. These sources support the project's separate evidence gates. They do not upgrade its results. [Sources of variability in Parkinson's digital outcomes](https://pmc.ncbi.nlm.nih.gov/articles/PMC9284971/). [Mobilise-D validation recommendations](https://doi.org/10.1186/s12984-023-01198-5).
