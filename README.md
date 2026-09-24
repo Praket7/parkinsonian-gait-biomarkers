@@ -1,6 +1,6 @@
 # Parkinsonian Gait Biomarkers
 
-![Illustration of a gait research visit](docs/images/gait-research-illustration.png)
+![Illustration of a gait research visit](docs/images/gait_research_illustration.png)
 
 *This is an original illustration. It does not depict a study participant. No study data appear.*
 
@@ -34,7 +34,7 @@ A confidence interval is a range that describes uncertainty around an estimate. 
 
 Severity ranking means placing people in relative order by the study outcome. It does not mean predicting an exact clinical rating. Participant grouped validation keeps each person’s records together while checking how sensitive the result is to the people in each split.
 
-![Ranking results across repeated validation splits](docs/images/ranking-result.png)
+![Ranking results across repeated validation splits](docs/images/ranking_result.png)
 
 ## Why the result matters
 
@@ -44,12 +44,11 @@ This project keeps those questions separate. It reports positive findings. It re
 
 ## Start here
 
-Use Python 3.11. From the project folder, prepare an isolated environment, install the pinned packages, then install the project.
+Use Python 3.11. From the project folder, run the setup script. It creates `.venv` when needed. It installs the pinned packages, then installs the project.
 
 ```bash
-python3.11 -m venv .venv
-source .venv/bin/activate
 bash scripts/setup_environment.sh
+source .venv/bin/activate
 ```
 
 Run the complete automated test suite with `pytest`. The shorter Python unittest command misses tests.
@@ -87,6 +86,6 @@ The [dataset guide](DATASETS.md) explains what each source can answer. The [prer
 
 The video explains the study question. It shows the ranking result, then explains the main limits. Its statistics come from the public aggregate report. It does not show participant data.
 
-[Watch the short animated explanation](media/remotion/public/gait-study-overview.mp4). A [still image of the ranking result](docs/images/ranking-result.png) is also available.
+[Watch the short animated explanation](media/remotion/public/gait_study_overview.mp4). A [still image of the ranking result](docs/images/ranking_result.png) is also available.
 
 Video source files are in `media/remotion`. Run `npm install` in that folder, then use `npm run render` to rebuild the video.

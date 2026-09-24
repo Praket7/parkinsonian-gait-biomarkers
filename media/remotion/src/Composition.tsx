@@ -103,7 +103,7 @@ const Intro: React.FC = () => {
   return (
     <Frame dark>
       <Img
-        src={staticFile("gait-research-illustration.png")}
+        src={staticFile("gait_research_illustration.png")}
         style={{
           position: "absolute",
           right: -24,

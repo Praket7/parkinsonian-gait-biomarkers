@@ -23,8 +23,8 @@
   },
   "scripts": {
     "dev": "remotion studio",
-    "render": "remotion render src/index.ts GaitStudyOverview public/gait-study-overview.mp4",
-    "still": "remotion still src/index.ts GaitStudyOverview public/ranking-result.png --frame=480",
+    "render": "remotion render src/index.ts GaitStudyOverview public/gait_study_overview.mp4",
+    "still": "remotion still src/index.ts GaitStudyOverview public/ranking_result.png --frame=480",
     "build": "remotion bundle",
     "upgrade": "remotion upgrade",
     "lint": "eslint src && tsc"
