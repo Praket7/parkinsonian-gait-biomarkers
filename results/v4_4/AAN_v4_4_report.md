@@ -1,5 +1,7 @@
 # AAN v4.4 measurement-error and responsiveness extension
 
+> Historical version report. Use the [canonical v4.5 AAN report](../../report/AAN_FINAL_REPORT.md) for the current integrated interpretation; this file preserves its original frozen analysis context.
+
 ## Bottom line
 
 v4.4 makes the project more defensible by testing the proposed protocol rescue without changing the frozen v4.1 score, model, or v4.3 result. The four-pass, featurewise-median endpoint was estimable but did not meet the preregistered lower-95%-CI reliability criterion of 0.80. This is evidence against the proposed rescue under this protocol, not a reason to relax the criterion.

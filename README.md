@@ -16,6 +16,20 @@ That is useful evidence. It is not proof of diagnosis. It is not proof of clinic
 
 ## What the evidence says
 
+The full current story is in the [canonical AAN research report](report/AAN_FINAL_REPORT.md). The [300-word abstract](report/AAN_abstract.md), [evidence matrix](report/AAN_FINAL_EVIDENCE_MATRIX.csv), [literature comparison](report/AAN_prior_work_table.md), and [judge questions](report/AAN_JUDGE_QA.md) are companion materials. Older reports are preserved in the [historical report index](report/HISTORICAL_REPORTS.md).
+
+| Evidence layer | Finding |
+|---|---|
+| Concurrent severity association | Supported |
+| Healthy-reference robustness | Same direction in all 2,000 resamples |
+| Severity ranking beyond speed | Improved in 98% of participant-level repeats |
+| Exact-score prediction | Improvement not established |
+| Eight-input walkway reconstruction | All eight passed on 252 matched trials |
+| Six-plus-month stability | Did not meet the frozen criterion |
+| Short-term reliability, responsiveness, broad transport | Not estimable from the available evidence |
+
+The details and limits for each result are in the canonical report and evidence matrix.
+
 The primary analysis included 124 task records from 62 people. Repeated records do not double the number of independent people. The preregistered trait standard was not met.
 
 A score trained with healthy controls measured how much a person’s walking differed from the reference pattern. Its association with gait severity remained after speed adjustment. The standardized association was 0.301, with a 95 percent confidence interval from 0.089 to 0.513. The adjusted q value was 0.0055.

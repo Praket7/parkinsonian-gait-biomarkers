@@ -1,34 +1,9 @@
-# Context-robust Parkinsonian gait biomarkers
+Background. A gait measure can correlate with Parkinsonian severity without being reliable or transferable enough to serve as a biomarker. We tested these evidence layers separately.
 
-**Background:** A cross-sectional gait-severity association does not establish
-a clinically useful digital biomarker. We tested whether reference-walkway
-gait measures retain evidence across speed, task, site, repeat-session
-reliability, analytical agreement, and CARE-PD transport.
+Objective. Test whether an outcome-blind deviation from healthy gait provides severity information beyond walking speed and survives independent validation.
 
-**Methods:** We analyzed 124 straight-walk rows from 62 participants with
-Parkinson's disease. Participant-clustered Gaussian GEE models adjusted for
-age, height, sex, task, and site; the primary exposure was MDS-UPDRS Part III
-item 3.10. We used Benjamini-Hochberg FDR correction, 2,000 clustered GEE
-bootstrap refits, 5,000 participant-label permutations, speed-adjusted GEE
-models, task/site interaction tests, and task-specific ICC(A,1). Four labeled
-CARE-PD cohorts supplied a predefined external forward-translation-speed
-check. Matched H36M gait features were not reported unless official H36M
-assets passed predeclared Appendix-B event QC.
+Methods. We analyzed 62 people with Parkinson’s disease and 124 task observations in WearGait-PD. A healthy-control reference defined an eight-input gait-deviation score without Parkinsonian outcomes. Participant-clustered models estimated association with gait-specific MDS-UPDRS severity. We resampled the control reference 2,000 times and compared speed-only and extended models in 100 repeated participant-grouped five-fold validations. Before longitudinal use, raw walkway reconstruction was compared with PKMAS on 252 matched trials. The unchanged score was applied to visits at least six months apart.
 
-**Results:** Eight of eleven measures were associated with severity after FDR
-correction. Gait speed was lower with worse gait severity (standardized beta
--0.308, q=0.000418). Step and stride length were strongly associated in the
-primary model, but their speed-adjusted FDR q-values did not meet the
-predeclared threshold. Step-time variability retained a speed-adjusted signal
-but was not repeatable at the predefined SP ICC threshold. No measure passed
-every trait-biomarker criterion. CARE-PD translation speed had the same
-negative direction in all four labeled cohorts; this is supportive transport
-evidence for forward translation, not matched-feature replication. The
-licensed CARE bundle available here contained canonical SMPL records but not
-the official H36M assets required for the paper's ankle-based event method, so
-matched cadence, step length, and step time were classified not estimable.
+Results. The standardized severity association was 0.301 (95% CI, 0.089 to 0.513; q=0.0055). All 2,000 reference resamples retained the same direction; median effect was 0.291. At the participant level, ranking improved in 98% of validations; median ΔSpearman was 0.047. Median RMSE change was −0.0069, but RMSE improved in 66% of repeats and MAE in 44%, so better exact-score prediction was not established. All eight reconstructed inputs passed analytical-equivalence gates. Six-plus-month stability missed the prespecified criterion: SelfPace ICC(A,1)=0.647 (95% BCa CI, 0.439 to 0.863; n=45) and HurriedPace ICC(A,1)=0.282 (95% BCa CI, −0.009 to 0.543; n=44).
 
-**Conclusion:** Several gait measures track concurrent severity, yet none
-qualifies as a context-robust trait biomarker under the prespecified rule. This
-result identifies speed dependence, task-specific reliability, and missing
-matched external features as the next validation targets.
+Conclusion. The score carries reproducible severity-ranking information and can be reconstructed from raw walkway records, but it did not meet the long-interval stability standard. Association and analytical validity do not guarantee longitudinal biomarker stability. Short-term reliability, clinical responsiveness, and broad external transport remain unestablished.

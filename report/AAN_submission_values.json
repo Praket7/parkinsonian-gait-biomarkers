@@ -1,0 +1,92 @@
+{
+  "submission_release": "v5.0.0-aan-submission",
+  "scientific_results_release": "v4.5.1",
+  "source_files": {
+    "primary": "results/v4/frozen/primary_associations.csv",
+    "reference_bootstrap": "results/v4_1/frozen/normative_reference_bootstrap.csv",
+    "h2_repeated": "results/v4_2/frozen/h2_repeated_cv_runs.csv",
+    "h2_summary": "results/v4_2/frozen/h2_repeated_cv_summary.csv",
+    "h2_corrected": "results/v4_5/h2_favorable_fraction_corrected.csv",
+    "bridge": "results/v4_3/v1_reconstruction_agreement.csv",
+    "longitudinal_point": "results/v4_4/h4b_multipass_reliability.csv",
+    "longitudinal_ci": "results/v4_5/h4b_endpoint_error_corrected.csv",
+    "external_carepd": "results/frozen/carepd_cohort_results.csv",
+    "external_mobilised": "results/frozen/mobilised_longitudinal_associations.csv",
+    "external_mendeley": "results/frozen/mendeley_cross_sectional_replication.csv"
+  },
+  "primary": {
+    "n_participants": 62,
+    "conventional_task_observations": 124,
+    "score_association_rows": 125,
+    "standardized_effect": 0.30093541881157304,
+    "ci_low": 0.08855145928250918,
+    "ci_high": 0.5133193783406369,
+    "q_value": 0.005483749215395211,
+    "speed_adjusted_effect": 0.2788099205839509,
+    "speed_adjusted_ci_low": 0.0827776443219296,
+    "speed_adjusted_ci_high": 0.4748421968459722,
+    "speed_adjusted_q_value": 0.00531018776294478
+  },
+  "reference_robustness": {
+    "resamples": 2000,
+    "same_direction_fraction": 1.0,
+    "median_standardized_effect": 0.29097501272708104
+  },
+  "incremental_value": {
+    "repeats": 100,
+    "participant_median_delta_spearman": 0.04737933370608602,
+    "participant_spearman_favorable_fraction": 0.98,
+    "participant_median_delta_rmse": -0.006908773391669898,
+    "participant_rmse_favorable_fraction": 0.66,
+    "participant_mae_favorable_fraction": 0.44,
+    "participant_median_delta_pearson": 0.049790695949388314,
+    "participant_pearson_favorable_fraction": 0.91,
+    "participant_calibration_slope_closer_to_one_fraction": 0.6,
+    "participant_calibration_intercept_closer_to_zero_fraction": 0.61,
+    "row_median_delta_spearman": 0.05451233231377617,
+    "row_spearman_favorable_fraction": 0.99,
+    "single_grouped_baseline_spearman": 0.31031180384302043,
+    "single_grouped_extended_spearman": 0.38607619852847874,
+    "single_grouped_baseline_rmse": 0.6382367606509983,
+    "single_grouped_extended_rmse": 0.6512021071617978,
+    "label": "RANKING_SUPPORT_ONLY"
+  },
+  "analytical_bridge": {
+    "matched_trials": 252,
+    "features": 8,
+    "features_passing": 8,
+    "mean_feature_gate": 0.9,
+    "variability_feature_gate": 0.85
+  },
+  "longitudinal_stability": {
+    "criterion": 0.8,
+    "self_pace": {
+      "n": 45,
+      "icc": 0.6474215603057999,
+      "bca_ci_low": 0.43855007462690454,
+      "bca_ci_high": 0.8625942441838625,
+      "status": "FAIL"
+    },
+    "hurried_pace": {
+      "n": 44,
+      "icc": 0.28157539438403584,
+      "bca_ci_low": -0.009366753942818946,
+      "bca_ci_high": 0.5427876428279136,
+      "status": "FAIL"
+    },
+    "short_term_reliability": "NOT_ESTIMABLE"
+  },
+  "evidence_status": {
+    "severity_association": "SUPPORTED",
+    "reference_robustness": "SUPPORTED",
+    "incremental_rank_information": "SUPPORTED",
+    "absolute_prediction_improvement": "INCOMPLETE",
+    "analytical_reconstruction": "SUPPORTED",
+    "six_plus_month_stability": "FAILED",
+    "short_term_reliability": "NOT_ESTIMABLE",
+    "clinical_responsiveness": "NOT_ESTIMABLE",
+    "carepd_frozen_score_transport": "NOT_ESTIMABLE",
+    "carepd_medication_response": "NOT_ESTIMABLE",
+    "broad_multisite_transport": "NOT_ESTIMABLE"
+  }
+}

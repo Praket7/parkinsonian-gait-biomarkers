@@ -1,5 +1,7 @@
 # When Association Is Not Validation
 
+> Historical version report. Use the [canonical v4.5 AAN report](../../../report/AAN_FINAL_REPORT.md) for the current integrated interpretation; this file preserves its original frozen analysis context.
+
 ## Prospective v4 biomarker-redesign extension
 
 v4 is a separately frozen prospective extension; it does not alter the v3.2.4 conclusion that 0/11 original conventional features qualified.
