@@ -1,5 +1,7 @@
 # Parkinsonian gait biomarkers: evidence report
 
+> Historical version report. Use the [canonical v4.5 AAN report](AAN_FINAL_REPORT.md) for the current integrated interpretation; this file preserves the frozen v3.2.4 analysis context.
+
 Analysis protocol version: `3.2.4`  
 Release version: `v3.2.4`  
 Frozen status: `analysis_complete`
