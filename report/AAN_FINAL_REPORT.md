@@ -8,13 +8,13 @@
 
 Background. A gait measure can correlate with Parkinsonian severity without being reliable, repeatable, or transferable enough to serve as a biomarker. We tested the evidence layers separately rather than treating association as qualification.
 
-Objective. Determine whether an outcome-blind deviation from healthy gait provides severity information beyond walking speed and survives independent validation tests.
+Objective. Determine whether an outcome-blind deviation from healthy gait provides severity information beyond walking speed, then evaluate it across distinct validation layers.
 
 Methods. We analyzed the frozen WearGait-PD study of 62 people with Parkinson’s disease and 124 task observations. A healthy-control reference defined an eight-input gait-deviation score without using Parkinsonian outcomes. We estimated its association with gait-specific MDS-UPDRS severity using participant-clustered models, resampled the control reference 2,000 times, and compared speed-only and extended models in 100 repeated participant-grouped five-fold validations. Before longitudinal use, raw walkway reconstruction was compared with PKMAS on 252 matched trials. The unchanged score was then applied to visits separated by at least six months.
 
 Results. The standardized severity association was 0.301 (95% CI, 0.089 to 0.513; q=0.0055). All 2,000 reference resamples retained the same direction, with median effect 0.291. At the participant level, the score improved rank correlation in 98% of repeated validations; median ΔSpearman was 0.047. The median RMSE change was −0.0069, but RMSE improved in only 66% of repeats and MAE in 44%, so better exact-score prediction was not established. All eight reconstructed inputs passed their frozen analytical-equivalence gates. Six-plus-month stability did not meet the prespecified criterion: SelfPace ICC(A,1)=0.647 (95% BCa CI, 0.439 to 0.863; n=45) and HurriedPace ICC(A,1)=0.282 (95% BCa CI, −0.009 to 0.543; n=44).
 
-Conclusion. The score carries reproducible information about severity ranking and can be reconstructed from raw walkway records, but it did not meet the long-interval stability standard. Severity association and analytical validity do not guarantee longitudinal biomarker stability. Short-term reliability, clinical responsiveness, and broad external transport remain unestablished.
+Conclusion. The score consistently improved severity ranking in repeated grouped validation and can be reconstructed from raw walkway records, but it did not meet the long-interval stability standard. Severity association and analytical validity do not guarantee longitudinal biomarker stability. Short-term reliability, clinical responsiveness, and broad external transport remain unestablished.
 
 ## The clinical problem
 
@@ -97,7 +97,7 @@ The absolute-prediction results were weaker. At the participant level, median Δ
 | Calibration slope closer to 1 | 60% | Limited calibration evidence |
 | Calibration intercept closer to 0 | 61% | Mixed calibration evidence |
 
-The frozen interpretation is `RANKING_SUPPORT_ONLY`. The score contributes reproducible information about the ordering of severity beyond speed. Better exact-score prediction has not been established. Spearman correlation and prediction error answer different questions and are reported separately.
+The frozen interpretation is `RANKING_SUPPORT_ONLY`. The score consistently improved relative severity ordering beyond speed in the repeated grouped validations. Better exact-score prediction has not been established. Spearman correlation and prediction error answer different questions and are reported separately.
 
 ![Repeated validation separates ranking from prediction error](figures/final/figure_3_incremental_validation.png)
 
