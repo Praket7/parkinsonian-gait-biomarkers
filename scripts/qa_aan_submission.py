@@ -33,6 +33,11 @@ UNSUPPORTED = re.compile(
     r"reliable trait biomarker|validated across CARE-PD)\b",
     re.IGNORECASE,
 )
+OVERCLAIMED_VALIDATION = re.compile(
+    r"survives independent validation(?: tests)?|"
+    r"reproducible (?:severity-ranking )?information(?: about severity ranking)?",
+    re.IGNORECASE,
+)
 
 
 def word_count(text: str) -> int:
@@ -58,6 +63,8 @@ def check(root: Path = ROOT) -> list[str]:
         errors.append("final report lacks a clear diagnostic boundary")
     if UNSUPPORTED.search(report):
         errors.append("final report contains an unsupported clinical claim")
+    if OVERCLAIMED_VALIDATION.search(report) or OVERCLAIMED_VALIDATION.search(abstract):
+        errors.append("canonical submission overstates validation or reproducibility")
 
     with MATRIX.open(newline="", encoding="utf-8") as handle:
         matrix = list(csv.DictReader(handle))
