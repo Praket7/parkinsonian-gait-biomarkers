@@ -5,7 +5,7 @@ This directory contains aggregate evidence tables, bibliography files, provenanc
 ## Current evidence
 
 - `AAN_FINAL_EVIDENCE_MATRIX.csv` — structured status of each major validation claim
-- `AAN_submission_values.json` — traceable aggregate values used by submission QA checks
+- `AAN_submission_values.json` — traceable aggregate values used by automated QA checks
 - `claim_evidence_matrix.csv` — claim-to-output mapping
 - `AAN_results_appendix.md` — aggregate result details
 - `AAN_bibliography.md` — source list used by the frozen analysis materials
@@ -21,7 +21,7 @@ The latest corrected result bundle is v4.5. Scientific results are frozen separa
 
 ## Contribution record
 
-See [AUTHorship and assistance](AUTHORSHIP_AND_ASSISTANCE.md) for the documented boundaries of student direction, mentor information, and computational assistance.
+See [authorship and assistance](AUTHORSHIP_AND_ASSISTANCE.md) for the documented boundaries of student direction, mentor information, and computational assistance.
 
 ## Submission prose
 
