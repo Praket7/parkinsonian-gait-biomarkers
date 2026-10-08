@@ -1,60 +1,120 @@
-# Research review: context-robust Parkinsonian gait biomarkers
+# Scientific context and literature position
+
+## Scope
+
+This repository studies a candidate digital gait measure for Parkinsonian motor severity. The central question is not whether gait contains information about Parkinson disease; that is well established. The question is whether a fixed gait measure remains defensible when association, measurement agreement, reliability, responsiveness, and transport are evaluated as separate properties.
+
+The project should therefore be interpreted as a biomarker-validation study, not as a diagnostic model and not as evidence of clinical utility.
+
+## Neurological rationale
+
+Parkinson disease alters basal-ganglia motor circuits involved in movement initiation, scaling, and automaticity. These changes can appear behaviorally as bradykinesia, reduced stride length, altered pace, impaired adaptation, and increased temporal variability. Instrumented gait measurement provides a quantitative view of that motor phenotype, but a behavioral signal is not a direct measurement of dopaminergic loss or a specific neural circuit.
+
+The clinical anchor used here is gait-specific Parkinsonian severity. The project asks whether a multivariate deviation from healthy gait provides information beyond simple walking speed and whether that information survives additional validation tests.
+
+## Why validation must be layered
+
+Digital measures can fail in different ways:
+
+- a feature can correlate with severity but be highly dependent on walking speed,
+- a score can rank participants well but predict exact clinical values poorly,
+- a derived measure can be clinically associated while being technically difficult to reproduce,
+- a measure can agree with a reference system yet fail to remain stable over time,
+- a result can hold in one site or device but fail to transport to another, and
+- longitudinal variation can reflect real clinical change rather than measurement error.
+
+These are different scientific questions and should not be collapsed into one accuracy number.
+
+## Current literature
+
+### Longitudinal Parkinson digital outcomes
+
+Rábano-Suárez et al. reviewed digital outcomes proposed as markers of early Parkinson disease progression. Among 1,507 screened records, only 15 longitudinal studies met their criteria. The review found promising signals but concluded that the ability of digital outcomes to track disease progression remains insufficiently established and called for more standardized methodology and data sharing.
+
+Reference: Rábano-Suárez P, Del Campo N, Benatru I, et al. *Digital Outcomes as Biomarkers of Disease Progression in Early Parkinson's Disease: A Systematic Review.* Movement Disorders. 2025;40(2):184-203. [PubMed](https://pubmed.ncbi.nlm.nih.gov/39613480/)
+
+### External validation and reporting
+
+Qi et al. reviewed the Parkinson digital-biomarker literature and a subset of deep-learning studies for freezing of gait. The review identified strong model performance in many studies but emphasized limited external validation and inconsistent performance reporting. That limitation is directly relevant to this repository: internal predictive performance is not treated as equivalent to independent transport.
+
+Reference: Qi W, Shen S, Dong C, et al. *Digital Biomarkers for Parkinson Disease: Bibliometric Analysis and a Scoping Review of Deep Learning for Freezing of Gait.* Journal of Medical Internet Research. 2025;27:e71560. [PubMed](https://pubmed.ncbi.nlm.nih.gov/40392578/)
+
+### Gait as a neurological systems-level measure
+
+A 2026 review by Ortega-Robles et al. describes gait as an integrated output of cortical, subcortical, cerebellar, spinal, and peripheral systems. It highlights the promise of digital mobility outcomes while identifying methodological heterogeneity, limited disease-specific validation, and insufficient longitudinal evidence as major barriers to translation.
+
+Reference: Ortega-Robles E, Treviño M, Manjarrez E, Arias-Carrión O. *Walking as a Window to the Brain: Redefining Gait in Neurology.* Medical Sciences. 2026;14(3):338. [PubMed](https://pubmed.ncbi.nlm.nih.gov/42506308/)
+
+### Wearable and remote gait measurement
+
+Systematic reviews of wearable gait monitoring in Parkinson disease have also found substantial variation in sensor placement, algorithms, protocols, and clinical use cases. Technical validity in a laboratory does not automatically establish ecological validity, longitudinal sensitivity, or clinical usefulness.
+
+Reference: Salaorni F, Bonardi G, Schena F, Tinazzi M, Gandolfi M. *Wearable devices for gait and posture monitoring via telemedicine in people with movement disorders and multiple sclerosis: a systematic review.* Expert Review of Medical Devices. 2024;21(1-2):121-140. [PubMed](https://pubmed.ncbi.nlm.nih.gov/38124300/)
+
+## Position of this project
+
+The project does not claim to introduce gait analysis, the first Parkinson digital biomarker, or the first multivariate gait score. Its contribution is narrower and methodological.
+
+A fixed, outcome-blind, healthy-control-referenced score is evaluated through a sequence of prespecified evidence layers:
+
+1. concurrent association with gait-specific severity,
+2. robustness to resampling of the healthy reference,
+3. incremental information beyond gait speed,
+4. analytical agreement of reconstructed gait inputs,
+5. six-plus-month longitudinal stability,
+6. clinical responsiveness where session-linked anchors are available, and
+7. transport to other sites or measurement systems where an equivalent measurement bridge exists.
+
+The current evidence supports association, healthy-reference robustness, participant-level severity ranking beyond speed, and analytical reconstruction of the eight WearGait inputs. It does not establish consistently better exact-score prediction. The six-plus-month stability criterion was not met. Short-term repeatability, treatment responsiveness, and broad multisite transport remain unresolved.
+
+## Claim boundaries
+
+The following claims are not supported by the current evidence:
+
+### Diagnosis
+
+The study does not test a diagnostic threshold, differential-diagnosis population, or prospective clinical workflow. The score should not be described as diagnosing Parkinson disease.
+
+### Disease progression
+
+A cross-sectional association with severity does not establish progression sensitivity. The available repeated visits are separated by at least six months and lack a verified repeated clinical anchor adequate for a formal responsiveness analysis.
+
+### Short-term reliability
+
+Long-interval stability is not a substitute for state-controlled test-retest reliability. Medication state, disease progression, general health, and other factors may change between visits.
+
+### Treatment response
+
+Medication timing or treatment labels alone are insufficient. A response analysis requires comparable repeated measurements and clinically interpretable session-linked anchors.
+
+### Broad external validation
+
+CARE-PD and other external datasets use different measurement representations. A full replication of the frozen eight-input score requires a validated bridge to the same inputs and an appropriate healthy reference. Cohort-specific speed associations or related gait measures should not be relabeled as replication of the frozen score.
+
+## Why a more complex model is not the immediate priority
+
+The primary severity dataset contains 62 independent participants. A higher-capacity model would increase flexibility and overfitting risk without resolving the principal scientific uncertainties. The current bottlenecks are measurement reliability, responsiveness, and external transport, not model complexity.
+
+A simple model that survives independent validation layers would be more informative than a more complex model evaluated only by internal predictive performance.
+
+## Highest-value next studies
+
+### 1. Short-interval repeatability
+
+Repeat the same task on the same device over a short interval while documenting medication timing, clinical state, health changes, and protocol deviations. Evaluate ICC, agreement, and measurement error using the unchanged score.
+
+### 2. Responsiveness
+
+Collect a gait-specific clinical rating at every gait session. Test whether within-person change in the frozen score tracks within-person change in the clinical anchor.
+
+### 3. Independent-site measurement bridge
+
+Validate reconstruction of all frozen inputs at another center before evaluating the score itself. Do not learn the bridge from target-site clinical outcomes.
+
+### 4. Prospective transport
+
+Use leave-center-out or locked external evaluation with no target-site outcome refitting. Report rank correlation, absolute error, calibration, missingness, and confidence intervals separately.
 
 ## Bottom line
 
-Treat the proposed output as a **context-aware digital gait measure** (or a candidate monitoring/progression marker), not a diagnostic biomarker, unless the study is explicitly designed and powered for diagnosis against an expert clinical reference standard. Parkinson disease diagnosis still depends on trained neurologic history/examination under the MDS criteria; a gait signal alone cannot establish PD. The MDS notes that supportive features increase confidence but cannot make the diagnosis on their own ([MDS position statement](https://www.movementdisorders.org/MDS/News/Newsroom/Position-Papers/MDS-Position-Diagnosis-of-PD.htm)).
-
-The defensible scientific question is: **Does a pre-specified gait measure retain analytical reliability and clinically meaningful association with a prespecified outcome across walking contexts, medication states, sites, devices, and people?** Avoid the stronger claim that one model is “context robust” simply because it scores well on randomly split windows.
-
-## What is reasonably supported
-
-- Candidate outcomes with the strongest current support include stride length, stride-time variability (SD or coefficient of variation), turn velocity/turn steps, trunk range of motion, arm-swing range, and foot-contact/shuffling measures. The NINDS PD digital-outcomes guidance lists these as recommended gait outcomes, while noting that most evidence remains from prescribed tasks ([NINDS PD digital outcomes guidance](https://www.commondataelements.ninds.nih.gov/sites/nindscde/files/Doc/PD/F3012_Best_Practices_for_Digital_Health_Outcomes.pdf)).
-- Free-living signals can be treatment-responsive without being disease-specific. In Parkinson@Home, real-life gait features detected medication-related motor fluctuations (combined AUC 0.84), whereas distinguishing PD from controls was weaker (AUC 0.76); hand position materially changed wrist/pocket spectral features ([Hillel et al., 2019](https://pmc.ncbi.nlm.nih.gov/articles/PMC7584982/)). This is direct evidence that context and sensor placement are part of the measurement, not nuisance details to ignore.
-- Freezing of gait is especially context-dependent: narrow spaces, turning, obstacles, transitions, and medication state can elicit episodes that a broad hallway test misses. A wearable FOG study used synchronized video/manual annotation and leave-one-patient-out validation; its reported sensitivity/specificity are useful feasibility results, not proof of generalization to arbitrary homes or populations ([Mazilu et al./FOG-provoking test](https://pmc.ncbi.nlm.nih.gov/articles/PMC7472497/); [daily-living FOG comparison](https://pmc.ncbi.nlm.nih.gov/articles/PMC10071496/)).
-- Technical validity and clinical validity are separate. A wearable gait system can agree with motion capture on stride parameters in a standardized walk yet still fail to represent daily-life mobility. Conversely, a daily-life signal can correlate with clinical state without being accurate as a stride-event measurement. Both layers need to be reported ([sensor-vs-motion-capture validation](https://pmc.ncbi.nlm.nih.gov/articles/PMC8623101/)).
-
-## Main infeasible or unsafe claims to remove
-
-1. **“Diagnoses Parkinson’s from gait.”** Replace with “estimates a prespecified gait phenotype,” “monitors motor fluctuations,” or “tests association with clinically rated parkinsonism.” A control-vs-PD classifier is not a diagnostic device without representative differential-diagnosis cohorts, expert reference diagnosis, prospective external validation, calibration, and a clinical-use threshold.
-2. **“Works regardless of context.”** Context changes the estimand. Define the intended context of use (e.g., 10-m walk, turning task, home free-living walking, or a specific walking-bout class), then test transport across contexts. If context labels are available, report stratified performance and interaction terms rather than averaging them away.
-3. **“Progression biomarker” from cross-sectional severity correlation.** Cross-sectional association supports a correlate, not progression. Progression requires longitudinal repeated measures, prespecified follow-up, reliability/MDC, sensitivity to change, and a clinically interpretable anchor.
-4. **“Freezing detector” from unannotated activity data.** FOG episodes require an operational definition and synchronized reference annotation (video, clinician rating, or another justified reference). Report event-level sensitivity, false alarms per hour/walking bout, onset latency, and missingness—not only window accuracy.
-5. **“Generalizes” from random window splits.** Windows from the same person leak subject-specific gait, device placement, and environment. The minimum split is subject-wise; stronger evidence is leave-one-site/device/context-out plus a locked external test set.
-
-## Recommended implementation and validation plan
-
-### 1. Lock the estimand before modeling
-
-Choose one primary use and one primary outcome. For example: “weekly median stride-time CV during free-living walking as a monitoring measure of motor fluctuation,” or “event-level FOG detection during turning and narrow-space tasks.” Keep diagnosis, progression, and treatment response as separate claims; FDA/NIH biomarker categories require different validation evidence.
-
-Record, at minimum: medication state and time since last levodopa dose, sensor location/orientation/firmware, walking-bout segmentation rules, assistive device, footwear, terrain/surface, indoor/outdoor status, turns/obstacles, time of day, and missingness. NINDS specifically recommends sharing participant, PD, technology, and environment/context metadata and warns that medication and narrow-space walking can alter outcomes ([NINDS PD v2 digital subgroup summary](https://commondataelements.ninds.nih.gov/sites/nindscde/files/Doc/PD/F3018_Digital_Technology_Subgroup_Summary.pdf)).
-
-### 2. Start with interpretable features and a context-aware baseline
-
-Use a small prespecified feature set: stride time/length, cadence, stride-time CV, double-support time, turn velocity/steps, bout duration, and FOG burden if annotated. Establish a mixed-effects or regularized baseline with participant-level random intercepts and context/medication covariates before any deep model. Report both raw and context-adjusted estimates; adjustment is not permission to erase clinically meaningful context effects.
-
-### 3. Evaluate robustness as transport, not as one score
-
-Use nested subject-level splits for development, then a locked external test. Add stress tests: unseen participant, site, device, sensor placement, medication state, indoor/outdoor, straight walking versus turning, and short versus long bouts. Report confidence intervals, calibration, subgroup performance, and missing-data behavior. For continuous measures use ICC/CCC, Bland–Altman limits, MAE, and MDC; for event detection use sensitivity, specificity/precision, F1 only alongside false alarms per hour and event timing error.
-
-### 4. Validate the measurement chain
-
-Analytical validation: repeatability, sensor-placement sensitivity, timestamp/dropout handling, gait-event accuracy against motion capture/pressure walkway, and prespecified quality-control failures. Clinical validation: association with MDS-UPDRS gait/FOG items, patient-reported FOG, medication ON/OFF or another relevant anchor. Clinical utility: demonstrate that the measure changes a decision or trial endpoint; correlation alone is insufficient.
-
-### 5. Make the hypothesis falsifiable
-
-Good primary hypothesis: “After accounting for participant and medication state, stride-time variability differs by walking context, and a context-stratified model has lower absolute error than a context-agnostic model on an unseen-site test set.”
-
-Bad hypothesis: “Our AI detects Parkinson’s gait in all real-world situations.”
-
-Pre-register the primary feature, outcome window, exclusion rules, split strategy, and success threshold. Treat context robustness as a testable interaction/transport property, not a marketing adjective.
-
-## Evidence boundary
-
-The strongest immediately defensible deliverable is a reproducible, context-labeled **candidate digital outcome** with analytical and clinical validity evidence. A clinical diagnostic claim, a disease-progression claim, or a claim of universal real-world robustness requires a substantially larger prospective, multi-site study and a locked external test set.
-
-## Literature checked during the September 2026 audit
-
-Recent work reinforces the separation between measurement reliability, association with a clinical measure, medication sensitivity, and change over time. A small ObjectivePD analysis of 24 people with Parkinson's disease plus 22 controls reported that digital measure performance depended on the intended use. This supports defining a specific context of use before judging a gait measure. It is a preprint with a modest sample, not independent validation of this repository's score. [Scotina et al., 2025 preprint](https://doi.org/10.1101/2025.10.14.25337984).
-
-Research on sources of variability in Parkinson's digital outcomes emphasizes device, context, and clinical purpose as parts of measurement validity. The Mobilise-D consortium's validation recommendations likewise support checking the measurement system within its intended real world setting. These sources support the project's separate evidence gates. They do not upgrade its results. [Sources of variability in Parkinson's digital outcomes](https://pmc.ncbi.nlm.nih.gov/articles/PMC9284971/). [Mobilise-D validation recommendations](https://doi.org/10.1186/s12984-023-01198-5).
+The most defensible conclusion is not that a Parkinson gait biomarker has been qualified. It is that a promising control-referenced gait signal can survive several validation layers and still fail another important one. The current results show why association, analytical validity, prediction, longitudinal behavior, and external transport must be evaluated separately before a digital gait measure is treated as clinically reliable.
