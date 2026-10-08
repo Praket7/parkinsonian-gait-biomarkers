@@ -1,105 +1,128 @@
 # Parkinsonian Gait Biomarkers
 
-![Illustration of a gait research visit](docs/images/gait_research_illustration.png)
+A reproducible study of whether a control-referenced gait measure captures Parkinsonian gait severity beyond walking speed, and whether that signal survives separate tests of robustness, measurement agreement, longitudinal stability, and transport.
 
-*This is an original illustration. It does not depict a study participant. No study data appear.*
+## Research question
 
-This project asks a simple question. Do walking measurements tell us about Parkinsonian movement severity in more than one setting?
+A gait measure can correlate with clinical severity without being reliable enough to monitor a person over time or transferable enough to use across settings. This project therefore treats biomarker validation as a sequence of distinct questions rather than a single performance metric.
 
-Walking measures change with the task. Pace, location, health, equipment all matter. A measure may look useful in one setting while failing in another. This research tests those differences directly.
+The primary candidate, `context_adjusted_gait_deviation_v1`, is an eight-input distance from an age- and height-adjusted healthy-control gait reference. Parkinsonian outcomes are not used to fit the healthy reference.
 
-## The short answer
+## Main findings
 
-In the main study, 62 people with Parkinson’s disease completed two walking tasks. No tested gait feature met the project’s full standard as a stable trait measure. A separate score did relate to severity. It improved the ordering of people by severity in nearly every repeated validation split. It did not reliably improve exact score predictions.
-
-That is useful evidence. It is not proof of diagnosis. It is not proof of clinical benefit. Treatment response remains untested. The score is not ready to guide patient care.
-
-## What the evidence says
-
-The full current story is in the [canonical AAN research report](report/AAN_FINAL_REPORT.md). The [300-word abstract](report/AAN_abstract.md), [evidence matrix](report/AAN_FINAL_EVIDENCE_MATRIX.csv), [literature comparison](report/AAN_prior_work_table.md), and [judge questions](report/AAN_JUDGE_QA.md) are companion materials. Older reports are preserved in the [historical report index](report/HISTORICAL_REPORTS.md).
-
-| Evidence layer | Finding |
+| Evidence layer | Result |
 |---|---|
-| Concurrent severity association | Supported |
-| Healthy-reference robustness | Same direction in all 2,000 resamples |
-| Severity ranking beyond speed | Improved in 98% of participant-level repeats |
-| Exact-score prediction | Improvement not established |
-| Eight-input walkway reconstruction | All eight passed on 252 matched trials |
-| Six-plus-month stability | Did not meet the frozen criterion |
-| Short-term reliability, responsiveness, broad transport | Not estimable from the available evidence |
+| Concurrent severity association | Supported. Standardized effect 0.301, 95% CI 0.089 to 0.513, q=0.0055 |
+| Association after gait-speed adjustment | Supported. Standardized effect 0.279, 95% CI 0.083 to 0.475, q=0.0053 |
+| Healthy-reference robustness | Same association direction in all 2,000 control-reference resamples |
+| Severity ranking beyond speed | Improved in 98% of participant-level repeated validations; median ΔSpearman +0.0474 |
+| Exact-score prediction | Not established; RMSE and MAE did not improve consistently |
+| Eight-input analytical reconstruction | All eight inputs passed prespecified agreement gates on 252 matched trials |
+| Six-plus-month stability | Failed the prespecified criterion |
+| Short-term test-retest reliability | Not estimable from the available repeated visits |
+| Clinical responsiveness | Not estimable with verified session-linked clinical anchors |
+| Broad external transport | Not established |
 
-The details and limits for each result are in the canonical report and evidence matrix.
+The long-interval result is important. Self-paced ICC(A,1) was 0.647 (95% BCa CI 0.439 to 0.863; n=45) and hurried-pace ICC(A,1) was 0.282 (95% BCa CI -0.009 to 0.543; n=44). Those visits were at least six months apart, so the result reflects stability under changing clinical conditions rather than a controlled short-term repeatability experiment.
 
-The primary analysis included 124 task records from 62 people. Repeated records do not double the number of independent people. The preregistered trait standard was not met.
+## Scientific contribution
 
-A score trained with healthy controls measured how much a person’s walking differed from the reference pattern. Its association with gait severity remained after speed adjustment. The standardized association was 0.301, with a 95 percent confidence interval from 0.089 to 0.513. The adjusted q value was 0.0055.
+The contribution is not a claim that gait features, multivariate distance scores, or Parkinson digital biomarkers were invented here. It is the application of a fixed score to a prespecified validation architecture that separates:
 
-In 100 repeated validations, the score improved severity ranking in 99 percent of row level splits. This held in 98 percent of participant level splits. Exact score prediction did not improve consistently. The finding supports ranking only.
+1. concurrent clinical association,
+2. robustness to the healthy reference sample,
+3. information beyond a strong baseline such as gait speed,
+4. analytical measurement agreement,
+5. longitudinal behavior,
+6. clinical responsiveness, and
+7. external transport.
 
-The project also rebuilt eight walkway measurements from raw WearGait records. All eight met the frozen comparison rule across 252 matched trials. The resulting score was evaluated across visits at least six months apart. Stability was below the project’s prespecified standard. These long intervals cannot measure short term repeatability. Health can change between visits. Medication state can change too.
+A positive result at one layer is not treated as evidence for the others. The six-plus-month stability test remained negative rather than being redefined after the result was observed.
 
-The [latest scientific report](results/v4_5/AAN_v4_5_report.md) gives confidence limits, exclusions, source checks. It also explains the study limits. The [evidence table](results/v4_5/evidence_matrix.csv) gives the status of each claim.
+This framing is consistent with the broader digital-biomarker literature. Recent reviews continue to identify limited external validation, heterogeneous methods, and insufficient longitudinal evidence as major barriers to clinical translation in Parkinson disease and neurological gait measurement:
 
-## A few terms in plain language
+- Rábano-Suárez et al., *Movement Disorders* (2025): [Digital Outcomes as Biomarkers of Disease Progression in Early Parkinson's Disease](https://pubmed.ncbi.nlm.nih.gov/39613480/)
+- Qi et al., *Journal of Medical Internet Research* (2025): [Digital Biomarkers for Parkinson Disease](https://pubmed.ncbi.nlm.nih.gov/40392578/)
+- Ortega-Robles et al., *Medical Sciences* (2026): [Walking as a Window to the Brain](https://pubmed.ncbi.nlm.nih.gov/42506308/)
 
-A stable trait measure should give similar results when a person repeats the same task under similar conditions.
+See [research_review_parkinsonian_gait.md](research_review_parkinsonian_gait.md) for the literature context and claim boundaries.
 
-A confidence interval is a range that describes uncertainty around an estimate. The adjusted q value reflects correction across several measures. It helps limit false discoveries. It does not show the size of a clinical benefit.
+## Study design
 
-Severity ranking means placing people in relative order by the study outcome. It does not mean predicting an exact clinical rating. Participant grouped validation keeps each person’s records together while checking how sensitive the result is to the people in each split.
+The primary WearGait-PD analysis includes 62 independent participants with Parkinson's disease and repeated walking tasks. Repeated task records are clustered by participant, and cross-validation splits keep all records from a participant in the same fold.
 
-![Ranking results across repeated validation splits](docs/images/ranking_result.png)
+The frozen score uses eight gait inputs:
 
-## Why the result matters
+- gait speed
+- cadence
+- mean step length
+- mean stride length
+- mean step time
+- mean stride time
+- step-time coefficient of variation
+- stride-time coefficient of variation
 
-A measure can track severity without being stable enough to monitor one person. A measure can rank people well without predicting an exact clinical score. Agreement between two measurement systems does not establish usefulness in a new clinic. These are separate scientific questions.
+The healthy-control reference estimates the expected feature vector for age and height and the covariance of control residuals. The score is the covariance-weighted distance from that reference.
 
-This project keeps those questions separate. It reports positive findings. It reports failed tests. It names questions the available data cannot answer. It does not change thresholds after seeing results.
+Secondary datasets are used only for questions their measurement systems can support. CARE-PD, Mobilise-D, and the Mendeley gait data are not presented as full replications of the frozen eight-input WearGait score when an equivalent measurement bridge is unavailable.
 
-## Start here
+## Interpretation boundaries
 
-Use Python 3.11. From the project folder, run the setup script. It creates `.venv` when needed. It installs the pinned packages, then installs the project.
+This repository does **not** establish:
+
+- diagnosis of Parkinson disease,
+- a clinical decision threshold,
+- treatment response,
+- patient benefit,
+- short-term test-retest reliability,
+- broad multisite calibration, or
+- prospective clinical utility.
+
+The supported claim is narrower: the frozen control-referenced score contains reproducible severity-ranking information beyond gait speed in the primary dataset and can be reconstructed from the audited WearGait walkway records, but it did not meet the prespecified six-plus-month stability standard.
+
+## Repository structure
+
+- `src/` — analysis and validation code
+- `scripts/` — reproducible pipeline entry points and acquisition/audit utilities
+- `configs/` — frozen analysis configuration
+- `results/` — versioned aggregate outputs and figures
+- `report/` — evidence tables, bibliography, provenance records, and historical-result index
+- `docs/` — preregistration, reproduction guide, and technical notes
+- `tests/` — automated checks
+- `DATASETS.md` — dataset roles, access boundaries, and supported analyses
+- `research_review_parkinsonian_gait.md` — literature context and validation framework
+
+Participant-level records and identifiers are not stored in this public repository.
+
+## Reproduction
+
+Python 3.11 is recommended.
 
 ```bash
 bash scripts/setup_environment.sh
 source .venv/bin/activate
+pytest
 ```
 
-Run the complete automated test suite with `pytest`. The shorter Python unittest command misses tests.
-
-Public metadata can be refreshed without downloading participant records.
-
-```bash
-python scripts/acquire_dataset_metadata.py
-```
-
-The main pipeline needs authorized source data. Keep that material outside this repository. Set `PARKINSON_GAIT_DATA_ROOT` to the parent folder that contains the authorized dataset folders. Its contents must include `WearGait_PD_V1`, `WearGait_PD_Longitudinal`, `CARE_PD`, `MobiliseD_CVS_v1_0_0`, `Mendeley_Gait_PD_v2`, as well as `AdaptiveDBS_Gait_2026`.
+The full analysis requires authorized source datasets outside the repository. Point `PARKINSON_GAIT_DATA_ROOT` to the parent directory containing the authorized dataset folders, then run:
 
 ```bash
 export PARKINSON_GAIT_DATA_ROOT="/path/to/authorized/Parkinsonian_Gait_Data"
 bash scripts/reproduce_final_results.sh
 ```
 
-The corrected v4.5 release has several ordered steps. Run the v4.3 walkway reconstruction check first. Then run the v4.4 measurement protocol. Next run the v4.5 score repair. Follow with the source audit, report creation, release gate. The [reproduction guide](docs/reproduction_guide.md) lists each command with its expected files.
+The ordered v4.3-v4.5 reconstruction and validation steps are documented in [docs/reproduction_guide.md](docs/reproduction_guide.md). Aggregate evidence and provenance files are indexed in [report/README.md](report/README.md).
 
-Raw data plus person level outputs are not part of this public repository. Access depends on each dataset’s terms. Low disk space can stop a run. Credentials may expire. Files may be missing. A Drive placeholder may remain inaccessible. Such a run must be reported as incomplete. It must not be described as a failed scientific hypothesis.
+## Next experiments
 
-The analysis freeze check needs the full Git history. A shallow clone may fail that check even when the source files are correct. Git tags identify source snapshots. GitHub Releases are separate published records. Check both before citing a release.
+The highest-value next studies are methodological rather than higher-capacity modeling:
 
-## What comes next
+1. short-interval repeated walks with task, device, medication timing, and clinical state controlled,
+2. MDS-UPDRS gait ratings linked to every repeated gait session to test responsiveness,
+3. independent-site validation of the measurement bridge before testing the frozen score,
+4. prospective leave-center-out evaluation without refitting on target-site outcomes, and
+5. confirmation of ranking, absolute error, and calibration in an independent cohort.
 
-The next step should be better evidence, not a more complex model. Clinical measurements need visit links. Short interval repeat visits need a documented health state. An independent center needs a validated measurement bridge. Without these inputs, change over time remains untested. Wider use remains untested.
+## Research integrity and assistance
 
-The FDA dataset description says sessions include links to clinical ratings. It also lists medication details. It also lists DBS information. The authorized files in this analysis did not verify repeated session level ratings. Ask the data custodians to confirm the release version, access rules, table names, link fields, plus assessment dates. Do not join records using participant ID alone.
-
-Any future score comparison should use the same participant level splits. Use the same site splits too. Compare speed alone first. Then compare a small feature set chosen in advance. Evaluate the frozen deviation score separately. Report ranking, exact prediction error, calibration, missing data, plus confidence intervals. Use simulations to plan sample size. Keep this work separate from the frozen result.
-
-The [dataset guide](DATASETS.md) explains what each source can answer. The [preregistered design](docs/preregistration.md) records the original tests. The [research review](research_review_parkinsonian_gait.md) explains the scientific background.
-
-## Short video
-
-The video explains the study question. It shows the ranking result, then explains the main limits. Its statistics come from the public aggregate report. It does not show participant data.
-
-[Watch the short animated explanation](media/remotion/public/gait_study_overview.mp4). A [still image of the ranking result](docs/images/ranking_result.png) is also available.
-
-Video source files are in `media/remotion`. Run `npm install` in that folder, then use `npm run render` to rebuild the video.
+The scientific results are versioned separately from presentation files. Automated and computational assistance used in development is documented in [report/AUTHORSHIP_AND_ASSISTANCE.md](report/AUTHORSHIP_AND_ASSISTANCE.md). Competition-ready abstract or report prose is intentionally not stored in this repository; any submitted writing must be prepared and verified independently by the applicant in accordance with the relevant competition rules.
