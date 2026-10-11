@@ -50,7 +50,7 @@ def test_reference_bootstrap_is_deterministic_and_uses_same_reference_for_both_s
                                                  covariance_method="sample")
     pd.testing.assert_frame_equal(first, second)
     pd.testing.assert_frame_equal(people_first, people_second)
-    assert first.resample.nunique() == 9
+    assert first["resample"].nunique() == 9
     assert set(first.task) == {"SelfPace", "HurriedPace"}
     assert {"icc_a1", "median_precision_cosine", "mean_score_change", "median_score_change"}.issubset(first.columns)
     assert people_first.groupby(["resample", "task"]).participant.nunique().eq(5).all()
