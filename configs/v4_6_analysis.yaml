@@ -1,0 +1,18 @@
+protocol_version: v4.6.0
+seed: 20261010
+participant_bootstrap_iterations: 2000
+control_reference_bootstrap_iterations: 2000
+direction_permutations: 10000
+primary_direction_statistic: median
+multiple_testing: holm
+primary_tasks:
+  - SelfPace
+  - HurriedPace
+required_valid_passes_per_session: 4
+covariance_method: sample
+zero_residual_rule: exclude_and_count
+protected_model: results/v4_1/frozen/v4_1_control_model.json
+v1_reconstructed_features_local: results/v4_3/v1_reconstructed_features.csv
+v1_reconstruction_qc: results/v4_3/v1_reconstruction_qc.json
+longitudinal_endpoints_local: results/v4_4/h4b_session_endpoints_local.csv
+v45_longitudinal_source: results/v4_5/h4b_endpoint_error_corrected.csv
