@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify the frozen v4.6 protocol and historical scientific inputs."""
+"""Verify the frozen v4.6 protocol, historical inputs, and implementation."""
 from __future__ import annotations
 
 import hashlib
@@ -31,6 +31,11 @@ def digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def git_blob_sha1(path: Path) -> str:
+    payload = path.read_bytes()
+    return hashlib.sha1(f"blob {len(payload)}\0".encode() + payload).hexdigest()
+
+
 def check() -> list[str]:
     failures: list[str] = []
     if not MANIFEST.exists():
@@ -48,6 +53,17 @@ def check() -> list[str]:
                 failures.append(f"missing frozen file: {name}")
             elif digest(path) != expected:
                 failures.append(f"v4.6 freeze mismatch: {name}")
+    if manifest.get("implementation_hash_algorithm") != "git_blob_sha1":
+        failures.append("invalid v4.6 implementation hash algorithm")
+    implementation = manifest.get("implementation", {})
+    if not implementation:
+        failures.append("missing frozen v4.6 implementation identities")
+    for name, expected in implementation.items():
+        path = ROOT / name
+        if not path.exists():
+            failures.append(f"missing frozen implementation file: {name}")
+        elif git_blob_sha1(path) != expected:
+            failures.append(f"v4.6 implementation mismatch: {name}")
     config_path = ROOT / "configs/v4_6_analysis.yaml"
     if config_path.exists():
         config = yaml.safe_load(config_path.read_text())
