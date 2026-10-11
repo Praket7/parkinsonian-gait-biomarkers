@@ -3,6 +3,21 @@
     "configs/v4_6_analysis.yaml": "fbdbfffe99e7c2dad497c72fea291a6bd0bc8604d558083dac67047dd0bd60af",
     "docs/v4_6_preregistration.md": "6ac3781b9c772bbb719627c713bb0ce4f021f1908429667c83e5e35b932371be"
   },
+  "implementation": {
+    "scripts/build_v4_6_report.py": "d4a48b5a50b7130d1db52ab9226df55665351eca",
+    "scripts/check_v4_6_claims.py": "7594a1c2313ba7bc94d631dcf0ad22640b3f0f68",
+    "scripts/check_v4_6_freeze.py": "fb5d0540cb122200415aad6f83fecc7fb72caedc",
+    "scripts/freeze_v4_6_protocol.py": "c0bfb68bbc7dfcd33345f7435718e8b396798d0e",
+    "scripts/run_v4_6_all.py": "fb12e0be0b1ba5b1df6b9ec55411791996210b8f",
+    "scripts/run_v4_6_deviation_geometry.py": "658cac2a7aae1578c8dd888a23431d9841c457d5",
+    "scripts/run_v4_6_reference_uncertainty.py": "717ada6dc778e1696e7e013303a77ca909d657c0",
+    "scripts/run_v4_6_score_agreement.py": "a91b4341956b9d16c42ea00f9a6f7cf5ec8be662",
+    "src/v4_6/deviation_geometry.py": "30e509f9565cdf8d1e5078c340d455d5e8647955",
+    "src/v4_6/longitudinal_direction.py": "3a9918a5aa0c105f60cdb3fb3dc06f3aa88d2c00",
+    "src/v4_6/reference_uncertainty.py": "eebb1e80f1cd04ed55e4c4e1c39366ab70c39668",
+    "src/v4_6/score_agreement.py": "363a0028244082b01eb607c65d6322511eb07354"
+  },
+  "implementation_hash_algorithm": "git_blob_sha1",
   "note": "Frozen before any v4.6 scientific result. Row-level authorized inputs remain outside Git.",
   "protected": {
     "results/v4_1/frozen/v4_1_control_model.json": "b3d04cc17a08de4c213abe3d01f7d378b161a75df847da8022659c11312dfb53",
