@@ -4,6 +4,8 @@ import hashlib
 import json
 from pathlib import Path
 
+from scripts.check_v4_6_freeze import check
+
 
 ROOT = Path(__file__).resolve().parents[2]
 CONFIG = ROOT / "configs/v4_6_analysis.yaml"
@@ -64,3 +66,7 @@ def test_manifest_locks_critical_v4_6_implementation_by_git_blob_identity():
         path = ROOT / name
         assert path.exists(), f"missing v4.6 implementation file: {name}"
         assert git_blob_sha1(path) == implementation[name], f"implementation hash mismatch: {name}"
+
+
+def test_v4_6_freeze_checker_accepts_the_committed_frozen_tree():
+    assert check() == []
