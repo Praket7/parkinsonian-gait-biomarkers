@@ -1,0 +1,17 @@
+{
+  "files": {
+    "configs/v4_6_analysis.yaml": "fbdbfffe99e7c2dad497c72fea291a6bd0bc8604d558083dac67047dd0bd60af",
+    "docs/v4_6_preregistration.md": "6ac3781b9c772bbb719627c713bb0ce4f021f1908429667c83e5e35b932371be"
+  },
+  "note": "Frozen before any v4.6 scientific result. Row-level authorized inputs remain outside Git.",
+  "protected": {
+    "results/v4_1/frozen/v4_1_control_model.json": "b3d04cc17a08de4c213abe3d01f7d378b161a75df847da8022659c11312dfb53",
+    "results/v4_3/v1_reconstruction_agreement.csv": "2bc60eb3e41abcc059aab3cad8a9c9bce3a256cc10dea7636f1b484f845bcad6",
+    "results/v4_3/v1_reconstruction_qc.json": "d6bbab6330ac8bd5650952916d209697f805d242e39968833cc0876c148a9292",
+    "results/v4_5/AAN_v4_5_report.md": "cbda81e6ddc854dd71724fedbe5437ffbf70748209ef3704f98249f71193ab11",
+    "results/v4_5/h4b_endpoint_error_corrected.csv": "eb84c9c518fa7c84cb01068ed126e7e6a77f78174d2808fb9fdc5b681133f455",
+    "src/v4_1/normative.py": "76131363f1a0b8521f7ae9ad73974fad7945fdb8f66687007d6604f6a7c23c88"
+  },
+  "protocol": "v4.6.0",
+  "schema": "v4.6-protocol-freeze-v1"
+}
