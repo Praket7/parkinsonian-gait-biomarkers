@@ -14,10 +14,10 @@ No specific mentor contribution is documented in the repository. Any advice on s
 
 ## Computational assistance
 
-Codex was used for parts of repository implementation, source-schema auditing, analysis scripting, aggregate-result checks, figure generation, documentation editing, and quality assurance. The analysis uses the Python packages pinned in `requirements-lock.txt`, including NumPy, pandas, SciPy, statsmodels, scikit-learn, PyYAML, Matplotlib, and pytest.
+This project includes AI-assisted computational and editorial work. Codex was used for parts of repository implementation, source schema auditing, analysis scripting, aggregate result checks, figure generation, documentation editing, and quality assurance. The analysis uses the Python packages pinned in `requirements-lock.txt`, including NumPy, pandas, SciPy, statsmodels, scikit-learn, PyYAML, Matplotlib, and pytest.
 
-Participant-level datasets and identifiers are not stored in this public repository. Public figures and evidence files are generated from committed aggregate outputs.
+Participant level datasets and identifiers are not stored in this public repository. Public figures and evidence files are generated from committed aggregate outputs.
 
 ## External submissions
 
-Competition-ready abstract and research-report prose is intentionally not stored in this repository. Any external submission should be written and verified independently by the applicant, accurately describe all assistance, and comply with the rules of the receiving organization.
+Any competition submission must represent the student's original written work, accurately describe all assistance, and comply with the rules of the receiving organization. Computational or editorial assistance should not be presented as independent student work when that would be inaccurate.
