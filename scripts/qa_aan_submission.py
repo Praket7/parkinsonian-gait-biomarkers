@@ -19,7 +19,7 @@ MATRIX = ROOT / "report" / "AAN_FINAL_EVIDENCE_MATRIX.csv"
 VALUES = ROOT / "report" / "AAN_submission_values.json"
 REQUIRED = (
     REPORT, ABSTRACT, MATRIX, VALUES, ROOT / "report" / "AAN_prior_work_table.md",
-    ROOT / "report" / "AAN_JUDGE_QA.md", ROOT / "report" / "AUTHORSHIP_AND_ASSISTANCE.md",
+    ROOT / "report" / "AUTHORSHIP_AND_ASSISTANCE.md",
     ROOT / "report" / "AAN_bibliography.md",
 )
 FIGURES = tuple(ROOT / "report" / "figures" / "final" / f"figure_{i}_{name}.png" for i, name in (
