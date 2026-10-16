@@ -45,8 +45,6 @@ This framing is consistent with the broader digital-biomarker literature. Recent
 - Qi et al., *Journal of Medical Internet Research* (2025): [Digital Biomarkers for Parkinson Disease](https://pubmed.ncbi.nlm.nih.gov/40392578/)
 - Ortega-Robles et al., *Medical Sciences* (2026): [Walking as a Window to the Brain](https://pubmed.ncbi.nlm.nih.gov/42506308/)
 
-See [research_review_parkinsonian_gait.md](research_review_parkinsonian_gait.md) for the literature context and claim boundaries.
-
 ## Study design
 
 The primary WearGait-PD analysis includes 62 independent participants with Parkinson's disease and repeated walking tasks. Repeated task records are clustered by participant, and cross-validation splits keep all records from a participant in the same fold.
@@ -90,7 +88,6 @@ The supported claim is narrower: the frozen control-referenced score contains re
 - `docs/` — preregistration, reproduction guide, and technical notes
 - `tests/` — automated checks
 - `DATASETS.md` — dataset roles, access boundaries, and supported analyses
-- `research_review_parkinsonian_gait.md` — literature context and validation framework
 
 Participant-level records and identifiers are not stored in this public repository.
 

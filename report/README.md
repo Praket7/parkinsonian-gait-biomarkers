@@ -25,4 +25,4 @@ See [authorship and assistance](AUTHORSHIP_AND_ASSISTANCE.md) for the documented
 
 ## Submission prose
 
-AI-assisted competition abstract, judge-preparation, and integrated submission-report drafts have been removed from the repository. Any external abstract or research report should be written and verified independently by the applicant and should accurately disclose assistance as required by the receiving organization.
+Competition-ready abstract, judge-preparation, and integrated submission-report drafts are not maintained as repository documentation. Any external abstract or research report should be written and verified independently by the applicant and should accurately disclose assistance as required by the receiving organization.
