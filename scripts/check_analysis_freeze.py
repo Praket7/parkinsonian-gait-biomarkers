@@ -13,6 +13,12 @@ def sha(path: Path) -> str:
 
 
 def check_freeze(root: Path) -> list[str]:
+    """Verify the retained machine-readable frozen inputs.
+
+    Historical protocol prose is intentionally not required in the lean public
+    repository. The freeze manifest remains preserved as provenance, while the
+    active configuration and mapping files continue to be hash-checked.
+    """
     manifest_path = root / "results" / "frozen" / "analysis_freeze_manifest.json"
     if not manifest_path.is_file():
         return ["missing analysis freeze manifest"]
@@ -20,11 +26,17 @@ def check_freeze(root: Path) -> list[str]:
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
         return ["invalid analysis freeze manifest"]
+
     failures: list[str] = []
     if manifest.get("schema") != "analysis-freeze-v1":
         failures.append("analysis freeze schema is not analysis-freeze-v1")
-    paths = {"analysis_config_sha256": "configs/analysis.yaml", "analysis_protocol_sha256": "docs/v3_2_analysis_freeze.md", "feature_mapping_sha256": "docs/external_feature_mapping.md", "external_mappings_sha256": "configs/external_mappings.yaml"}
-    for key, relative in paths.items():
+
+    retained_paths = {
+        "analysis_config_sha256": "configs/analysis.yaml",
+        "feature_mapping_sha256": "docs/external_feature_mapping.md",
+        "external_mappings_sha256": "configs/external_mappings.yaml",
+    }
+    for key, relative in retained_paths.items():
         path = root / relative
         if not path.is_file():
             failures.append(f"missing frozen input: {relative}")
@@ -36,7 +48,10 @@ def check_freeze(root: Path) -> list[str]:
     provenance_path = root / "results" / "frozen" / "run_provenance.json"
     if config_path.is_file():
         config = yaml.safe_load(config_path.read_text(encoding="utf-8")) or {}
-        expected = {"analysis_protocol_version": config.get("analysis_protocol_version"), "release_version": config.get("release_version")}
+        expected = {
+            "analysis_protocol_version": config.get("analysis_protocol_version"),
+            "release_version": config.get("release_version"),
+        }
         for path, label in ((results_path, "results"), (provenance_path, "provenance")):
             if not path.is_file():
                 continue

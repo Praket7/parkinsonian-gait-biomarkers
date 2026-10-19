@@ -1,8 +1,6 @@
 # Parkinsonian gait biomarkers: aggregate results appendix
 
-This appendix is generated from the same frozen aggregate bundle as the main
-report. It retains the numerical audit trail while the main report presents the
-scientific argument concisely.
+This appendix preserves the numerical audit trail from the retained frozen aggregate bundle. It is intended to keep the reported values inspectable without maintaining superseded narrative report drafts.
 
 ## Aggregate associations
 

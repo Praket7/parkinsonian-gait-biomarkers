@@ -81,11 +81,11 @@ The supported claim is narrower: the frozen control-referenced score contains re
 ## Repository structure
 
 - `src/` — analysis and validation code
-- `scripts/` — reproducible pipeline entry points and acquisition/audit utilities
-- `configs/` — frozen analysis configuration
+- `scripts/` — reproducible pipeline entry points and audit utilities
+- `configs/` — analysis configuration
 - `results/` — versioned aggregate outputs and figures
-- `report/` — evidence tables, bibliography, provenance records, and historical-result index
-- `docs/` — preregistration, reproduction guide, and technical notes
+- `report/` — retained aggregate submission artifacts, including the abstract, evidence matrix, results appendix, structured values, and final figures
+- `docs/` — reproduction guide and technical notes
 - `tests/` — automated checks
 - `DATASETS.md` — dataset roles, access boundaries, and supported analyses
 
@@ -108,7 +108,7 @@ export PARKINSON_GAIT_DATA_ROOT="/path/to/authorized/Parkinsonian_Gait_Data"
 bash scripts/reproduce_final_results.sh
 ```
 
-The ordered v4.3-v4.5 reconstruction and validation steps are documented in [docs/reproduction_guide.md](docs/reproduction_guide.md). Aggregate evidence and provenance files are indexed in [report/README.md](report/README.md).
+The ordered v4.3-v4.5 reconstruction and validation steps are documented in [docs/reproduction_guide.md](docs/reproduction_guide.md). Retained aggregate submission artifacts are stored directly in `report/`.
 
 ## Next experiments
 
@@ -119,7 +119,3 @@ The highest-value next studies are methodological rather than higher-capacity mo
 3. independent-site validation of the measurement bridge before testing the frozen score,
 4. prospective leave-center-out evaluation without refitting on target-site outcomes, and
 5. confirmation of ranking, absolute error, and calibration in an independent cohort.
-
-## Research integrity and assistance
-
-The scientific results are versioned separately from presentation files. Automated and computational assistance used in development is documented in [report/AUTHORSHIP_AND_ASSISTANCE.md](report/AUTHORSHIP_AND_ASSISTANCE.md). Competition-ready abstract or report prose is intentionally not stored in this repository; any submitted writing must be prepared and verified independently by the applicant in accordance with the relevant competition rules.
