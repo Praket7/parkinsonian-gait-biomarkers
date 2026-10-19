@@ -1,28 +1,16 @@
-# Evidence and provenance files
+# Retained aggregate submission artifacts
 
-This directory contains aggregate evidence tables, bibliography files, provenance records, and historical-result indexes. It is not a repository of application-ready competition prose.
+This directory contains the compact, aggregate-only artifacts retained for review and automated consistency checks.
 
-## Current evidence
+## Current files
 
-- `AAN_FINAL_EVIDENCE_MATRIX.csv` — structured status of each major validation claim
-- `AAN_submission_values.json` — traceable aggregate values used by automated QA checks
-- `claim_evidence_matrix.csv` — claim-to-output mapping
-- `AAN_results_appendix.md` — aggregate result details
-- `AAN_bibliography.md` — source list used by the frozen analysis materials
-- `AAN_prior_work_table.md` — comparison of related published work and the project's methodological position
+- `AAN_abstract.md` — canonical abstract
+- `AAN_FINAL_EVIDENCE_MATRIX.csv` — structured status and source mapping for major validation claims
+- `AAN_results_appendix.md` — aggregate numerical results
+- `AAN_submission_values.json` — structured values checked against committed result tables
+- `claim_evidence_matrix.csv` — claim-to-output numeric trace used by release QA
+- `figures/final/` — final aggregate figures
 
-The legacy `AAN_` prefix is retained on frozen files for provenance. It does not indicate that the files are current application text.
+Historical report prose, bibliography drafts, prior-work drafting tables, authorship notes, preregistration prose, and superseded analysis-freeze notes are intentionally not maintained in this lean directory.
 
-## Analysis history
-
-See [HISTORICAL_REPORTS.md](HISTORICAL_REPORTS.md) for versioned scientific reports and [../results/](../results/) for the corresponding aggregate output bundles.
-
-The latest corrected result bundle is v4.5. Scientific results are frozen separately from presentation and documentation changes.
-
-## Contribution record
-
-See [authorship and assistance](AUTHORSHIP_AND_ASSISTANCE.md) for the documented boundaries of student direction, mentor information, and computational assistance.
-
-## Submission prose
-
-Competition-ready abstract, judge-preparation, and integrated submission-report drafts are not maintained as repository documentation. Any external abstract or research report should be written and verified independently by the applicant and should accurately disclose assistance as required by the receiving organization.
+The underlying analysis code, configurations, versioned aggregate outputs, reproduction instructions, and automated tests remain elsewhere in the repository.

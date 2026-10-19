@@ -1,8 +1,10 @@
 {
   "files": {
-    "configs/v4_6_analysis.yaml": "fbdbfffe99e7c2dad497c72fea291a6bd0bc8604d558083dac67047dd0bd60af",
-    "docs/v4_6_preregistration.md": "6ac3781b9c772bbb719627c713bb0ce4f021f1908429667c83e5e35b932371be"
+    "configs/v4_6_analysis.yaml": "fbdbfffe99e7c2dad497c72fea291a6bd0bc8604d558083dac67047dd0bd60af"
   },
+  "excluded_public_artifacts": [
+    "docs/v4_6_preregistration.md"
+  ],
   "implementation": {
     "scripts/build_v4_6_report.py": "d4a48b5a50b7130d1db52ab9226df55665351eca",
     "scripts/check_v4_6_claims.py": "7594a1c2313ba7bc94d631dcf0ad22640b3f0f68",
@@ -18,7 +20,7 @@
     "src/v4_6/score_agreement.py": "363a0028244082b01eb607c65d6322511eb07354"
   },
   "implementation_hash_algorithm": "git_blob_sha1",
-  "note": "Frozen before any v4.6 scientific result. Row-level authorized inputs remain outside Git.",
+  "note": "Frozen before any v4.6 scientific result. Row-level authorized inputs remain outside Git. Historical preregistration prose is intentionally excluded from the lean public repository; the machine-readable locked configuration remains hash-checked.",
   "protected": {
     "results/v4_1/frozen/v4_1_control_model.json": "b3d04cc17a08de4c213abe3d01f7d378b161a75df847da8022659c11312dfb53",
     "results/v4_3/v1_reconstruction_agreement.csv": "2bc60eb3e41abcc059aab3cad8a9c9bce3a256cc10dea7636f1b484f845bcad6",
