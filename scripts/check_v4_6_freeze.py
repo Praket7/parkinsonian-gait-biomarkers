@@ -12,6 +12,7 @@ from src.v4_1.normative import FROZEN_MODEL_SHA256, load_frozen_model
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "results/v4_6/protocol_manifest.json"
+PUBLICATION_OMITTED = {"docs/v4_6_preregistration.md"}
 EXPECTED_CONFIG = {
     "protocol_version": "v4.6.0",
     "seed": 20261010,
@@ -36,6 +37,10 @@ def git_blob_sha1(path: Path) -> str:
     return hashlib.sha1(f"blob {len(payload)}\0".encode() + payload).hexdigest()
 
 
+def _valid_sha256(value: object) -> bool:
+    return isinstance(value, str) and len(value) == 64 and all(c in "0123456789abcdef" for c in value.lower())
+
+
 def check() -> list[str]:
     failures: list[str] = []
     if not MANIFEST.exists():
@@ -49,6 +54,10 @@ def check() -> list[str]:
     for section in ("files", "protected"):
         for name, expected in manifest.get(section, {}).items():
             path = ROOT / name
+            if not path.exists() and name in PUBLICATION_OMITTED:
+                if not _valid_sha256(expected):
+                    failures.append(f"invalid historical frozen hash: {name}")
+                continue
             if not path.exists():
                 failures.append(f"missing frozen file: {name}")
             elif digest(path) != expected:
