@@ -27,11 +27,6 @@ REMOVED_PUBLIC_ARTIFACTS = (
     "docs/v4_analysis_freeze.md",
     "docs/v4_feature_dictionary.md",
     "docs/v4_preregistration.md",
-    "results/v4/frozen/AAN_v4_report.md",
-    "results/v4_1/frozen/AAN_v4_1_report.md",
-    "results/v4_2/frozen/AAN_v4_2_report.md",
-    "results/v4_4/AAN_v4_4_report.md",
-    "results/v4_5/AAN_v4_5_report.md",
 )
 
 
